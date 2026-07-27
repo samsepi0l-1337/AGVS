@@ -1,0 +1,98 @@
+.OverView {
+    overflow: hidden;
+    position: relative;
+}
+
+.OverView header {
+    width: 1920px;
+    height: 80px;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    border-bottom: 1px solid #ffffff;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+.OverView header:hover {
+    background-color: #ffffff;
+    color: #333333;
+}
+.OverView header:hover .ContactUsWrap {
+    color: #ffffff;
+}
+.OverView header .LogoWrap {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.OverView header .LogoWrap a {
+    width: 70%;
+}
+
+
+.OverView header .GnbContainer {
+    width: 80%;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.OverView header .GnbWrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.OverView header .GnbWrap #Gnb {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.OverView header .GnbWrap #Gnb > li:first-child {
+    margin-left: 0px;
+}
+.OverView header .GnbWrap #Gnb > li {
+    padding: 23px 30px;
+    margin-left: 5px;
+}
+.OverView header .GnbWrap #Gnb > li > ul > li > a {
+    display: none;
+}
+
+
+.OverView header .ContactUsWrap {
+
+}
+.OverView header .ContactUsWrap a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 190px;
+    width: 190px;
+    height: 81px;
+    background-color: #007DCC;
+}
+
+/*------------------------------------------------------*/
+main #FullPage > div {
+    width: 1920px;
+    height: 100vh;    
+}
+main #FullPage div:nth-of-type(2) {
+    background-color: #F8B2B2;
+}
+main #FullPage div:nth-of-type(3) {
+    background-color: #F8B25f;
+}
+.BgVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
