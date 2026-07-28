@@ -60,7 +60,7 @@ Opening/closing is class-driven (`.is-open`), and **closing is bound to `header`
 
 Two non-author verifiers (Codex `gpt-5.6-sol`, Cursor `cursor-grok-4.5-high`) reviewed `js/main.js` and both returned FAIL. The owner chose to defer the fixes. Full findings: `.claude/state/cursor-rescue/*.log`. Highest impact:
 
-- The `wheel` handler never normalizes `deltaMode`. The `Math.abs(e.deltaY) < 4` threshold discards Firefox's line-mode events (`deltaY ≈ 3`) *after* `preventDefault()` has run, so wheel scrolling is dead in Firefox.
+- The `wheel` handler never normalizes `deltaMode`. The `Math.abs(e.deltaY) < 4` threshold discards Firefox's line-mode events (`deltaY ≈ 3`) _after_ `preventDefault()` has run, so wheel scrolling is dead in Firefox.
 - `preventDefault()` is unconditional, which also disables Ctrl+wheel zoom and pinch zoom, and leaves no native-scroll escape for reduced-motion or assistive-tech users.
 - The 900ms lock is shorter than a real trackpad momentum tail, so one flick can advance two sections.
 - Space on a focused `.ScrollBtn` snaps the section instead of activating the button (the `keydown` guard only excludes `input`/`textarea`/`select`).
