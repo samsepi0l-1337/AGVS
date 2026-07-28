@@ -11,6 +11,7 @@
     justify-content: space-between;
     position: absolute;
     top: 0;
+    z-index: 100;
     border-bottom: 1px solid #ffffff;
     background-color: transparent;
     transition: background-color 1s ease;
@@ -53,6 +54,7 @@
     flex-flow: row;
     justify-content: flex-start;
     align-items: center;
+    position: relative;
 }
 .OverView header .GnbWrap #Gnb > li:first-child {
     margin-left: 0px;
@@ -61,8 +63,68 @@
     padding: 23px 30px;
     margin-left: 5px;
 }
+
+/* ---------- GNB 2depth (mouseover / mouseout) ----------
+   한 줄 가로 배치. 어떤 메뉴를 열어도 첫 항목이 About 텍스트 시작점에서 시작하도록
+   기준을 개별 li 가 아니라 #Gnb 로 잡는다. (left = li 의 padding-left 와 동일한 30px) */
+.OverView header .GnbWrap #Gnb > li > ul {
+    position: absolute;
+    top: 100%;
+    left: 30px;
+    z-index: 2;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 32px;
+    height: 60px;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+}
+.OverView header .GnbWrap #Gnb > li.is-open > ul {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
 .OverView header .GnbWrap #Gnb > li > ul > li > a {
-    display: none;
+    display: block;
+    padding: 0;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #333333;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+.OverView header .GnbWrap #Gnb > li > ul > li > a:hover,
+.OverView header .GnbWrap #Gnb > li > ul > li > a:focus-visible {
+    color: #007DCC;
+}
+.OverView header .GnbWrap #Gnb > li.is-open > a {
+    color: #007DCC;
+}
+
+/* 2depth 가 열릴 때 헤더 아래로 깔리는 흰색 패널 */
+.OverView header .GnbBackdrop {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-bottom: 0 solid rgba(221, 221, 221, 0.6);
+    overflow: hidden;
+    pointer-events: none;
+    transition: height 0.35s ease;
+}
+.OverView header .GnbBackdrop.is-open {
+    border-bottom-width: 1px;
+    pointer-events: auto;
 }
 
 
@@ -82,7 +144,8 @@
 /*------------------------------------------------------*/
 main #FullPage > div {
     width: 1920px;
-    height: 100vh;    
+    height: 100vh;
+    position: relative;
 }
 main #FullPage div:nth-of-type(2) {
     background-color: #F8B2B2;
@@ -95,4 +158,81 @@ main #FullPage div:nth-of-type(3) {
     height: 100%;
     object-fit: cover;
     z-index: -1;
+}
+
+/* ---------- 섹션 이동 클릭 버튼 (참고 사이트와 동일하게 하단 중앙) ---------- */
+.ScrollBtnWrap {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+}
+.ScrollBtn {
+    display: block;
+    padding: 6px;
+    line-height: 0;
+}
+.ScrollBtn img {
+    width: 32px;
+    height: 32px;
+    animation: ScrollBtnBounce 1.8s ease-in-out infinite;
+    transition: opacity 0.2s ease;
+}
+.ScrollBtn:hover img,
+.ScrollBtn:focus-visible img {
+    opacity: 0.6;
+}
+
+@keyframes ScrollBtnBounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ScrollBtn img { animation: none; }
+}
+
+/* 드래그 스크롤 */
+body.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+}
+
+/* ---------- Footer ---------- */
+.OverView footer {
+    width: 1920px;
+    background-color: #222222;
+    color: #ffffff;
+}
+.OverView footer .FooterInner {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    gap: 24px;
+    padding: 60px 30px;
+}
+.OverView footer .FooterLogo {
+    width: 180px;
+    /* 워드마크가 어두운 배경에서도 보이도록 반전 */
+    filter: brightness(0) invert(1);
+}
+.OverView footer .FooterNav {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 40px;
+}
+.OverView footer .FooterNav a {
+    font-size: 17px;
+    color: #ffffff;
+    transition: color 0.2s ease;
+}
+.OverView footer .FooterNav a:hover,
+.OverView footer .FooterNav a:focus-visible {
+    color: #007DCC;
+}
+.OverView footer .FooterCopy {
+    font-size: 15px;
+    color: #999999;
 }

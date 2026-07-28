@@ -10,8 +10,11 @@
 html,
 body {
   height: 100%;
-  font-family: NotoSans;
+  font-family: "Noto Sans KR", NotoSans, "Apple SD Gothic Neo", "맑은 고딕",
+    "Malgun Gothic", sans-serif;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ol,
