@@ -77,11 +77,13 @@
     left: 30px;
     z-index: 2;
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     align-items: center;
-    gap: 32px;
-    height: 60px;
-    padding: 0;
+    align-content: center;
+    gap: 12px 32px;
+    width: 800px;
+    min-height: 60px;
+    padding: 16px 0;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
