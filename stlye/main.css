@@ -91,7 +91,7 @@
     transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
 }
 
-.OverView header .GnbWrap #Gnb > li.is-open > ul {
+.OverView header .GnbWrap #Gnb > li.isOpen > ul {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -114,7 +114,7 @@
     color: #007DCC;
 }
 
-.OverView header .GnbWrap #Gnb > li.is-open > a {
+.OverView header .GnbWrap #Gnb > li.isOpen > a {
     color: #007DCC;
 }
 
@@ -132,7 +132,7 @@
     transition: height 0.35s ease;
 }
 
-.OverView header .GnbBackdrop.is-open {
+.OverView header .GnbBackdrop.isOpen {
     border-bottom-width: 1px;
     pointer-events: auto;
 }
@@ -156,12 +156,188 @@ main #FullPage > div {
     position: relative;
 }
 
-main #FullPage div:nth-of-type(2) {
-    background-color: #F8B2B2;
+.Sec02Panels {
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+    height: 100%;
 }
 
-main #FullPage div:nth-of-type(3) {
-    background-color: #F8B25f;
+.Sec02Panel {
+    display: flex;
+    flex: 0 0 auto;
+    justify-content: center;
+    align-items: center;
+    width: 33.33333333%;
+    height: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: width 0.3s ease-in-out;
+}
+
+.Sec02Panel.isHoverOn {
+    width: 50%;
+}
+
+.Sec02Panel.isNonHover {
+    width: 25%;
+}
+
+.Sec02Panel01 {
+    background-image: url("../img/sec02_01.png");
+}
+
+.Sec02Panel02 {
+    background-image: url("../img/sec02_02.png");
+}
+
+.Sec02Panel03 {
+    background-image: url("../img/sec02_03.png");
+}
+
+.Sec02Title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.Sec03Inner {
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+    height: 100%;
+}
+
+.Sec03Visual {
+    width: 70%;
+    height: 100%;
+    background-image: url("../img/sec03.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.Sec03Content {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 30%;
+    height: 100%;
+    padding: 0 48px;
+    background-color: #E8F6F5;
+}
+
+.Sec03Copy {
+    max-width: 100%;
+}
+
+.Sec03Title {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    gap: 0.12em;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #111111;
+}
+
+.Sec03TitleLine {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 2px;
+}
+
+.Sec03TitleLine::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #111111;
+    transform: scaleX(0);
+    transform-origin: left center;
+}
+
+.Sec03TitleLine01::after {
+    transition: transform 0.95s ease;
+}
+
+.Sec03TitleLine02::after {
+    transition: transform 0.55s ease;
+}
+
+.Sec03Copy.isResetting .Sec03TitleLine::after {
+    transition: none;
+}
+
+.Sec03Copy.isRevealed .Sec03TitleLine01::after,
+.Sec03Copy.isRevealed .Sec03TitleLine02::after {
+    transform: scaleX(1);
+}
+
+.Sec03Desc {
+    margin-top: 28px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.7;
+    color: #333333;
+}
+
+.Sec03Tagline {
+    margin-top: 18px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #777777;
+    letter-spacing: 0.02em;
+}
+
+.Sec03ContactBtn {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 360px;
+    margin-top: 48px;
+    padding: 18px 0;
+    border-bottom: 1px solid #111111;
+    color: #111111;
+    transition: color 0s, border-color 0s;
+}
+
+.Sec03ContactBtn:hover,
+.Sec03ContactBtn:focus-visible {
+    color: #007DCC;
+    border-color: #007DCC;
+}
+
+.Sec03ContactLabel {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.Sec03ContactBtn .material-symbols-outlined {
+    font-size: 28px;
+    transition: transform 0.25s ease;
+}
+
+.Sec03ContactBtn:hover .material-symbols-outlined,
+.Sec03ContactBtn:focus-visible .material-symbols-outlined {
+    transform: translateX(6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .Sec03TitleLine::after {
+        transform: scaleX(1);
+        transition: none;
+    }
+
+    .Sec03ContactBtn .material-symbols-outlined {
+        transition: none;
+    }
 }
 
 .BgVideo {
@@ -215,49 +391,267 @@ main #FullPage div:nth-of-type(3) {
     }
 }
 
-body.is-dragging {
+body.isDragging {
     cursor: grabbing;
     user-select: none;
 }
 
 .OverView footer {
+    display: block;
     width: 1920px;
-    background-color: #222222;
+    background-color: #0a0a0a;
     color: #ffffff;
 }
 
 .OverView footer .FooterInner {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 80px 0 40px;
+}
+
+.OverView footer .FooterTop {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 60px;
+}
+
+.OverView footer .FooterBrand {
+    flex: 0 0 auto;
+    max-width: 420px;
+}
+
+.OverView footer .FooterBrandName {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.02em;
+}
+
+.OverView footer .FooterDesc {
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #999999;
+}
+
+.OverView footer .FooterSns {
+    display: flex;
+    flex-flow: row;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.OverView footer .FooterSnsLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: #1a1a1a;
+    color: #cccccc;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.OverView footer .FooterSnsLink:hover,
+.OverView footer .FooterSnsLink:focus-visible {
+    background-color: #007DCC;
+    color: #ffffff;
+}
+
+.OverView footer .FooterSnsIcon {
+    display: block;
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.OverView footer .FooterLinks {
+    display: flex;
+    flex-flow: row;
+    gap: 80px;
+    flex: 1;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 8px;
+}
+
+.OverView footer .FooterLinkCol {
     display: flex;
     flex-flow: column;
-    align-items: center;
-    gap: 24px;
-    padding: 60px 30px;
+    gap: 14px;
 }
 
-.OverView footer .FooterLogo {
-    width: 180px;
-    filter: brightness(0) invert(1);
-}
-
-.OverView footer .FooterNav {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    gap: 40px;
-}
-
-.OverView footer .FooterNav a {
+.OverView footer .FooterLinkTitle a {
     font-size: 17px;
+    font-weight: 700;
     color: #ffffff;
-    transition: color 0.2s ease;
 }
 
-.OverView footer .FooterNav a:hover,
-.OverView footer .FooterNav a:focus-visible {
+.OverView footer .FooterLinkTitle a:hover,
+.OverView footer .FooterLinkTitle a:focus-visible {
     color: #007DCC;
 }
 
-.OverView footer .FooterCopy {
+.OverView footer .FooterLinks a {
     font-size: 15px;
     color: #999999;
+    transition: color 0.2s ease;
+}
+
+.OverView footer .FooterLinks a:hover,
+.OverView footer .FooterLinks a:focus-visible {
+    color: #007DCC;
+}
+
+.OverView footer .FooterTopBtn {
+    display: flex;
+    flex: 0 0 auto;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 120px;
+    height: 120px;
+    margin-left: auto;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.OverView footer .FooterTopBtn:hover,
+.OverView footer .FooterTopBtn:focus-visible {
+    background-color: #007DCC;
+    border-color: #007DCC;
+    color: #ffffff;
+}
+
+.OverView footer .FooterTopBtn .FooterTopBtnIcon {
+    display: block;
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+}
+
+.OverView footer .FooterTopBtnLabel {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.OverView footer .FooterDivider {
+    height: 1px;
+    margin: 48px 0 24px;
+    background-color: #2a2a2a;
+}
+
+.OverView footer .FooterBottom {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.OverView footer .FooterCopy {
+    font-size: 14px;
+    color: #999999;
+}
+
+.OverView footer .FooterContact {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #999999;
+}
+
+.OverView footer .FooterContactLine a {
+    color: #999999;
+    transition: color 0.2s ease;
+}
+
+.OverView footer .FooterContactLine a:hover,
+.OverView footer .FooterContactLine a:focus-visible {
+    color: #007DCC;
+}
+
+.OverView footer .FooterLang {
+    position: relative;
+}
+
+.OverView footer .FooterLangBtn {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    min-width: 88px;
+    padding: 10px 18px;
+    border: 1px solid #2a2a2a;
+    border-radius: 999px;
+    background-color: transparent;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.OverView footer .FooterLangBtn:hover,
+.OverView footer .FooterLangBtn:focus-visible,
+.OverView footer .FooterLang.isOpen .FooterLangBtn {
+    border-color: #007DCC;
+}
+
+.OverView footer .FooterLangBtn .FooterLangChevron {
+    display: block;
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    transition: transform 0.2s ease;
+}
+
+.OverView footer .FooterLang.isOpen .FooterLangBtn .FooterLangChevron {
+    transform: rotate(180deg);
+}
+
+.OverView footer .FooterLangMenu {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 8px);
+    z-index: 5;
+    min-width: 100%;
+    padding: 8px 0;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    background-color: #141414;
+    overflow: hidden;
+}
+
+.OverView footer .FooterLangOption {
+    display: block;
+    width: 100%;
+    padding: 10px 18px;
+    border: 0;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 700;
+    color: #999999;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.OverView footer .FooterLangOption:hover,
+.OverView footer .FooterLangOption:focus-visible {
+    color: #ffffff;
+    background-color: #1a1a1a;
+}
+
+.OverView footer .FooterLangOption.isActive {
+    color: #007DCC;
 }
