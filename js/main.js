@@ -318,7 +318,7 @@
   }
 
   function initSec03Reveal() {
-    var section = document.getElementById("section03");
+    var section = document.getElementById("Section03");
     var copy = section && section.querySelector(".Sec03Copy");
     if (!section || !copy) return;
 
