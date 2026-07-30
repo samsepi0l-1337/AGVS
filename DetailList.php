@@ -20,10 +20,18 @@
         <div class="ListTittleWrap">
             <div class="ListTittle">
                 <ul><!--선택자 잡아서 전체 주거공간 사이에 ㅣ 만들기 마지막 선택자 잡아서 없애기 nth-of-type쓰면됨-->
-                    <li><button>전체</button></li>
-                    <li><button>AGV</button></li>
-                    <li><button>ForkLift</button></li>
-                    <li><button>Technology</button></li><!--라스트차일드 쓰면됨-->
+                    <li>
+                        <button>전체</button>
+                    </li>
+                    <li>
+                        <button>AGV</button>
+                    </li>
+                    <li>
+                        <button>ForkLift</button>
+                    </li>
+                    <li>
+                        <button>Technology</button>
+                    </li><!--라스트차일드 쓰면됨-->
                 </ul>
             </div>
             <div class="SerchBar"></div><!--form태그 써서 서치바 만들기-->
