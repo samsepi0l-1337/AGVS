@@ -1,3 +1,5 @@
+/* Common layout: header + footer (shared by index.php / DetailList.php) */
+
 header {
     width: 1920px;
     height: 80px;
@@ -86,7 +88,7 @@ header .GnbWrap #Gnb > li > ul {
     transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
 }
 
-header .GnbWrap #Gnb > li.is-open > ul {
+header .GnbWrap #Gnb > li.isOpen > ul {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -109,7 +111,7 @@ header .GnbWrap #Gnb > li > ul > li > a:focus-visible {
     color: #007DCC;
 }
 
-header .GnbWrap #Gnb > li.is-open > a {
+header .GnbWrap #Gnb > li.isOpen > a {
     color: #007DCC;
 }
 
@@ -127,7 +129,7 @@ header .GnbBackdrop {
     transition: height 0.35s ease;
 }
 
-header .GnbBackdrop.is-open {
+header .GnbBackdrop.isOpen {
     border-bottom-width: 1px;
     pointer-events: auto;
 }

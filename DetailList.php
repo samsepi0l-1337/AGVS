@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AGVS-ItemList</title>
-    <link rel="stylesheet" href="./stlye/reset.css">
-    <link rel="stylesheet" href="./stlye/DetailList.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./stlye/reset.css?ver=20260730d">
+    <link rel="stylesheet" href="./stlye/layout.css?ver=20260730d">
+    <link rel="stylesheet" href="./stlye/DetailList.css?ver=20260730d">
 </head>
 <body>
+    <?php include __DIR__ . "/include/header.html"; ?>
     <main>
         <div class="TopBg"><!-- 백그라운드 이미지 넣어서 하기 백그라운드비지쓰면됨 -->
             <p>ALL Item</p><!--tittle에따라 이름변경되어야함ex)전체,AGV-->
@@ -30,5 +35,7 @@
             </div>
         </div>
     </main>
+    <?php include __DIR__ . "/include/footer.html"; ?>
+    <script src="./js/main.js?ver=20260730d"></script>
 </body>
 </html>
