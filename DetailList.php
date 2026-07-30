@@ -38,8 +38,12 @@
         </div>
         <div class="ListItemWrap">
             <div class="Item001Wrap"><!--랩크기는 자유-->
-                <div><img src="#" alt="아이템이미지1"></div><!--320x230-->
-                <h3>Heavy Transpoter</h3><!--크기18px굵기700-->
+                <div>
+                    <img src="#" alt="아이템이미지1">
+                </div><!--320x230-->
+                <h3>
+                    Heavy Transpoter
+                </h3><!--크기18px굵기700-->
             </div>
         </div>
     </main>
