@@ -7,7 +7,7 @@
 
   function initGnb() {
     var gnb = document.getElementById("Gnb");
-    var header = document.querySelector(".OverView header");
+    var header = document.querySelector("header");
     var backdrop = document.querySelector(".GnbBackdrop");
     if (!gnb || !header) return;
 
@@ -227,6 +227,7 @@
   }
 
   function initDragScroll(snap) {
+    if (!snap) return;
     var area = document.querySelector("main");
     if (!area) return;
 
