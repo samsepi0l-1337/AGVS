@@ -26,15 +26,15 @@
     />
     <link
       rel="stylesheet"
-      href="./stlye/reset.css?ver=20260730d"
+      href="./stlye/reset.css?ver=20260730g"
     />
     <link
       rel="stylesheet"
-      href="./stlye/layout.css?ver=20260730d"
+      href="./stlye/layout.css?ver=20260730g"
     />
     <link
       rel="stylesheet"
-      href="./stlye/main.css?ver=20260730d"
+      href="./stlye/main.css?ver=20260730g"
     />
   </head>
   <body>
@@ -162,6 +162,6 @@
       </main>
       <?php include __DIR__ . "/include/footer.html"; ?>
     </div>
-    <script src="./js/main.js?ver=20260730d"></script>
+    <script src="./js/main.js?ver=20260730g"></script>
   </body>
 </html>
