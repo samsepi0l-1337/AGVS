@@ -1,0 +1,408 @@
+/* Common layout: header + footer (shared by index.php / DetailList.php) */
+
+header {
+    width: 1920px;
+    height: 80px;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #ffffff;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+header:hover {
+    background-color: #ffffff;
+    color: #333333;
+}
+
+header:hover .ContactUsWrap {
+    color: #ffffff;
+}
+
+header .LogoWrap {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+header .LogoWrap a {
+    width: 70%;
+}
+
+
+header .GnbContainer {
+    width: 80%;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+header .GnbWrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header .GnbWrap #Gnb {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+}
+
+header .GnbWrap #Gnb > li:first-child {
+    margin-left: 0px;
+}
+
+header .GnbWrap #Gnb > li {
+    padding: 23px 30px;
+    margin-left: 5px;
+}
+
+header .GnbWrap #Gnb > li > ul {
+    position: absolute;
+    top: 100%;
+    left: 30px;
+    z-index: 2;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    align-content: center;
+    gap: 12px 32px;
+    width: 800px;
+    min-height: 60px;
+    padding: 16px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+}
+
+header .GnbWrap #Gnb > li.isOpen > ul {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+header .GnbWrap #Gnb > li > ul > li > a {
+    display: block;
+    padding: 0;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #333333;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+
+header .GnbWrap #Gnb > li > ul > li > a:hover,
+header .GnbWrap #Gnb > li > ul > li > a:focus-visible {
+    color: #007DCC;
+}
+
+header .GnbWrap #Gnb > li.isOpen > a {
+    color: #007DCC;
+}
+
+header .GnbBackdrop {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-bottom: 0 solid rgba(221, 221, 221, 0.6);
+    overflow: hidden;
+    pointer-events: none;
+    transition: height 0.35s ease;
+}
+
+header .GnbBackdrop.isOpen {
+    border-bottom-width: 1px;
+    pointer-events: auto;
+}
+
+
+header .ContactUsWrap {}
+
+header .ContactUsWrap a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 190px;
+    width: 190px;
+    height: 81px;
+    background-color: #007DCC;
+}
+
+footer {
+    display: block;
+    width: 1920px;
+    background-color: #0a0a0a;
+    color: #ffffff;
+}
+
+footer .FooterInner {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 80px 0 40px;
+}
+
+footer .FooterTop {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 60px;
+}
+
+footer .FooterBrand {
+    flex: 0 0 auto;
+    max-width: 420px;
+}
+
+footer .FooterBrandName {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.02em;
+}
+
+footer .FooterDesc {
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #999999;
+}
+
+footer .FooterSns {
+    display: flex;
+    flex-flow: row;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+footer .FooterSnsLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: #1a1a1a;
+    color: #cccccc;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+footer .FooterSnsLink:hover,
+footer .FooterSnsLink:focus-visible {
+    background-color: #007DCC;
+    color: #ffffff;
+}
+
+footer .FooterSnsIcon {
+    display: block;
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+footer .FooterLinks {
+    display: flex;
+    flex-flow: row;
+    gap: 80px;
+    flex: 1;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 8px;
+}
+
+footer .FooterLinkCol {
+    display: flex;
+    flex-flow: column;
+    gap: 14px;
+}
+
+footer .FooterLinkTitle a {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+footer .FooterLinkTitle a:hover,
+footer .FooterLinkTitle a:focus-visible {
+    color: #007DCC;
+}
+
+footer .FooterLinks a {
+    font-size: 15px;
+    color: #999999;
+    transition: color 0.2s ease;
+}
+
+footer .FooterLinks a:hover,
+footer .FooterLinks a:focus-visible {
+    color: #007DCC;
+}
+
+footer .FooterTopBtn {
+    display: flex;
+    flex: 0 0 auto;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 120px;
+    height: 120px;
+    margin-left: auto;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+footer .FooterTopBtn:hover,
+footer .FooterTopBtn:focus-visible {
+    background-color: #007DCC;
+    border-color: #007DCC;
+    color: #ffffff;
+}
+
+footer .FooterTopBtn .FooterTopBtnIcon {
+    display: block;
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+}
+
+footer .FooterTopBtnLabel {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+footer .FooterDivider {
+    height: 1px;
+    margin: 48px 0 24px;
+    background-color: #2a2a2a;
+}
+
+footer .FooterBottom {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+footer .FooterCopy {
+    font-size: 14px;
+    color: #999999;
+}
+
+footer .FooterContact {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #999999;
+}
+
+footer .FooterContactLine a {
+    color: #999999;
+    transition: color 0.2s ease;
+}
+
+footer .FooterContactLine a:hover,
+footer .FooterContactLine a:focus-visible {
+    color: #007DCC;
+}
+
+footer .FooterLang {
+    position: relative;
+}
+
+footer .FooterLangBtn {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    min-width: 88px;
+    padding: 10px 18px;
+    border: 1px solid #2a2a2a;
+    border-radius: 999px;
+    background-color: transparent;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+footer .FooterLangBtn:hover,
+footer .FooterLangBtn:focus-visible,
+footer .FooterLang.isOpen .FooterLangBtn {
+    border-color: #007DCC;
+}
+
+footer .FooterLangBtn .FooterLangChevron {
+    display: block;
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    transition: transform 0.2s ease;
+}
+
+footer .FooterLang.isOpen .FooterLangBtn .FooterLangChevron {
+    transform: rotate(180deg);
+}
+
+footer .FooterLangMenu {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 8px);
+    z-index: 5;
+    min-width: 100%;
+    padding: 8px 0;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    background-color: #141414;
+    overflow: hidden;
+}
+
+footer .FooterLangOption {
+    display: block;
+    width: 100%;
+    padding: 10px 18px;
+    border: 0;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 700;
+    color: #999999;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+footer .FooterLangOption:hover,
+footer .FooterLangOption:focus-visible {
+    color: #ffffff;
+    background-color: #1a1a1a;
+}
+
+footer .FooterLangOption.isActive {
+    color: #007DCC;
+}
