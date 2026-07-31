@@ -1,3 +1,5 @@
+@AGENTS.md
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -75,9 +77,22 @@ Two non-author verifiers (Codex `gpt-5.6-sol`, Cursor `cursor-grok-4.5-high`) re
 - Space on a focused `.ScrollBtn` snaps the section instead of activating the button (the `keydown` guard only excludes `input`/`textarea`/`select`).
 - If the footer ever grows taller than the viewport it becomes unreachable, since native scroll is suppressed and the last snap target is its clamped top.
 
-## Orca workspace
+## Checkouts and Orca worktrees
 
-This checkout is an Orca-managed worktree of the AGVS repo (currently named `prowfish`, branch `samsepi0l-1337/refactor-extract-header-footer`; worktree names change over time, but the repo's role does not). Orca owns this worktree, its terminals, and the embedded browser. Do not run `git worktree add` here or create nested worktrees: this repo sets `externalWorktreeVisibility` to `hide`, so a non-Orca worktree would hold the branch while remaining invisible in the Orca UI. For sibling work, use `orca worktree create --name <n>`.
+This repo is used from two kinds of checkout, and the rules differ:
+
+- **This main checkout** (`~/Documents/Cursor/DreamProject/AGVS`) is an ordinary git checkout. Normal
+  git applies; nothing here is Orca-managed.
+- **An Orca-managed worktree** is any checkout under `~/orca/workspaces/`. There, Orca owns the
+  worktree, its terminals and the embedded browser: do not `git worktree add` and do not nest
+  worktrees, because the repo sets `externalWorktreeVisibility: "hide"`, so a non-Orca worktree would
+  hold the branch while staying invisible in the Orca UI. Create siblings with
+  `orca worktree create --name <n>`.
+
+Orca worktree names are EPHEMERAL — they are created and destroyed routinely, so never hardcode one.
+**Uncommitted work in an Orca worktree is lost when that worktree is removed**; commit or push before
+the worktree goes away. (Observed twice on 2026-07-30: the `otter` and `prowfish` worktrees were both
+destroyed, and only committed content survived.)
 
 The harness role for this repo is **FDW (frontend/design/writing)**. The native Claude-family author lane (`designer`/`writer` subagents) does the authoring for this repo; Codex+AGY, the two non-author vendor lanes, critically review that work. Authoring for this repo must **NOT** be routed to the isolated scratch-based `codex-author` lane used by the LOGIC domain. That lane is reserved for LOGIC repos, and this repo is FDW, not LOGIC.
 
