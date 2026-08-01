@@ -1,3 +1,12 @@
+header:has(+ .DetailListMain) {
+	background-color: #ffffff;
+	color: #333333;
+}
+
+header:has(+ .DetailListMain) .ContactUsWrap {
+	color: #ffffff;
+}
+
 .DetailListMain {
 	width: 100%;
 	max-width: 1920px;
@@ -14,6 +23,24 @@
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
+}
+
+.TopBg--agv {
+	background-image:
+		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../img/sec02_01.png");
+}
+
+.TopBg--forklift {
+	background-image:
+		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../img/sec02_02.png");
+}
+
+.TopBg--technology {
+	background-image:
+		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../img/sec02_03.png");
 }
 
 .TopBg p {

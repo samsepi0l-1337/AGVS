@@ -1,3 +1,22 @@
+<?php
+$catalog = json_decode(file_get_contents(__DIR__ . "/data/items.json"), true);
+$catalogCategories = isset($catalog["categories"]) && is_array($catalog["categories"]) ? $catalog["categories"] : array();
+$catalogItems = isset($catalog["items"]) && is_array($catalog["items"]) ? $catalog["items"] : array();
+
+$categoryLabels = array();
+foreach ($catalogCategories as $catalogCategory) {
+    $categoryLabels[$catalogCategory["id"]] = $catalogCategory["label"];
+}
+
+$initialBannerCategory = "all";
+if (
+    isset($_GET["category"]) &&
+    is_string($_GET["category"]) &&
+    array_key_exists($_GET["category"], $categoryLabels)
+) {
+    $initialBannerCategory = $_GET["category"];
+}
+?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -18,40 +37,41 @@
     rel="stylesheet"
     >
     <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&display=swap"
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260801g"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260801g"
+    href="./stlye/reset.css?ver=20260802e"
     >
     <link
     rel="stylesheet"
-    href="./stlye/DetailList.css?ver=20260801g"
+    href="./stlye/layout.css?ver=20260802e"
+    >
+    <link
+    rel="stylesheet"
+    href="./stlye/DetailList.css?ver=20260802e"
+    >
+    <link
+    rel="stylesheet"
+    href="./stlye/Pop.css?ver=20260802e"
     >
 </head>
 <body>
     <?php include __DIR__ . "/include/header.html"; ?>
     <main class="DetailListMain">
-        <div class="TopBg"><!-- 백그라운드 이미지 넣어서 하기 백그라운드비지쓰면됨 -->
-            <p>ALL Item</p><!--tittle에따라 이름변경되어야함ex)전체,AGV-->
+        <div class="TopBg TopBg--<?php echo htmlspecialchars($initialBannerCategory, ENT_QUOTES, "UTF-8"); ?>"><!-- 백그라운드 이미지 넣어서 하기 백그라운드비지쓰면됨 -->
+            <p><?php echo htmlspecialchars($catalogCategories[0]["title"], ENT_QUOTES, "UTF-8"); ?></p><!--tittle에따라 이름변경되어야함ex)전체,AGV-->
         </div>
         <div class="DetailListInner">
             <div class="ListTittleWrap">
                 <div class="ListTittle">
                     <ul><!--선택자 잡아서 전체 주거공간 사이에 ㅣ 만들기 마지막 선택자 잡아서 없애기 nth-of-type쓰면됨-->
+                        <?php foreach ($catalogCategories as $catalogCategoryIndex => $catalogCategory): ?>
                         <li>
-                            <button type="button" class="isOn" data-category="all" aria-pressed="true" data-title="ALL Item">전체</button>
+                            <button type="button"<?php echo $catalogCategoryIndex === 0 ? ' class="isOn"' : ""; ?> data-category="<?php echo htmlspecialchars($catalogCategory["id"], ENT_QUOTES, "UTF-8"); ?>" aria-pressed="<?php echo $catalogCategoryIndex === 0 ? "true" : "false"; ?>" data-title="<?php echo htmlspecialchars($catalogCategory["title"], ENT_QUOTES, "UTF-8"); ?>"><?php echo htmlspecialchars($catalogCategory["label"], ENT_QUOTES, "UTF-8"); ?></button>
                         </li>
-                        <li>
-                            <button type="button" data-category="agv" aria-pressed="false" data-title="AGV">AGV</button>
-                        </li>
-                        <li>
-                            <button type="button" data-category="forklift" aria-pressed="false" data-title="ForkLift">ForkLift</button>
-                        </li>
-                        <li>
-                            <button type="button" data-category="technology" aria-pressed="false" data-title="Technology">Technology</button>
-                        </li><!--라스트차일드 쓰면됨-->
+                        <?php endforeach; ?><!--라스트차일드 쓰면됨-->
                     </ul>
                 </div>
                 <div class="SerchBar"><!--form태그 써서 서치바 만들기-->
@@ -63,128 +83,27 @@
                 </div>
             </div>
             <div class="ListItemWrap">
-                <div class="ItemWrap" data-category="agv"><!--랩크기는 자유-->
-                    <a href="#">
-                        <div class="ItemThumb"></div><!--320x230-->
+                <?php foreach ($catalogItems as $catalogItem): ?>
+                <div class="ItemWrap" data-category="<?php echo htmlspecialchars($catalogItem["category"], ENT_QUOTES, "UTF-8"); ?>"><!--랩크기는 자유-->
+                    <a href="view.php?item=<?php echo rawurlencode($catalogItem["slug"]); ?>">
+                        <div class="ItemThumb"><!--320x230-->
+                            <?php if (!empty($catalogItem["images"])): ?>
+                            <img src="<?php echo htmlspecialchars($catalogItem["images"][0]["src"], ENT_QUOTES, "UTF-8"); ?>" alt="<?php echo htmlspecialchars($catalogItem["name"], ENT_QUOTES, "UTF-8"); ?>">
+                            <?php endif; ?>
+                        </div>
                         <h3>
-                            Heavy Transpoter
+                            <?php echo htmlspecialchars($catalogItem["name"], ENT_QUOTES, "UTF-8"); ?>
                         </h3><!--크기18px굵기700-->
-                        <p class="ItemCategory">AGV</p>
+                        <p class="ItemCategory"><?php echo htmlspecialchars($categoryLabels[$catalogItem["category"]], ENT_QUOTES, "UTF-8"); ?></p>
                     </a>
                 </div>
-                <div class="ItemWrap" data-category="agv">
-                    <a href="#">
-                        <div class="ItemThumb"></div>
-                        <h3>
-                            Cuil Transporting
-                        </h3>
-                        <p class="ItemCategory">AGV</p>
-                    </a>
-                </div>
-                <div class="ItemWrap" data-category="agv">
-                    <a href="#">
-                        <div class="ItemThumb"></div>
-                        <h3>
-                            Excvator Assemble Line
-                        </h3>
-                        <p class="ItemCategory">AGV</p>
-                    </a>
-                </div>
-                <div class="ItemWrap" data-category="agv">
-                    <a href="#">
-                        <div class="ItemThumb"></div>
-                        <h3>
-                            Disel Engine Assemble Line
-                        </h3>
-                        <p class="ItemCategory">AGV</p>
-                    </a>
-                </div>
-                <div class="ItemWrap" data-category="agv">
-                    <a href="#">
-                        <div class="ItemThumb"></div>
-                        <h3>
-                            Box Transporting
-                        </h3>
-                        <p class="ItemCategory">AGV</p>
-                    </a>
-                </div>
-                <div class="ItemWrap" data-category="agv">
-                    <a href="#">
-                        <div class="ItemThumb"></div>
-                        <h3>
-                            Aluminium DDiesasting Line
-                        </h3>
-                        <p class="ItemCategory">AGV</p>
-                    </a>
-                </div>
-                <div class="ItemWrap" data-category="agv">
-                    <a href="#">
-                        <div class="ItemThumb"></div>
-                        <h3>
-                            Tire Foming Line
-                        </h3>
-                        <p class="ItemCategory">AGV</p>
-                    </a>
-                </div>
-                <div class="ItemWrap" data-category="agv">
-                    <a href="#">
-                        <div class="ItemThumb"></div>
-                        <h3>
-                            Tugging
-                        </h3>
-                        <p class="ItemCategory">AGV</p>
-                    </a>
-                </div>
-                <div class="ItemWrap" data-category="forklift">
-                    <a href="#">
-                        <div class="ItemThumb"></div>
-                        <h3>
-                            1~2 Tone Application
-                        </h3>
-                        <p class="ItemCategory">ForkLift</p>
-                    </a>
-                </div>
-                <div class="ItemWrap" data-category="forklift">
-                    <a href="#">
-                        <div class="ItemThumb"></div>
-                        <h3>
-                            Heavy Application
-                        </h3>
-                        <p class="ItemCategory">ForkLift</p>
-                    </a>
-                </div>
-                <div class="ItemWrap" data-category="technology">
-                    <a href="#">
-                        <div class="ItemThumb"></div>
-                        <h3>
-                            ACS
-                        </h3>
-                        <p class="ItemCategory">Technology</p>
-                    </a>
-                </div>
-                <div class="ItemWrap" data-category="technology">
-                    <a href="#">
-                        <div class="ItemThumb"></div>
-                        <h3>
-                            System Design Tools
-                        </h3>
-                        <p class="ItemCategory">Technology</p>
-                    </a>
-                </div>
-                <div class="ItemWrap" data-category="technology">
-                    <a href="#">
-                        <div class="ItemThumb"></div>
-                        <h3>
-                            Vehicle Controller
-                        </h3>
-                        <p class="ItemCategory">Technology</p>
-                    </a>
-                </div>
+                <?php endforeach; ?>
             </div>
             <p class="ListEmpty" hidden>검색 결과가 없습니다.</p>
         </div>
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
-    <script src="./js/main.js?ver=20260801g"></script>
+    <?php include __DIR__ . "/include/contactPop.html"; ?>
+    <script src="./js/main.js?ver=20260802e"></script>
 </body>
 </html>
