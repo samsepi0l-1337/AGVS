@@ -23,7 +23,7 @@ header:has(+ .VideoViewMain) .ContactUsWrap {
 	justify-content: center;
 	align-items: center;
 	background-color: #1b3a52;
-	background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35));
+	background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url("../img/sec03.png");
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
