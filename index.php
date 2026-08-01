@@ -25,16 +25,24 @@
       rel="stylesheet"
     />
     <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&display=swap"
       rel="stylesheet"
-      href="./stlye/reset.css?ver=20260801g"
     />
     <link
       rel="stylesheet"
-      href="./stlye/layout.css?ver=20260801g"
+      href="./stlye/reset.css?ver=20260802e"
     />
     <link
       rel="stylesheet"
-      href="./stlye/main.css?ver=20260801g"
+      href="./stlye/layout.css?ver=20260802e"
+    />
+    <link
+      rel="stylesheet"
+      href="./stlye/main.css?ver=20260802e"
+    />
+    <link
+      rel="stylesheet"
+      href="./stlye/Pop.css?ver=20260802e"
     />
   </head>
   <body>
@@ -62,7 +70,11 @@
                 aria-label="다음 섹션으로 이동"
               >
                 <img
-                  src="./img/click.png"
+                  src="./img/Click.png"
+                  alt=""
+                />
+                <img
+                  src="./img/ClickHover.png"
                   alt=""
                 />
               </button>
@@ -74,22 +86,22 @@
           >
             <div class="Sec02Panels">
               <a
-                href="#"
+                href="DetailList.php?category=agv"
                 class="Sec02Panel Sec02Panel01"
               >
-                <span class="Sec02Title">Interior Design</span>
+                <span class="Sec02Title">AGV</span>
               </a>
               <a
-                href="#"
+                href="DetailList.php?category=forklift"
                 class="Sec02Panel Sec02Panel02"
               >
-                <span class="Sec02Title">Remodeling</span>
+                <span class="Sec02Title">ForkLift</span>
               </a>
               <a
-                href="#"
+                href="DetailList.php?category=technology"
                 class="Sec02Panel Sec02Panel03"
               >
-                <span class="Sec02Title">Consulting</span>
+                <span class="Sec02Title">Technology</span>
               </a>
             </div>
             <div class="Sec02Dots">
@@ -117,7 +129,11 @@
                 aria-label="다음 섹션으로 이동"
               >
                 <img
-                  src="./img/click.png"
+                  src="./img/Click.png"
+                  alt=""
+                />
+                <img
+                  src="./img/ClickHover.png"
                   alt=""
                 />
               </button>
@@ -127,53 +143,43 @@
             class="Section03"
             id="Section03"
           >
-            <div class="Sec03Inner">
-              <div
-                class="Sec03Visual"
-                aria-hidden="true"
-              ></div>
-              <div class="Sec03Content">
-                <div class="Sec03Copy">
-                  <h2 class="Sec03Title">
-                    <span class="Sec03TitleLine Sec03TitleLine01"
-                      >물류가 스스로 움직이는 세상</span
-                    >
-                    <span class="Sec03TitleLine Sec03TitleLine02"
-                      >AGVS의 비전</span
-                    >
+            <section
+              class="contact-banner"
+              id="contact"
+            >
+              <div class="contact-banner__visual">
+                <img
+                  src="./img/sec03.png"
+                  alt="AGVS와 함께하는 스마트 물류 자동화"
+                />
+              </div>
+              <div class="contact-banner__content">
+                <div class="contact-banner__inner">
+                  <h2 class="contact-banner__title">
+                    <strong>스마트한 물류</strong>의 시작,<br />
+                    <strong>AGVS</strong>와 함께
                   </h2>
-                  <p class="Sec03Desc">
-                    자율주행 기술로<br />
-                    산업 현장의 미래를 연결합니다.
+                  <p class="contact-banner__description">
+                    고객의 현장과 목표를 함께 이해하고,<br
+                      class="desktop-only"
+                    />
+                    <strong
+                      >생산성과 운영 효율을 높이는 최적의 자동화 시스템</strong
+                    >을 함께 설계합니다.
                   </p>
-                  <p class="Sec03Tagline">Beyond Logistics Automation</p>
                   <a
                     href="#"
-                    class="Sec03ContactBtn"
+                    class="contact-banner__link Sec03ContactBtn"
                   >
-                    <span class="Sec03ContactLabel">Contact Us</span>
+                    <span>CONTACT US</span>
                     <span
-                      class="material-symbols-outlined"
+                      class="contact-banner__arrow"
                       aria-hidden="true"
-                      >chevron_right</span
-                    >
+                    ></span>
                   </a>
                 </div>
               </div>
-            </div>
-            <div class="ScrollBtnWrap ScrollBtnWrapMobile">
-              <button
-                type="button"
-                class="ScrollBtn"
-                data-target="#Footer"
-                aria-label="맨 아래로 이동"
-              >
-                <img
-                  src="./img/click.png"
-                  alt=""
-                />
-              </button>
-            </div>
+            </section>
           </div>
         </div>
       </main>
@@ -200,7 +206,8 @@
         </ul>
       </div>
       <?php include __DIR__ . "/include/footer.html"; ?>
+      <?php include __DIR__ . "/include/contactPop.html"; ?>
     </div>
-    <script src="./js/main.js?ver=20260801g"></script>
+    <script src="./js/main.js?ver=20260802e"></script>
   </body>
 </html>
