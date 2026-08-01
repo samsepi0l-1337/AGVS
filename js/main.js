@@ -55,6 +55,32 @@
 		});
 	}
 
+	function initGnbToggle() {
+		var header = document.querySelector("header");
+		var toggle = document.querySelector(".GnbToggle");
+		if (!toggle || !header) return;
+
+		function setOpen(open) {
+			header.classList.toggle("isMenuOpen", open);
+			toggle.setAttribute("aria-expanded", open ? "true" : "false");
+		}
+
+		toggle.addEventListener("click", function (e) {
+			e.stopPropagation();
+			setOpen(!header.classList.contains("isMenuOpen"));
+		});
+
+		document.addEventListener("click", function (e) {
+			if (!header.classList.contains("isMenuOpen")) return;
+			if (header.contains(e.target)) return;
+			setOpen(false);
+		});
+
+		document.addEventListener("keydown", function (e) {
+			if (e.key === "Escape") setOpen(false);
+		});
+	}
+
 	function initSectionSnap() {
 		var sections = Array.prototype.slice.call(
 			document.querySelectorAll("#FullPage > div"),
@@ -529,6 +555,7 @@
 
 	function init() {
 		initGnb();
+		initGnbToggle();
 		initSec02Hover();
 		initSec03Reveal();
 		var snap = initSectionSnap();
