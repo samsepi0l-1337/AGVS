@@ -24,19 +24,19 @@
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802e"
+    href="./stlye/reset.css?ver=20260802f"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802e"
+    href="./stlye/layout.css?ver=20260802f"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Overview.css?ver=20260802e"
+    href="./stlye/Overview.css?ver=20260802f"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802e"
+    href="./stlye/Pop.css?ver=20260802f"
     >
 </head>
 <body>
@@ -427,7 +427,7 @@
     <?php include __DIR__ . "/include/footer.html"; ?>
     <!-- contactPop.html renders the shared popup root with id="ContactUsPop". -->
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802e"></script>
+    <script src="./js/main.js?ver=20260802f"></script>
     <script>
         (() => {
             const overview = document.querySelector(".OverviewMain");

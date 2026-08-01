@@ -2021,8 +2021,8 @@ body > .header .nav-link.active::after {
 	}
 
 	.OverviewMain .about-main-card {
-		min-height: 420px;
-		padding: 28px 28px 170px;
+		min-height: 360px;
+		padding: 28px 28px 120px;
 		border-radius: 28px;
 	}
 
