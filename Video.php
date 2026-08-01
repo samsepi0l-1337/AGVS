@@ -28,19 +28,19 @@ $videos = isset($catalog["videos"]) && is_array($catalog["videos"]) ? $catalog["
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802e"
+    href="./stlye/reset.css?ver=20260802f"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802e"
+    href="./stlye/layout.css?ver=20260802f"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Video.css?ver=20260802e"
+    href="./stlye/Video.css?ver=20260802f"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802e"
+    href="./stlye/Pop.css?ver=20260802f"
     >
 </head>
 <body>
@@ -74,6 +74,6 @@ $videos = isset($catalog["videos"]) && is_array($catalog["videos"]) ? $catalog["
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802e"></script>
+    <script src="./js/main.js?ver=20260802f"></script>
 </body>
 </html>

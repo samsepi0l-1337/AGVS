@@ -28,19 +28,19 @@ $catalogItems = isset($catalog["items"]) && is_array($catalog["items"]) ? $catal
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802e"
+    href="./stlye/reset.css?ver=20260802f"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802e"
+    href="./stlye/layout.css?ver=20260802f"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Sitemap.css?ver=20260802e"
+    href="./stlye/Sitemap.css?ver=20260802f"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802e"
+    href="./stlye/Pop.css?ver=20260802f"
     >
 </head>
 <body>
@@ -92,6 +92,6 @@ $catalogItems = isset($catalog["items"]) && is_array($catalog["items"]) ? $catal
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802e"></script>
+    <script src="./js/main.js?ver=20260802f"></script>
 </body>
 </html>

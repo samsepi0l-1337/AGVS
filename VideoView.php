@@ -63,19 +63,19 @@ $pageTitle = $video["title"] . " | AGVS";
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802e"
+    href="./stlye/reset.css?ver=20260802f"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802e"
+    href="./stlye/layout.css?ver=20260802f"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Video.css?ver=20260802e"
+    href="./stlye/Video.css?ver=20260802f"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802e"
+    href="./stlye/Pop.css?ver=20260802f"
     >
 </head>
 <body>
@@ -138,6 +138,6 @@ $pageTitle = $video["title"] . " | AGVS";
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802e"></script>
+    <script src="./js/main.js?ver=20260802f"></script>
 </body>
 </html>
