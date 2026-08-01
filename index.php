@@ -26,15 +26,15 @@
     />
     <link
       rel="stylesheet"
-      href="./stlye/reset.css?ver=20260801b"
+      href="./stlye/reset.css?ver=20260801g"
     />
     <link
       rel="stylesheet"
-      href="./stlye/layout.css?ver=20260801b"
+      href="./stlye/layout.css?ver=20260801g"
     />
     <link
       rel="stylesheet"
-      href="./stlye/main.css?ver=20260801b"
+      href="./stlye/main.css?ver=20260801g"
     />
   </head>
   <body>
@@ -92,6 +92,23 @@
                 <span class="Sec02Title">Consulting</span>
               </a>
             </div>
+            <div class="Sec02Dots">
+              <button
+                type="button"
+                class="Sec02Dot"
+                aria-label="1번 슬라이드"
+              ></button>
+              <button
+                type="button"
+                class="Sec02Dot"
+                aria-label="2번 슬라이드"
+              ></button>
+              <button
+                type="button"
+                class="Sec02Dot"
+                aria-label="3번 슬라이드"
+              ></button>
+            </div>
             <div class="ScrollBtnWrap">
               <button
                 type="button"
@@ -144,7 +161,7 @@
                 </div>
               </div>
             </div>
-            <div class="ScrollBtnWrap">
+            <div class="ScrollBtnWrap ScrollBtnWrapMobile">
               <button
                 type="button"
                 class="ScrollBtn"
@@ -160,8 +177,30 @@
           </div>
         </div>
       </main>
+      <div class="AnchorNav">
+        <ul>
+          <li>
+            <a
+              href="#Section01"
+              aria-label="1번 섹션으로 이동"
+            ></a>
+          </li>
+          <li>
+            <a
+              href="#Section02"
+              aria-label="2번 섹션으로 이동"
+            ></a>
+          </li>
+          <li>
+            <a
+              href="#Section03"
+              aria-label="3번 섹션으로 이동"
+            ></a>
+          </li>
+        </ul>
+      </div>
       <?php include __DIR__ . "/include/footer.html"; ?>
     </div>
-    <script src="./js/main.js?ver=20260801b"></script>
+    <script src="./js/main.js?ver=20260801g"></script>
   </body>
 </html>

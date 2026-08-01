@@ -56,6 +56,10 @@ main #FullPage > div {
 	color: #ffffff;
 }
 
+.Sec02Dots {
+	display: none;
+}
+
 .Sec03Inner {
 	display: flex;
 	flex-flow: row;
@@ -175,6 +179,10 @@ main #FullPage > div {
 	z-index: 5;
 }
 
+.ScrollBtnWrapMobile {
+	display: none;
+}
+
 .ScrollBtn {
 	display: block;
 	padding: 6px;
@@ -216,11 +224,108 @@ body.isDragging {
 	user-select: none;
 }
 
+.AnchorNav {
+	position: fixed;
+	top: 50%;
+	right: max(50px, calc(100vw - 1870px));
+	width: 16px;
+	transform: translateY(-50%);
+	z-index: 5;
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.AnchorNav.isHidden {
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+}
+
+.AnchorNav ul {
+	display: flex;
+	flex-flow: column;
+}
+
+.AnchorNav li {
+	width: 16px;
+	height: 90px;
+}
+
+.AnchorNav a {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.AnchorNav a::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 3px;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.45);
+	transition: background-color 0.3s ease;
+}
+
+.AnchorNav a.isActive::before {
+	background-color: #007DCC;
+}
+
 @media (max-width: 767.98px) {
+	.Sec02Panels {
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none;
+	}
+
+	.Sec02Panels::-webkit-scrollbar {
+		display: none;
+	}
+
+	.Sec02Panel {
+		flex: 0 0 100%;
+		width: 100%;
+		scroll-snap-align: start;
+		transition: none;
+	}
+
+	.Sec02Panel.isHoverOn,
+	.Sec02Panel.isNonHover {
+		width: 100%;
+	}
+
 	.Sec02Title {
 		font-size: clamp(16px, 12px + 2vw, 30px);
 		padding: 0 8px;
 		text-align: center;
+	}
+
+	.Sec02Dots {
+		display: flex;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		transform: none;
+		z-index: 5;
+		gap: 0;
+	}
+
+	.Sec02Dot {
+		flex: 1 1 0;
+		width: auto;
+		height: 27px;
+		padding: 12px 0;
+		border: 0;
+		background-color: rgba(255, 255, 255, 0.45);
+		background-clip: content-box;
+		transition: background-color 0.3s ease;
+	}
+
+	.Sec02Dot.isActive {
+		background-color: #007DCC;
 	}
 
 	.Sec03Inner {
@@ -235,10 +340,22 @@ body.isDragging {
 	.Sec03Content {
 		width: 100%;
 		height: 62%;
-		padding: 24px 24px;
+		padding: 24px 24px 72px;
 	}
 
 	.Sec03Title {
 		font-size: clamp(22px, 18px + 2vw, 36px);
+	}
+
+	.ScrollBtnWrapMobile {
+		display: block;
+	}
+
+	#Section03 .ScrollBtnWrapMobile {
+		bottom: 12px;
+	}
+
+	.AnchorNav {
+		display: none;
 	}
 }
