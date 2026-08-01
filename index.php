@@ -30,19 +30,19 @@
     />
     <link
       rel="stylesheet"
-      href="./stlye/reset.css?ver=20260802f"
+      href="./stlye/reset.css?ver=20260802g"
     />
     <link
       rel="stylesheet"
-      href="./stlye/layout.css?ver=20260802f"
+      href="./stlye/layout.css?ver=20260802g"
     />
     <link
       rel="stylesheet"
-      href="./stlye/main.css?ver=20260802f"
+      href="./stlye/main.css?ver=20260802g"
     />
     <link
       rel="stylesheet"
-      href="./stlye/Pop.css?ver=20260802f"
+      href="./stlye/Pop.css?ver=20260802g"
     />
   </head>
   <body>
@@ -208,6 +208,6 @@
       <?php include __DIR__ . "/include/footer.html"; ?>
       <?php include __DIR__ . "/include/contactPop.html"; ?>
     </div>
-    <script src="./js/main.js?ver=20260802f"></script>
+    <script src="./js/main.js?ver=20260802g"></script>
   </body>
 </html>

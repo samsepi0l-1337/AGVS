@@ -78,19 +78,19 @@ $pageTitle = $item["name"] . " | AGVS";
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802f"
+    href="./stlye/reset.css?ver=20260802g"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802f"
+    href="./stlye/layout.css?ver=20260802g"
     >
     <link
     rel="stylesheet"
-    href="./stlye/view.css?ver=20260802f"
+    href="./stlye/view.css?ver=20260802g"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802f"
+    href="./stlye/Pop.css?ver=20260802g"
     >
 </head>
 <body>
@@ -162,6 +162,6 @@ $pageTitle = $item["name"] . " | AGVS";
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802f"></script>
+    <script src="./js/main.js?ver=20260802g"></script>
 </body>
 </html>
