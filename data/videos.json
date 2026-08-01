@@ -1,0 +1,24 @@
+{
+  "title": "AGV Video",
+  "videos": [
+    {
+      "slug": "fork-lift-agv",
+      "title": "Fork Lift AGV",
+      "mediaLabel": "YouTube",
+      "type": "youtube",
+      "thumbnail": "img/videos/fork-lift-agv.jpg",
+      "embed": "https://www.youtube.com/embed/Z7T1UpUl4Yk",
+      "source": "https://www.agvsk.com/bbs/board.php?bo_table=simulations&wr_id=20"
+    },
+    {
+      "slug": "dual-fork-1",
+      "title": "Dual Fork_1",
+      "mediaLabel": "MP4",
+      "type": "local",
+      "thumbnail": "img/videos/dual-fork-1.jpg",
+      "poster": "img/videos/dual-fork-1.jpg",
+      "video": "video/dual-fork-1.mp4",
+      "source": "https://www.agvsk.com/bbs/board.php?bo_table=simulations&wr_id=8"
+    }
+  ]
+}
