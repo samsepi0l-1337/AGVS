@@ -46,6 +46,13 @@ header .GnbContainer {
 
 }
 
+header .HeaderActions {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	gap: 24px;
+}
+
 header .GnbWrap {
 	display: flex;
 	justify-content: center;
@@ -137,6 +144,89 @@ header .GnbBackdrop {
 header .GnbBackdrop.isOpen {
 	border-bottom-width: 1px;
 	pointer-events: auto;
+}
+
+header .HeaderLang {
+	position: relative;
+	z-index: 3;
+}
+
+header .HeaderLangBtn {
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	align-items: center;
+	gap: 6px;
+	min-width: 76px;
+	height: 40px;
+	padding: 8px 14px;
+	border: 1px solid currentColor;
+	border-radius: 999px;
+	background-color: transparent;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1;
+	color: inherit;
+	cursor: pointer;
+	transition: color 0.2s ease, border-color 0.2s ease,
+		background-color 0.2s ease;
+}
+
+header .HeaderLangBtn:hover,
+header .HeaderLangBtn:focus-visible,
+header .HeaderLang.isOpen .HeaderLangBtn {
+	border-color: #007DCC;
+	color: #007DCC;
+}
+
+header .HeaderLangChevron {
+	display: block;
+	width: 17px;
+	height: 17px;
+	fill: currentColor;
+	transition: transform 0.2s ease;
+}
+
+header .HeaderLang.isOpen .HeaderLangChevron {
+	transform: rotate(180deg);
+}
+
+header .HeaderLangMenu {
+	position: absolute;
+	top: calc(100% + 8px);
+	right: 0;
+	z-index: 4;
+	min-width: 100%;
+	padding: 8px 0;
+	border: 1px solid #dddddd;
+	border-radius: 12px;
+	background-color: #ffffff;
+	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+	overflow: hidden;
+}
+
+header .HeaderLangOption {
+	display: block;
+	width: 100%;
+	padding: 10px 16px;
+	border: 0;
+	background: transparent;
+	font-size: 14px;
+	font-weight: 700;
+	color: #666666;
+	text-align: left;
+	cursor: pointer;
+	transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+header .HeaderLangOption:hover,
+header .HeaderLangOption:focus-visible {
+	color: #111111;
+	background-color: #f3f7fa;
+}
+
+header .HeaderLangOption.isActive {
+	color: #007DCC;
 }
 
 
@@ -460,6 +550,14 @@ header.isMenuOpen .GnbToggleClose {
 }
 
 @media (max-width: 991.98px) {
+	header .LogoWrap {
+		width: 40%;
+		display: flex;
+		justify-content: left;
+		align-items: left;
+
+	}
+
 	header.isMenuOpen {
 		background-color: #ffffff;
 		color: #333333;
@@ -480,6 +578,12 @@ header.isMenuOpen .GnbToggleClose {
 	header .GnbContainer {
 		width: auto;
 		justify-content: flex-end;
+		gap: 12px;
+		padding-right: 24px;
+	}
+
+	header .HeaderActions {
+		gap: 0;
 	}
 
 	header .GnbWrap {
