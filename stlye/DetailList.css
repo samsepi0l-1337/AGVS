@@ -10,12 +10,6 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 .DetailListMain {
 	width: 100%;
 	max-width: 1920px;
-	background-image:
-		linear-gradient(rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)),
-		url("../img/DetailListBg.png");
-	background-position: center bottom;
-	background-size: 100% calc(100% - 450px);
-	background-repeat: no-repeat;
 }
 
 .TopBg {
@@ -25,10 +19,14 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 	justify-content: center;
 	align-items: center;
 	background-color: #1b3a52;
-	background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35));
+	background-image: url("../img/DetailListBanner.svg");
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
+}
+
+.TopBg--all {
+	background-size: 100% 100%;
 }
 
 .TopBg--agv {

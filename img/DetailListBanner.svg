@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+	<defs>
+		<pattern id="linesDense" width="12" height="12" patternUnits="userSpaceOnUse">
+			<path d="M-3-3 15 15M9-3 15 3M-3 9 3 15" fill="none" stroke="#007DCC" stroke-width="0.8"/>
+		</pattern>
+		<pattern id="linesSparse" width="22" height="22" patternUnits="userSpaceOnUse">
+			<path d="M-4-4 26 26M18-4 26 4M-4 18 4 26" fill="none" stroke="#FFFFFF" stroke-width="0.65"/>
+		</pattern>
+		<linearGradient id="leftDenseFade" x1="0%" y1="0%" x2="100%" y2="0%">
+			<stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.8"/>
+			<stop offset="18%" stop-color="#FFFFFF" stop-opacity="0.62"/>
+			<stop offset="30%" stop-color="#FFFFFF" stop-opacity="0.16"/>
+			<stop offset="39%" stop-color="#FFFFFF" stop-opacity="0"/>
+		</linearGradient>
+		<linearGradient id="leftSparseFade" x1="0%" y1="0%" x2="100%" y2="0%">
+			<stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.52"/>
+			<stop offset="26%" stop-color="#FFFFFF" stop-opacity="0.34"/>
+			<stop offset="38%" stop-color="#FFFFFF" stop-opacity="0.1"/>
+			<stop offset="46%" stop-color="#FFFFFF" stop-opacity="0"/>
+		</linearGradient>
+		<radialGradient id="rightDenseFade" cx="100%" cy="100%" r="62%" fx="100%" fy="100%">
+			<stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.82"/>
+			<stop offset="35%" stop-color="#FFFFFF" stop-opacity="0.64"/>
+			<stop offset="58%" stop-color="#FFFFFF" stop-opacity="0.14"/>
+			<stop offset="72%" stop-color="#FFFFFF" stop-opacity="0"/>
+		</radialGradient>
+		<radialGradient id="rightSparseFade" cx="100%" cy="100%" r="74%" fx="100%" fy="100%">
+			<stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.54"/>
+			<stop offset="44%" stop-color="#FFFFFF" stop-opacity="0.36"/>
+			<stop offset="70%" stop-color="#FFFFFF" stop-opacity="0.08"/>
+			<stop offset="84%" stop-color="#FFFFFF" stop-opacity="0"/>
+		</radialGradient>
+		<mask id="maskLeftDense">
+			<rect width="100%" height="100%" fill="url(#leftDenseFade)"/>
+		</mask>
+		<mask id="maskLeftSparse">
+			<rect width="100%" height="100%" fill="url(#leftSparseFade)"/>
+		</mask>
+		<mask id="maskRightDense">
+			<rect width="100%" height="100%" fill="url(#rightDenseFade)"/>
+		</mask>
+		<mask id="maskRightSparse">
+			<rect width="100%" height="100%" fill="url(#rightSparseFade)"/>
+		</mask>
+	</defs>
+	<rect width="100%" height="100%" fill="#1B3A52"/>
+	<rect width="100%" height="100%" fill="url(#linesSparse)" opacity="0.12" mask="url(#maskLeftSparse)"/>
+	<rect width="100%" height="100%" fill="url(#linesDense)" opacity="0.3" mask="url(#maskLeftDense)"/>
+	<rect width="100%" height="100%" fill="url(#linesSparse)" opacity="0.12" mask="url(#maskRightSparse)"/>
+	<rect width="100%" height="100%" fill="url(#linesDense)" opacity="0.3" mask="url(#maskRightDense)"/>
+</svg>
