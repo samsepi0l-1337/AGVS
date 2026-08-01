@@ -9,8 +9,8 @@
 
 	function easeInOutCubic(progress) {
 		return progress < 0.5 ?
-			4 * progress * progress * progress
-		:	1 - Math.pow(-2 * progress + 2, 3) / 2;
+				4 * progress * progress * progress
+			:	1 - Math.pow(-2 * progress + 2, 3) / 2;
 	}
 
 	function finishWindowScroll(animation, jumpToEnd) {
@@ -29,7 +29,7 @@
 		if (activeWindowScroll) finishWindowScroll(activeWindowScroll, false);
 	}
 
-	function animateWindowScroll(top, onFinish) {
+	function animateWindowScroll(top, onFinish, onStart) {
 		cancelWindowScroll();
 
 		var maxScroll = Math.max(
@@ -40,6 +40,7 @@
 		var startY = window.pageYOffset;
 
 		if (reduceMotion || Math.abs(targetY - startY) < 1) {
+			if (onStart) onStart(false);
 			window.scrollTo(0, targetY);
 			if (onFinish) onFinish();
 			return;
@@ -56,7 +57,10 @@
 
 		function step(timestamp) {
 			if (activeWindowScroll !== animation) return;
-			if (animation.startTime === null) animation.startTime = timestamp;
+			if (animation.startTime === null) {
+				animation.startTime = timestamp;
+				if (onStart) onStart(true);
+			}
 
 			var elapsed = timestamp - animation.startTime;
 			var progress = Math.min(elapsed / windowScrollDuration, 1);
@@ -171,9 +175,52 @@
 		if (sections.length < 2) return null;
 
 		var LOCK_MS = windowScrollDuration + 100;
+		var header = document.querySelector("header");
+		var section03Index = sections.indexOf(
+			document.getElementById("Section03"),
+		);
+		var footerIndex = sections.indexOf(footer);
+		var headerTransitionDelay = windowScrollDuration / 2;
+		var headerTransitionDuration =
+			windowScrollDuration - headerTransitionDelay;
+		var headerSolidEnabled =
+			header && section03Index !== -1 && footerIndex !== -1;
 		var locked = false;
 		var lockTimer = null;
 		var lockVersion = 0;
+
+		if (headerSolidEnabled) {
+			header.style.setProperty(
+				"--headerSolidTransitionDuration",
+				headerTransitionDuration + "ms",
+			);
+			header.style.setProperty("--headerSolidTransitionDelay", "0ms");
+		}
+
+		function setHeaderSolid(index, animate) {
+			if (!headerSolidEnabled) return;
+
+			var solid = index === section03Index || index === footerIndex;
+			if (header.classList.contains("isSolid") === solid) return;
+
+			header.style.setProperty(
+				"--headerSolidTransitionDuration",
+				(animate ? headerTransitionDuration : 0) + "ms",
+			);
+			header.style.setProperty(
+				"--headerSolidTransitionDelay",
+				(animate && solid ? headerTransitionDelay : 0) + "ms",
+			);
+			header.classList.toggle("isSolid", solid);
+
+			if (!animate) {
+				void header.offsetWidth;
+				header.style.setProperty(
+					"--headerSolidTransitionDuration",
+					headerTransitionDuration + "ms",
+				);
+			}
+		}
 
 		function maxScroll() {
 			return Math.max(
@@ -229,7 +276,7 @@
 			return best;
 		}
 
-		function scrollToPosition(targetY) {
+		function scrollToPosition(targetY, onStart) {
 			var version = ++lockVersion;
 
 			function releaseLock() {
@@ -249,12 +296,14 @@
 				releaseLock();
 			}, LOCK_MS);
 
-			animateWindowScroll(targetY, releaseLock);
+			animateWindowScroll(targetY, releaseLock, onStart);
 		}
 
 		function go(index) {
 			var i = Math.max(0, Math.min(sections.length - 1, index));
-			scrollToPosition(topOf(sections[i]));
+			scrollToPosition(topOf(sections[i]), function (animate) {
+				setHeaderSolid(i, animate);
+			});
 			return i;
 		}
 
@@ -387,6 +436,16 @@
 				go(currentIndex());
 			}, 200);
 		});
+
+		window.addEventListener(
+			"scroll",
+			function () {
+				if (!locked) setHeaderSolid(currentIndex(), false);
+			},
+			{ passive: true },
+		);
+
+		setHeaderSolid(currentIndex(), false);
 
 		return {
 			go: go,
@@ -734,10 +793,7 @@
 
 		function setOpen(langSwitch, open) {
 			langSwitch.wrap.classList.toggle("isOpen", open);
-			langSwitch.btn.setAttribute(
-				"aria-expanded",
-				open ? "true" : "false",
-			);
+			langSwitch.btn.setAttribute("aria-expanded", open ? "true" : "false");
 			if (open) langSwitch.menu.removeAttribute("hidden");
 			else langSwitch.menu.setAttribute("hidden", "");
 		}

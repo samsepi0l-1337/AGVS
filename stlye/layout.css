@@ -12,15 +12,21 @@ header {
 	z-index: 100;
 	border-bottom: 1px solid #ffffff;
 	background-color: transparent;
-	transition: background-color 1s ease;
+	transition:
+		background-color var(--headerSolidTransitionDuration, 1s) ease
+			var(--headerSolidTransitionDelay, 0ms),
+		color var(--headerSolidTransitionDuration, 1s) ease
+			var(--headerSolidTransitionDelay, 0ms);
 }
 
-header:hover {
+header:hover,
+header.isSolid {
 	background-color: #ffffff;
 	color: #333333;
 }
 
-header:hover .ContactUsWrap {
+header:hover .ContactUsWrap,
+header.isSolid .ContactUsWrap {
 	color: #ffffff;
 }
 
