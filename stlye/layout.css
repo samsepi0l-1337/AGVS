@@ -433,19 +433,24 @@ header .GnbToggleBar {
 	width: 22px;
 	height: 2px;
 	background-color: currentColor;
-	transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
-header.isMenuOpen .GnbToggleBar:nth-child(1) {
-	transform: translateY(7px) rotate(45deg);
+header .GnbToggleClose {
+	display: none;
+	width: 22px;
+	height: 22px;
+	fill: none;
+	stroke: #000000;
+	stroke-width: 2;
+	stroke-linecap: butt;
 }
 
-header.isMenuOpen .GnbToggleBar:nth-child(2) {
-	opacity: 0;
+header.isMenuOpen .GnbToggleBar {
+	display: none;
 }
 
-header.isMenuOpen .GnbToggleBar:nth-child(3) {
-	transform: translateY(-7px) rotate(-45deg);
+header.isMenuOpen .GnbToggleClose {
+	display: block;
 }
 
 @media (max-width: 1279.98px) {

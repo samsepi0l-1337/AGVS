@@ -19,15 +19,15 @@
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260801a"
+    href="./stlye/reset.css?ver=20260801b"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260801a"
+    href="./stlye/layout.css?ver=20260801b"
     >
     <link
     rel="stylesheet"
-    href="./stlye/DetailList.css?ver=20260801a"
+    href="./stlye/DetailList.css?ver=20260801b"
     >
 </head>
 <body>
@@ -185,6 +185,6 @@
         </div>
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
-    <script src="./js/main.js"></script>
+    <script src="./js/main.js?ver=20260801b"></script>
 </body>
 </html>
