@@ -1,9 +1,0 @@
-{
-  "useTabs": true,
-  "singleAttributePerLine": true,
-  "htmlWhitespaceSensitivity": "ignore",
-  "proseWrap": "always",
-  "experimentalTernaries": true,
-  "vueIndentScriptAndStyle": true,
-  "endOfLine": "auto"
-}
