@@ -14,16 +14,16 @@ HTML/CSS/vanilla JS. Two pages: `index.php` (the one-page main) and
 `include`-ing `include/header.html` and `include/footer.html` — so the pages
 need a PHP-capable server, not a static one.
 
-The design is fluid with `width: 100%` and `max-width: 1920px` wrappers;
-inner widths use percentages derived from the original 1920px pixel values.
-Font sizes use `clamp()` with 1920px as the maximum, preserving the original
-design at that viewport. Four breakpoints handle smaller screens: 1279.98px
-(footer nav wraps), 1199.98px, 991.98px (hamburger menu, card grid steps
-down), and 767.98px (single-column, stacked footer). A few widths stay in
-pixels — GNB submenu, search input, and Contact button sit in non-proportional
-containers, so literal percentages there would break the 1920px baseline.
-**1920px parity is the standing acceptance criterion:** measured values at a
-1920px viewport must not change.
+The design is fluid with `width: 100%` and `max-width: 1920px` wrappers; inner
+widths use percentages derived from the original 1920px pixel values. Font sizes
+use `clamp()` with 1920px as the maximum, preserving the original design at that
+viewport. Four breakpoints handle smaller screens: 1279.98px (footer nav wraps),
+1199.98px, 991.98px (hamburger menu, card grid steps down), and 767.98px
+(single-column, stacked footer). A few widths stay in pixels — GNB submenu,
+search input, and Contact button sit in non-proportional containers, so literal
+percentages there would break the 1920px baseline. **1920px parity is the
+standing acceptance criterion:** measured values at a 1920px viewport must not
+change.
 
 The GNB and section-scroll behavior deliberately imitate
 **https://www.mrlxzin.com/html/00_main/** (which uses jQuery + fullPage.js);
@@ -136,9 +136,9 @@ The white panel behind the dropdown is a separate element, `.GnbBackdrop`. Its
 close, so it animates to fit whichever submenu opened — CSS alone cannot size
 it.
 
-Opening/closing is class-driven (`isOpen`), and **closing is bound to
-`header`'s `mouseleave`, not each `li`** — that is what prevents flicker when
-the pointer travels from a 1-depth item into its own dropdown.
+Opening/closing is class-driven (`isOpen`), and **closing is bound to `header`'s
+`mouseleave`, not each `li`** — that is what prevents flicker when the pointer
+travels from a 1-depth item into its own dropdown.
 
 **Header** is `position: fixed`. Its background is painted on `:hover` only;
 there is deliberately no scroll-based background state (it was implemented and

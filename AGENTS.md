@@ -5,8 +5,8 @@
 - Use https://www.mrlxzin.com (especially `/html/00_main/`) as the primary
   layout/behavior reference; if copying its left-side progress bar, place it on
   the right of this site.
-- Keep motion subtle and non-excessive; no sequential fade-ups. Section 3
-  title underline sweep was removed on 2026-08-01.
+- Keep motion subtle and non-excessive; no sequential fade-ups. Section 3 title
+  underline sweep was removed on 2026-08-01.
 - Footer must not include App Store / Google Play badges; SNS icons are
   Facebook, Instagram, X, LinkedIn, and YouTube; put a scroll-to-top control
   where store badges would have been.
