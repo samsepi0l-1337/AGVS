@@ -344,56 +344,6 @@
 		});
 	}
 
-	function initSec03Reveal() {
-		var section = document.getElementById("Section03");
-		var copy = section && section.querySelector(".Sec03Copy");
-		if (!section || !copy) return;
-
-		if (reduceMotion) {
-			copy.classList.add("isRevealed");
-			return;
-		}
-
-		function resetUnderline() {
-			copy.classList.add("isResetting");
-			copy.classList.remove("isRevealed");
-			void copy.offsetWidth;
-			copy.classList.remove("isResetting");
-		}
-
-		function playUnderline() {
-			resetUnderline();
-			requestAnimationFrame(function () {
-				copy.classList.add("isRevealed");
-			});
-		}
-
-		if (!("IntersectionObserver" in window)) {
-			playUnderline();
-			return;
-		}
-
-		var visible = false;
-		var observer = new IntersectionObserver(
-			function (entries) {
-				entries.forEach(function (entry) {
-					if (entry.isIntersecting) {
-						if (visible) return;
-						visible = true;
-						playUnderline();
-						return;
-					}
-					if (!visible) return;
-					visible = false;
-					resetUnderline();
-				});
-			},
-			{ threshold: 0.4 },
-		);
-
-		observer.observe(section);
-	}
-
 	function initFooterTopBtn(snap) {
 		var btn = document.querySelector(".FooterTopBtn");
 		if (!btn) return;
@@ -557,7 +507,6 @@
 		initGnb();
 		initGnbToggle();
 		initSec02Hover();
-		initSec03Reveal();
 		var snap = initSectionSnap();
 		initSectionButtons(snap);
 		initFooterTopBtn(snap);

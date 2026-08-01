@@ -448,6 +448,12 @@ header.isMenuOpen .GnbToggleBar:nth-child(3) {
 	transform: translateY(-7px) rotate(-45deg);
 }
 
+@media (max-width: 1279.98px) {
+	footer .FooterLinks {
+		justify-content: flex-start;
+	}
+}
+
 @media (max-width: 991.98px) {
 	header.isMenuOpen {
 		background-color: #ffffff;
