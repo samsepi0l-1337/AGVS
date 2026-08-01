@@ -19,14 +19,12 @@ header {
 			var(--headerSolidTransitionDelay, 0ms);
 }
 
-header:hover,
-header.isSolid {
+header:hover {
 	background-color: #ffffff;
 	color: #333333;
 }
 
-header:hover .ContactUsWrap,
-header.isSolid .ContactUsWrap {
+header:hover .ContactUsWrap {
 	color: #ffffff;
 }
 
@@ -39,7 +37,41 @@ header .LogoWrap {
 }
 
 header .LogoWrap a {
+	display: grid;
 	width: 70%;
+}
+
+header .LogoImage {
+	grid-area: 1 / 1;
+	width: 100%;
+	transition: opacity var(--headerSolidTransitionDuration, 0.2s) ease
+		var(--headerSolidTransitionDelay, 0ms);
+}
+
+header .LogoImageWhite {
+	opacity: 1;
+}
+
+header .LogoImageNavy {
+	opacity: 0;
+}
+
+header:hover .LogoImageWhite,
+header.isMenuOpen .LogoImageWhite,
+header:has(+ .DetailListMain) .LogoImageWhite,
+header:has(+ .SitemapMain) .LogoImageWhite,
+header:has(+ .VideoMain) .LogoImageWhite,
+header:has(+ .VideoViewMain) .LogoImageWhite {
+	opacity: 0;
+}
+
+header:hover .LogoImageNavy,
+header.isMenuOpen .LogoImageNavy,
+header:has(+ .DetailListMain) .LogoImageNavy,
+header:has(+ .SitemapMain) .LogoImageNavy,
+header:has(+ .VideoMain) .LogoImageNavy,
+header:has(+ .VideoViewMain) .LogoImageNavy {
+	opacity: 1;
 }
 
 
@@ -547,6 +579,25 @@ header.isMenuOpen .GnbToggleBar {
 
 header.isMenuOpen .GnbToggleClose {
 	display: block;
+}
+
+@media (min-width: 992px) {
+	header.isSolid {
+		background-color: #ffffff;
+		color: #333333;
+	}
+
+	header.isSolid .ContactUsWrap {
+		color: #ffffff;
+	}
+
+	header.isSolid .LogoImageWhite {
+		opacity: 0;
+	}
+
+	header.isSolid .LogoImageNavy {
+		opacity: 1;
+	}
 }
 
 @media (max-width: 1279.98px) {
