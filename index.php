@@ -1,5 +1,6 @@
+<?php require_once __DIR__ . "/include/lang.php"; ?>
 <!doctype html>
-<html lang="ko">
+<html lang="<?php echo htmlspecialchars($agvsHtmlLang, ENT_QUOTES, "UTF-8"); ?>">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -30,19 +31,19 @@
     />
     <link
       rel="stylesheet"
-      href="./stlye/reset.css?ver=20260802h"
+      href="./stlye/reset.css?ver=20260802k"
     />
     <link
       rel="stylesheet"
-      href="./stlye/layout.css?ver=20260802h"
+      href="./stlye/layout.css?ver=20260802k"
     />
     <link
       rel="stylesheet"
-      href="./stlye/main.css?ver=20260802h"
+      href="./stlye/main.css?ver=20260802k"
     />
     <link
       rel="stylesheet"
-      href="./stlye/Pop.css?ver=20260802h"
+      href="./stlye/Pop.css?ver=20260802k"
     />
   </head>
   <body>
@@ -150,22 +151,16 @@
               <div class="contact-banner__visual">
                 <img
                   src="./img/sec03.png"
-                  alt="AGVS와 함께하는 스마트 물류 자동화"
+                  alt="<?php echo htmlspecialchars(agvs_t("sec03.imgAlt"), ENT_QUOTES, "UTF-8"); ?>"
                 />
               </div>
               <div class="contact-banner__content">
                 <div class="contact-banner__inner">
                   <h2 class="contact-banner__title">
-                    <strong>스마트한 물류</strong>의 시작,<br />
-                    <strong>AGVS</strong>와 함께
+                    <?php echo agvs_t("sec03.titleHtml"); ?>
                   </h2>
                   <p class="contact-banner__description">
-                    고객의 현장과 목표를 함께 이해하고,<br
-                      class="desktop-only"
-                    />
-                    <strong
-                      >생산성과 운영 효율을 높이는 최적의 자동화 시스템</strong
-                    >을 함께 설계합니다.
+                    <?php echo agvs_t("sec03.descriptionHtml"); ?>
                   </p>
                   <a
                     href="#"
@@ -208,6 +203,6 @@
       <?php include __DIR__ . "/include/footer.html"; ?>
       <?php include __DIR__ . "/include/contactPop.html"; ?>
     </div>
-    <script src="./js/main.js?ver=20260802h"></script>
+    <script src="./js/main.js?ver=20260802k"></script>
   </body>
 </html>

@@ -163,6 +163,36 @@ header:has(+ .VideoViewMain) .ContactUsWrap {
 	gap: 24px;
 }
 
+
+.ViewSpecList {
+	margin: 0 0 50px;
+	padding: 24px;
+	background-color: #f5f5f5;
+}
+
+.ViewSpecList li {
+	position: relative;
+	padding-left: 18px;
+	font-size: 15px;
+	line-height: 1.6;
+	color: #444444;
+}
+
+.ViewSpecList li:not(:last-child) {
+	margin-bottom: 10px;
+}
+
+.ViewSpecList li::before {
+	content: "";
+	position: absolute;
+	top: 9px;
+	left: 0;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background-color: #007DCC;
+}
+
 .VideoPlayer {
 	width: 100%;
 	background-color: #000000;

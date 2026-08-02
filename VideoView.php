@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . "/include/lang.php";
 $catalogPath = __DIR__ . "/data/videos.json";
 $catalogJson = file_get_contents($catalogPath);
 $catalog = json_decode($catalogJson, true);
@@ -39,7 +40,7 @@ foreach ($videos as $videoIndex => $candidate) {
 $pageTitle = $video["title"] . " | AGVS";
 
 ?><!DOCTYPE html>
-<html lang="ko">
+<html lang="<?php echo htmlspecialchars($agvsHtmlLang, ENT_QUOTES, "UTF-8"); ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,19 +64,19 @@ $pageTitle = $video["title"] . " | AGVS";
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802h"
+    href="./stlye/reset.css?ver=20260802n"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802h"
+    href="./stlye/layout.css?ver=20260802n"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Video.css?ver=20260802h"
+    href="./stlye/Video.css?ver=20260802n"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802h"
+    href="./stlye/Pop.css?ver=20260802n"
     >
 </head>
 <body>
@@ -108,6 +109,11 @@ $pageTitle = $video["title"] . " | AGVS";
                     </video>
                 </div>
                 <?php endif; ?>
+                <ul class="ViewSpecList">
+                    <li>테스트 글</li>
+                    <li>테스트 글</li>
+                    <li>테스트 글</li>
+                </ul>
             </div>
             <div class="ViewNav">
                 <div class="ViewNavSide ViewNavPrev">
@@ -138,6 +144,6 @@ $pageTitle = $video["title"] . " | AGVS";
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802h"></script>
+    <script src="./js/main.js?ver=20260802n"></script>
 </body>
 </html>

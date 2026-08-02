@@ -194,6 +194,9 @@ this repo; Codex+AGY, the two non-author vendor lanes, critically review that
 work. Authoring for this repo must **NOT** be routed to the isolated
 scratch-based `codex-author` lane used by the LOGIC domain. That lane is
 reserved for LOGIC repos, and this repo is FDW, not LOGIC.
+PLAN is authored by `planner`/`architect`, TEST/ACCEPTANCE by `test-engineer`,
+and content by `designer`/`writer` — all Claude-family lanes; the two non-author
+verify lanes remain the two other vendors.
 
 The **measuring in a real browser** via `Chrome DevTools MCP` procedure
 described earlier is this project's mechanical check. There is no build, lint,

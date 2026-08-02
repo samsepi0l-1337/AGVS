@@ -5,7 +5,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUT="$ROOT/_site"
-PAGES=(index DetailList Overview Sitemap Video)
+PAGES=(index DetailList Overview Sitemap Video Archive)
 ASSETS=(stlye js img video)
 
 command -v php >/dev/null 2>&1 || { echo "php 가 필요합니다."; exit 1; }
@@ -23,7 +23,7 @@ done
 # php -r 의 출력을 프로세스 치환(< <(...))으로 바로 읽으면 파이프라인의 종료 상태에
 # php 실행 결과가 반영되지 않아 set -euo pipefail 로도 실패를 잡을 수 없다.
 # 변수에 먼저 담아 종료 상태와 빈 결과를 명시적으로 검사한다.
-SLUGS="$(php -r '$d=json_decode(file_get_contents("'"$ROOT"'/data/items.json"),true); if(!is_array($d) || !isset($d["items"]) || !is_array($d["items"])){fwrite(STDERR,"catalog parse failed\n"); exit(1);} foreach($d["items"] as $i) echo $i["slug"],"\n";')" \
+SLUGS="$(php -r '$d=json_decode(file_get_contents("'"$ROOT"'/data/itemsKR.json"),true); if(!is_array($d) || !isset($d["items"]) || !is_array($d["items"])){fwrite(STDERR,"catalog parse failed\n"); exit(1);} foreach($d["items"] as $i) echo $i["slug"],"\n";')" \
   || { echo "FAIL: 카탈로그에서 슬러그 목록을 읽지 못했습니다."; exit 1; }
 [ -n "$SLUGS" ] || { echo "FAIL: 카탈로그에 항목이 없습니다."; exit 1; }
 
@@ -68,7 +68,7 @@ renderedVideoCount="$(ls -1 "$OUT"/video-*.html 2>/dev/null | wc -l | tr -d ' ')
 for f in "$OUT"/*.html; do
   perl -pi -e 's/VideoView\.php\?item=([A-Za-z0-9_-]+)/video-$1.html/g' "$f"
   perl -pi -e 's/view\.php\?item=([A-Za-z0-9_-]+)/view-$1.html/g' "$f"
-  perl -pi -e 's/\b(index|DetailList|Overview|Sitemap|Video)\.php\b/$1.html/g' "$f"
+  perl -pi -e 's/\b(index|DetailList|Overview|Sitemap|Video|Archive)\.php\b/$1.html/g' "$f"
 done
 
 for dir in "${ASSETS[@]}"; do
@@ -100,7 +100,7 @@ done
 # 카탈로그가 참조하는 이미지가 빌드 결과물(_site/)에 실제로 존재하는지 검증한다.
 # 소스 트리에만 있고 복사가 안 됐거나, 애초에 존재하지 않는 경로 오타를 잡아낸다.
 # 위와 같은 이유로 프로세스 치환 대신 변수에 먼저 담아 종료 상태와 빈 결과를 검사한다.
-IMG_SRCS="$(php -r '$d=json_decode(file_get_contents("'"$ROOT"'/data/items.json"),true); if(!is_array($d) || !isset($d["items"]) || !is_array($d["items"])){fwrite(STDERR,"catalog parse failed\n"); exit(1);} foreach($d["items"] as $i) foreach($i["images"] as $m) echo $m["src"],"\n";')" \
+IMG_SRCS="$(php -r '$d=json_decode(file_get_contents("'"$ROOT"'/data/itemsKR.json"),true); if(!is_array($d) || !isset($d["items"]) || !is_array($d["items"])){fwrite(STDERR,"catalog parse failed\n"); exit(1);} foreach($d["items"] as $i) foreach($i["models"] as $m) if(!empty($m["images"])) foreach($m["images"] as $img) echo $img["src"],"\n";')" \
   || { echo "FAIL: 카탈로그에서 이미지 경로를 읽지 못했습니다."; exit 1; }
 [ -n "$IMG_SRCS" ] || { echo "FAIL: 카탈로그에 이미지가 없습니다."; exit 1; }
 

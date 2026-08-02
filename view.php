@@ -1,8 +1,7 @@
 <?php
 
-$catalogPath = __DIR__ . "/data/items.json";
-$catalogJson = file_get_contents($catalogPath);
-$catalog = json_decode($catalogJson, true);
+require_once __DIR__ . "/include/lang.php";
+$catalog = agvs_load_catalog();
 
 $categories = isset($catalog["categories"]) && is_array($catalog["categories"]) ? $catalog["categories"] : array();
 $items = isset($catalog["items"]) && is_array($catalog["items"]) ? $catalog["items"] : array();
@@ -21,6 +20,27 @@ if ($item === null) {
     header("Location: DetailList.php");
     exit;
 }
+
+$models = !empty($item["models"]) && is_array($item["models"]) ? $item["models"] : array();
+$activeModel = null;
+$modelParam = isset($_GET["model"]) ? $_GET["model"] : "";
+if ($modelParam !== "") {
+    foreach ($models as $candidateModel) {
+        if (isset($candidateModel["id"]) && $candidateModel["id"] === $modelParam) {
+            $activeModel = $candidateModel;
+            break;
+        }
+    }
+}
+if ($activeModel === null && !empty($models)) {
+    $activeModel = $models[0];
+}
+$activeSpecs = ($activeModel !== null && !empty($activeModel["specs"]) && is_array($activeModel["specs"]))
+    ? $activeModel["specs"]
+    : array();
+$activeImages = ($activeModel !== null && !empty($activeModel["images"]) && is_array($activeModel["images"]))
+    ? $activeModel["images"]
+    : array();
 
 $categoryTitle = $item["category"];
 foreach ($categories as $category) {
@@ -54,7 +74,7 @@ foreach ($siblingItems as $siblingIndex => $sibling) {
 $pageTitle = $item["name"] . " | AGVS";
 
 ?><!DOCTYPE html>
-<html lang="ko">
+<html lang="<?php echo htmlspecialchars($agvsHtmlLang, ENT_QUOTES, "UTF-8"); ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -78,48 +98,55 @@ $pageTitle = $item["name"] . " | AGVS";
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802h"
+    href="./stlye/reset.css?ver=20260802m"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802h"
+    href="./stlye/layout.css?ver=20260802m"
     >
     <link
     rel="stylesheet"
-    href="./stlye/view.css?ver=20260802h"
+    href="./stlye/view.css?ver=20260802m"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802h"
+    href="./stlye/Pop.css?ver=20260802m"
     >
 </head>
 <body>
     <?php include __DIR__ . "/include/header.html"; ?>
     <main class="ViewMain">
-        <div class="ViewTopBg">
+        <div class="ViewTopBg ViewTopBg--<?php echo htmlspecialchars($item["category"], ENT_QUOTES, "UTF-8"); ?>">
             <p><?php echo htmlspecialchars($categoryTitle, ENT_QUOTES, "UTF-8"); ?></p>
         </div>
         <div class="ViewInner">
             <div class="ViewTitleBar">
                 <h2 class="ViewName"><?php echo htmlspecialchars($item["name"], ENT_QUOTES, "UTF-8"); ?></h2>
-                <?php if ($item["model"] !== ""): ?>
-                <p class="ViewModel"><?php echo htmlspecialchars($item["model"], ENT_QUOTES, "UTF-8"); ?></p>
+                <?php if (!empty($models)): ?>
+                <select class="ViewModelSelect" aria-label="Model">
+                    <?php foreach ($models as $modelOption): ?>
+                    <option
+                    value="<?php echo htmlspecialchars($modelOption["id"], ENT_QUOTES, "UTF-8"); ?>"
+                    <?php echo ($activeModel !== null && $activeModel["id"] === $modelOption["id"]) ? " selected" : ""; ?>
+                    ><?php echo htmlspecialchars($modelOption["label"], ENT_QUOTES, "UTF-8"); ?></option>
+                    <?php endforeach; ?>
+                </select>
                 <?php endif; ?>
             </div>
-            <?php if (!empty($item["specs"])): ?>
+            <?php if (!empty($activeSpecs)): ?>
             <ul class="ViewSpecList">
-                <?php foreach ($item["specs"] as $spec): ?>
+                <?php foreach ($activeSpecs as $spec): ?>
                 <li><?php echo htmlspecialchars($spec, ENT_QUOTES, "UTF-8"); ?></li>
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>
             <div class="ViewBody">
-                <?php if (empty($item["images"])): ?>
+                <?php if (empty($activeImages)): ?>
                 <div class="ViewImagePlaceholder">
                     <p>준비 중인 이미지입니다.</p>
                 </div>
                 <?php else: ?>
-                <?php foreach ($item["images"] as $imageIndex => $image): ?>
+                <?php foreach ($activeImages as $imageIndex => $image): ?>
                 <div class="ViewImageGroup">
                     <img
                     class="ViewImage"
@@ -162,6 +189,18 @@ $pageTitle = $item["name"] . " | AGVS";
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802h"></script>
+    <script>
+    (function () {
+      var select = document.querySelector(".ViewModelSelect");
+      if (!select) return;
+      select.addEventListener("change", function () {
+        var url = new URL(window.location.href);
+        url.searchParams.set("item", <?php echo json_encode($item["slug"]); ?>);
+        url.searchParams.set("model", select.value);
+        window.location.href = url.toString();
+      });
+    })();
+    </script>
+    <script src="./js/main.js?ver=20260802m"></script>
 </body>
 </html>

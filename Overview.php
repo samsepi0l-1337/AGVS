@@ -1,10 +1,11 @@
+<?php require_once __DIR__ . "/include/lang.php"; ?>
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="<?php echo htmlspecialchars($agvsHtmlLang, ENT_QUOTES, "UTF-8"); ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AGVS 회사 소개 및 주요사업 안내">
-    <title>회사소개 및 주요사업 | AGVS</title>
+    <meta name="description" content="<?php echo htmlspecialchars(agvs_t("overview.metaDescription"), ENT_QUOTES, "UTF-8"); ?>">
+    <title><?php echo htmlspecialchars(agvs_t("overview.pageTitle"), ENT_QUOTES, "UTF-8"); ?></title>
     <link
     rel="preconnect"
     href="https://fonts.googleapis.com"
@@ -24,33 +25,87 @@
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802h"
+    href="./stlye/reset.css?ver=20260802n"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802h"
+    href="./stlye/layout.css?ver=20260802n"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Overview.css?ver=20260802h"
+    href="./stlye/Overview.css?ver=20260802n"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802h"
+    href="./stlye/Pop.css?ver=20260802n"
     >
 </head>
 <body>
     <header class="header" id="header">
         <div class="header-inner">
-            <a class="brand" href="index.php" aria-label="AGVS 홈으로 이동">
-                <img src="./img/Wordmark.png" alt="">
+            <a class="brand" href="index.php" aria-label="<?php echo htmlspecialchars(agvs_t("overview.homeAria"), ENT_QUOTES, "UTF-8"); ?>">
+                <img src="./img/WordmarkWhite.png" alt="">
             </a>
-            <nav class="nav" id="main-nav" aria-label="주요 메뉴">
+            <nav class="nav" id="main-nav" aria-label="<?php echo htmlspecialchars(agvs_t("overview.navAria"), ENT_QUOTES, "UTF-8"); ?>">
                 <a class="nav-link" href="#about">ABOUT</a>
                 <a class="nav-link" href="#business">OUR BUSINESS</a>
                 <a class="nav-link" href="#values">CORE VALUE</a>
                 <a class="nav-link" href="#profile">COMPANY</a>
             </nav>
+            <div class="HeaderLang LangSwitch">
+				<button
+					type="button"
+					class="HeaderLangBtn LangSwitchBtn"
+					aria-expanded="false"
+					aria-haspopup="listbox"
+					aria-label="<?php echo htmlspecialchars(agvs_t("header.langAria"), ENT_QUOTES, "UTF-8"); ?>"
+				>
+					<span class="HeaderLangCurrent LangSwitchCurrent"><?php echo htmlspecialchars($agvsLang, ENT_QUOTES, "UTF-8"); ?></span>
+					<svg
+						class="HeaderLangChevron LangSwitchChevron"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+					>
+						<path
+							fill="currentColor"
+							d="M7 10l5 5 5-5H7z"
+						></path>
+					</svg>
+				</button>
+				<ul
+					class="HeaderLangMenu LangSwitchMenu"
+					role="listbox"
+					hidden
+				>
+					<li role="option">
+						<button
+							type="button"
+							class="HeaderLangOption LangSwitchOption"
+							data-lang="KR"
+						>
+							KR
+						</button>
+					</li>
+					<li role="option">
+						<button
+							type="button"
+							class="HeaderLangOption LangSwitchOption"
+							data-lang="EN"
+						>
+							EN
+						</button>
+					</li>
+					<li role="option">
+						<button
+							type="button"
+							class="HeaderLangOption LangSwitchOption"
+							data-lang="JP"
+						>
+							JP
+						</button>
+					</li>
+				</ul>
+            </div>
         </div>
     </header>
     <main class="OverviewMain">
@@ -62,39 +117,38 @@
                         SINCE 1995 · INTEGRATED MATERIAL HANDLING
                     </div>
                     <h1 class="hero-title">
-                        물류의 흐름을 자동화하고,<br />
-                        <span class="gradient-text">생산의 가능성을 확장합니다.</span>
+                        <?php echo agvs_t("overview.hero.titleHtml"); ?>
                     </h1>
                     <p class="hero-description">
-                        AGVS는 고객의 다양한 생산·물류 환경에 맞춘 무인운반차(AGV)와 제어 시스템을 개발·공급해 온 물류 자동화 전문기업입니다.
+                        <?php echo htmlspecialchars(agvs_t("overview.hero.description"), ENT_QUOTES, "UTF-8"); ?>
                     </p>
                     <div class="hero-actions">
                         <a class="button button-primary" href="#about">
-                            AGVS 소개
+                            <?php echo htmlspecialchars(agvs_t("overview.hero.ctaAbout"), ENT_QUOTES, "UTF-8"); ?>
                             <svg class="button-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </a>
-                        <a class="button button-ghost" href="#business">주요사업 보기</a>
+                        <a class="button button-ghost" href="#business"><?php echo htmlspecialchars(agvs_t("overview.hero.ctaBusiness"), ENT_QUOTES, "UTF-8"); ?></a>
                     </div>
 
-                    <div class="hero-metrics" aria-label="AGVS 핵심 정보">
+                    <div class="hero-metrics" aria-label="<?php echo htmlspecialchars(agvs_t("overview.hero.metricsAria"), ENT_QUOTES, "UTF-8"); ?>">
                         <div class="hero-metric">
                             <strong class="metric-value">1995</strong>
-                            <span class="metric-label">설립연도</span>
+                            <span class="metric-label"><?php echo htmlspecialchars(agvs_t("overview.hero.metricFounded"), ENT_QUOTES, "UTF-8"); ?></span>
                         </div>
                         <div class="hero-metric">
                             <strong class="metric-value">6</strong>
-                            <span class="metric-label">핵심 사업영역</span>
+                            <span class="metric-label"><?php echo htmlspecialchars(agvs_t("overview.hero.metricAreas"), ENT_QUOTES, "UTF-8"); ?></span>
                         </div>
                         <div class="hero-metric">
                             <strong class="metric-value">HW + SW</strong>
-                            <span class="metric-label">통합 개발역량</span>
+                            <span class="metric-label"><?php echo htmlspecialchars(agvs_t("overview.hero.metricCapability"), ENT_QUOTES, "UTF-8"); ?></span>
                         </div>
                     </div>
                 </div>
 
-                <div class="hero-visual reveal reveal-delay-2 is-visible" aria-label="AGV 물류 자동화 시스템 개념도">
+                <div class="hero-visual reveal reveal-delay-2 is-visible" aria-label="<?php echo htmlspecialchars(agvs_t("overview.hero.visualAria"), ENT_QUOTES, "UTF-8"); ?>">
                     <div class="system-board">
                         <div class="board-topbar">
                             <div class="board-dots" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -149,26 +203,26 @@
                     <div class="about-main-card">
                         <div class="about-card-content">
                             <div class="about-card-kicker">Integrated Automation Partner</div>
-                            <h2 class="about-card-title">현장을 이해하는 경험과<br />통합 자동화 기술</h2>
-                            <p class="about-card-copy">AGV, 제어 시스템, 기구 설계, 운영 소프트웨어를 하나의 관점에서 연결합니다.</p>
+                            <h2 class="about-card-title"><?php echo agvs_t("overview.about.cardTitleHtml"); ?></h2>
+                            <p class="about-card-copy"><?php echo htmlspecialchars(agvs_t("overview.about.cardCopy"), ENT_QUOTES, "UTF-8"); ?></p>
                         </div>
                     </div>
                     <div class="since-card">
                         <span class="since-label">Established</span>
                         <strong class="since-year">1995</strong>
-                        <span class="since-copy">축적된 경험과 기술 노하우</span>
+                        <span class="since-copy"><?php echo htmlspecialchars(agvs_t("overview.about.sinceCopy"), ENT_QUOTES, "UTF-8"); ?></span>
                     </div>
                 </div>
 
                 <div class="about-copy reveal reveal-delay-1">
                     <p class="eyebrow">ABOUT AGVS</p>
-                    <h2 class="section-title">고객의 요구를<br /><span class="accent">실행 가능한 자동화</span>로 연결합니다.</h2>
+                    <h2 class="section-title"><?php echo agvs_t("overview.about.titleHtml"); ?></h2>
                     <div class="about-paragraphs">
                         <p>
-                            AGVS는 설립 이래 고객의 다양한 요구에 맞춰 AGV와 제어 시스템을 개발·공급해 왔습니다. 축적된 현장 경험과 기술 노하우를 바탕으로 AGV 제어 시스템, 기구 설계, 운영자 인터페이스 소프트웨어를 지속적으로 고도화합니다.
+                            <?php echo htmlspecialchars(agvs_t("overview.about.p1"), ENT_QUOTES, "UTF-8"); ?>
                         </p>
                         <p>
-                            장비 단위의 공급을 넘어 차량, 이송설비, 운영 소프트웨어가 하나의 흐름으로 작동하도록 통합 관점에서 시스템을 설계합니다. 신뢰성, 사용성, 확장성, 유연성을 핵심 기준으로 생산과 물류 현장의 효율적인 운영을 지원합니다.
+                            <?php echo htmlspecialchars(agvs_t("overview.about.p2"), ENT_QUOTES, "UTF-8"); ?>
                         </p>
                     </div>
 
@@ -176,22 +230,22 @@
                         <article class="capability-item">
                             <div class="capability-number">01</div>
                             <div>
-                                <h3 class="capability-title">통합 시스템 개발</h3>
-                                <p class="capability-copy">기구 설계부터 제어 시스템, 운영자 인터페이스까지 유기적으로 구성합니다.</p>
+                                <h3 class="capability-title"><?php echo htmlspecialchars(agvs_t("overview.about.cap1Title"), ENT_QUOTES, "UTF-8"); ?></h3>
+                                <p class="capability-copy"><?php echo htmlspecialchars(agvs_t("overview.about.cap1Copy"), ENT_QUOTES, "UTF-8"); ?></p>
                             </div>
                         </article>
                         <article class="capability-item">
                             <div class="capability-number">02</div>
                             <div>
-                                <h3 class="capability-title">현장 맞춤형 자동화</h3>
-                                <p class="capability-copy">공정, 공간, 운반 대상과 운영 조건을 고려해 적용 가능한 시스템을 설계합니다.</p>
+                                <h3 class="capability-title"><?php echo htmlspecialchars(agvs_t("overview.about.cap2Title"), ENT_QUOTES, "UTF-8"); ?></h3>
+                                <p class="capability-copy"><?php echo htmlspecialchars(agvs_t("overview.about.cap2Copy"), ENT_QUOTES, "UTF-8"); ?></p>
                             </div>
                         </article>
                         <article class="capability-item">
                             <div class="capability-number">03</div>
                             <div>
-                                <h3 class="capability-title">지속 가능한 확장성</h3>
-                                <p class="capability-copy">라인 변경과 설비 증설 등 현장의 변화에 대응할 수 있는 구조를 지향합니다.</p>
+                                <h3 class="capability-title"><?php echo htmlspecialchars(agvs_t("overview.about.cap3Title"), ENT_QUOTES, "UTF-8"); ?></h3>
+                                <p class="capability-copy"><?php echo htmlspecialchars(agvs_t("overview.about.cap3Copy"), ENT_QUOTES, "UTF-8"); ?></p>
                             </div>
                         </article>
                     </div>
@@ -204,49 +258,49 @@
                 <div class="section-heading reveal">
                     <div>
                         <p class="eyebrow">OUR BUSINESS</p>
-                        <h2 class="section-title">이동 장비부터 제어까지,<br /><span class="accent">하나의 물류 흐름</span>으로 연결합니다.</h2>
+                        <h2 class="section-title"><?php echo agvs_t("overview.business.titleHtml"); ?></h2>
                     </div>
                     <p class="section-lead">
-                        AGVS는 무인운반차와 무인지게차, 자동창고, 자동이송, 컨베이어, 물류·AGV 관리 소프트웨어를 기반으로 생산 및 물류 자동화 시스템을 구성합니다.
+                        <?php echo htmlspecialchars(agvs_t("overview.business.lead"), ENT_QUOTES, "UTF-8"); ?>
                     </p>
                 </div>
 
                 <div class="business-layout">
-                    <div class="wheel-wrap reveal reveal-delay-1" aria-label="AGVS 주요사업 6개 영역">
+                    <div class="wheel-wrap reveal reveal-delay-1" aria-label="<?php echo htmlspecialchars(agvs_t("overview.business.wheelAria"), ENT_QUOTES, "UTF-8"); ?>">
                         <div class="business-wheel">
                             <div class="wheel-item wheel-1">
                                 <span class="wheel-number">1</span>
-                                <span class="wheel-name">무인운반차</span>
+                                <span class="wheel-name"><?php echo htmlspecialchars(agvs_t("overview.business.wheel1"), ENT_QUOTES, "UTF-8"); ?></span>
                                 <span class="wheel-sub">AGV</span>
                             </div>
                             <div class="wheel-item wheel-2">
                                 <span class="wheel-number">2</span>
-                                <span class="wheel-name">무인지게차</span>
+                                <span class="wheel-name"><?php echo htmlspecialchars(agvs_t("overview.business.wheel2"), ENT_QUOTES, "UTF-8"); ?></span>
                                 <span class="wheel-sub">FLA</span>
                             </div>
                             <div class="wheel-item wheel-3">
                                 <span class="wheel-number">3</span>
-                                <span class="wheel-name">자동창고 시스템</span>
+                                <span class="wheel-name"><?php echo htmlspecialchars(agvs_t("overview.business.wheel3"), ENT_QUOTES, "UTF-8"); ?></span>
                                 <span class="wheel-sub">AS/RS</span>
                             </div>
                             <div class="wheel-item wheel-4">
                                 <span class="wheel-number">4</span>
-                                <span class="wheel-name">자동이송</span>
+                                <span class="wheel-name"><?php echo htmlspecialchars(agvs_t("overview.business.wheel4"), ENT_QUOTES, "UTF-8"); ?></span>
                                 <span class="wheel-sub">Automatic Transfer</span>
                             </div>
                             <div class="wheel-item wheel-5">
                                 <span class="wheel-number">5</span>
-                                <span class="wheel-name">컨베이어 시스템</span>
+                                <span class="wheel-name"><?php echo htmlspecialchars(agvs_t("overview.business.wheel5"), ENT_QUOTES, "UTF-8"); ?></span>
                                 <span class="wheel-sub">Conveyor</span>
                             </div>
                             <div class="wheel-item wheel-6">
                                 <span class="wheel-number">6</span>
-                                <span class="wheel-name">물류·AGV 관리<br />소프트웨어 및 제어</span>
+                                <span class="wheel-name"><?php echo agvs_t("overview.business.wheel6Html"); ?></span>
                             </div>
                         </div>
                         <div class="business-note">
                             <strong>Integrated Solution</strong>
-                            <span>장비·설비·소프트웨어를 통합해 물류 흐름 전체를 설계합니다.</span>
+                            <span><?php echo htmlspecialchars(agvs_t("overview.business.note"), ENT_QUOTES, "UTF-8"); ?></span>
                         </div>
                     </div>
 
@@ -254,8 +308,8 @@
                         <article class="business-card reveal">
                             <div class="business-index">01</div>
                             <div>
-                                <h3 class="business-title">무인운반차 <small>AGV</small></h3>
-                                <p class="business-description">생산·물류 현장에서 자재와 부품을 자동으로 이송하는 무인운반 시스템입니다.</p>
+                                <h3 class="business-title"><?php echo htmlspecialchars(agvs_t("overview.business.b1Title"), ENT_QUOTES, "UTF-8"); ?> <small>AGV</small></h3>
+                                <p class="business-description"><?php echo htmlspecialchars(agvs_t("overview.business.b1Desc"), ENT_QUOTES, "UTF-8"); ?></p>
                             </div>
                             <span class="business-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -265,8 +319,8 @@
                         <article class="business-card reveal reveal-delay-1">
                             <div class="business-index">02</div>
                             <div>
-                                <h3 class="business-title">무인지게차 <small>FLA</small></h3>
-                                <p class="business-description">팔레트와 적재물을 무인으로 운반하고 입·출고 작업을 자동화하는 시스템입니다.</p>
+                                <h3 class="business-title"><?php echo htmlspecialchars(agvs_t("overview.business.b2Title"), ENT_QUOTES, "UTF-8"); ?> <small>FLA</small></h3>
+                                <p class="business-description"><?php echo htmlspecialchars(agvs_t("overview.business.b2Desc"), ENT_QUOTES, "UTF-8"); ?></p>
                             </div>
                             <span class="business-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -276,8 +330,8 @@
                         <article class="business-card reveal reveal-delay-2">
                             <div class="business-index">03</div>
                             <div>
-                                <h3 class="business-title">자동창고 시스템 <small>AS/RS</small></h3>
-                                <p class="business-description">보관 공간의 활용도와 입·출고 정확도를 높이는 자동 저장·검색 시스템입니다.</p>
+                                <h3 class="business-title"><?php echo htmlspecialchars(agvs_t("overview.business.b3Title"), ENT_QUOTES, "UTF-8"); ?> <small>AS/RS</small></h3>
+                                <p class="business-description"><?php echo htmlspecialchars(agvs_t("overview.business.b3Desc"), ENT_QUOTES, "UTF-8"); ?></p>
                             </div>
                             <span class="business-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -287,8 +341,8 @@
                         <article class="business-card reveal">
                             <div class="business-index">04</div>
                             <div>
-                                <h3 class="business-title">자동이송 <small>Automatic Transfer</small></h3>
-                                <p class="business-description">공정과 설비 사이의 물류 흐름을 연결하는 자동 이송 솔루션입니다.</p>
+                                <h3 class="business-title"><?php echo htmlspecialchars(agvs_t("overview.business.b4Title"), ENT_QUOTES, "UTF-8"); ?> <small>Automatic Transfer</small></h3>
+                                <p class="business-description"><?php echo htmlspecialchars(agvs_t("overview.business.b4Desc"), ENT_QUOTES, "UTF-8"); ?></p>
                             </div>
                             <span class="business-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -298,8 +352,8 @@
                         <article class="business-card reveal reveal-delay-1">
                             <div class="business-index">05</div>
                             <div>
-                                <h3 class="business-title">컨베이어 시스템 <small>Conveyor</small></h3>
-                                <p class="business-description">제품, 부품, 포장물을 연속적이고 안정적으로 이송하는 맞춤형 시스템입니다.</p>
+                                <h3 class="business-title"><?php echo htmlspecialchars(agvs_t("overview.business.b5Title"), ENT_QUOTES, "UTF-8"); ?> <small>Conveyor</small></h3>
+                                <p class="business-description"><?php echo htmlspecialchars(agvs_t("overview.business.b5Desc"), ENT_QUOTES, "UTF-8"); ?></p>
                             </div>
                             <span class="business-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -309,8 +363,8 @@
                         <article class="business-card reveal reveal-delay-2">
                             <div class="business-index">06</div>
                             <div>
-                                <h3 class="business-title">물류·AGV 관리 소프트웨어 및 제어시스템</h3>
-                                <p class="business-description">차량 배차, 경로, 상태, 작업 정보를 통합 관리하는 운영 소프트웨어와 제어 시스템입니다.</p>
+                                <h3 class="business-title"><?php echo htmlspecialchars(agvs_t("overview.business.b6Title"), ENT_QUOTES, "UTF-8"); ?></h3>
+                                <p class="business-description"><?php echo htmlspecialchars(agvs_t("overview.business.b6Desc"), ENT_QUOTES, "UTF-8"); ?></p>
                             </div>
                             <span class="business-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -326,33 +380,33 @@
                 <div class="section-heading reveal">
                     <div>
                         <p class="eyebrow">CORE VALUE</p>
-                        <h2 class="section-title">시스템의 완성도를 결정하는<br /><span class="accent">네 가지 기준</span></h2>
+                        <h2 class="section-title"><?php echo agvs_t("overview.values.titleHtml"); ?></h2>
                     </div>
                     <p class="section-lead">
-                        AGVS는 신뢰성, 사용성, 확장성, 유연성을 중심으로 현장에서 안정적으로 운영되고 변화에 대응할 수 있는 자동화 시스템을 지향합니다.
+                        <?php echo htmlspecialchars(agvs_t("overview.values.lead"), ENT_QUOTES, "UTF-8"); ?>
                     </p>
                 </div>
 
                 <div class="values-grid">
                     <article class="value-card reveal">
                         <div class="value-index">VALUE 01</div>
-                        <div class="value-english">Reliability<span class="value-korean">신뢰성</span></div>
-                        <p class="value-copy">생산 현장에서 안정적으로 운용될 수 있도록 시스템의 일관성과 지속성을 고려합니다.</p>
+                        <div class="value-english">Reliability<span class="value-korean"><?php echo htmlspecialchars(agvs_t("overview.values.v1Label"), ENT_QUOTES, "UTF-8"); ?></span></div>
+                        <p class="value-copy"><?php echo htmlspecialchars(agvs_t("overview.values.v1Copy"), ENT_QUOTES, "UTF-8"); ?></p>
                     </article>
                     <article class="value-card reveal reveal-delay-1">
                         <div class="value-index">VALUE 02</div>
-                        <div class="value-english">Usability<span class="value-korean">사용성</span></div>
-                        <p class="value-copy">운영자가 시스템의 상태를 빠르게 이해하고 효율적으로 조작할 수 있는 환경을 설계합니다.</p>
+                        <div class="value-english">Usability<span class="value-korean"><?php echo htmlspecialchars(agvs_t("overview.values.v2Label"), ENT_QUOTES, "UTF-8"); ?></span></div>
+                        <p class="value-copy"><?php echo htmlspecialchars(agvs_t("overview.values.v2Copy"), ENT_QUOTES, "UTF-8"); ?></p>
                     </article>
                     <article class="value-card reveal reveal-delay-2">
                         <div class="value-index">VALUE 03</div>
-                        <div class="value-english">Scalability<span class="value-korean">확장성</span></div>
-                        <p class="value-copy">설비 증설, 차량 추가, 공정 변화에 맞춰 기능과 운용 범위를 확장할 수 있는 구조를 지향합니다.</p>
+                        <div class="value-english">Scalability<span class="value-korean"><?php echo htmlspecialchars(agvs_t("overview.values.v3Label"), ENT_QUOTES, "UTF-8"); ?></span></div>
+                        <p class="value-copy"><?php echo htmlspecialchars(agvs_t("overview.values.v3Copy"), ENT_QUOTES, "UTF-8"); ?></p>
                     </article>
                     <article class="value-card reveal reveal-delay-3">
                         <div class="value-index">VALUE 04</div>
-                        <div class="value-english">Flexibility<span class="value-korean">유연성</span></div>
-                        <p class="value-copy">고객별 물류 조건과 다양한 운영 시나리오를 반영할 수 있도록 시스템을 유연하게 구성합니다.</p>
+                        <div class="value-english">Flexibility<span class="value-korean"><?php echo htmlspecialchars(agvs_t("overview.values.v4Label"), ENT_QUOTES, "UTF-8"); ?></span></div>
+                        <p class="value-copy"><?php echo htmlspecialchars(agvs_t("overview.values.v4Copy"), ENT_QUOTES, "UTF-8"); ?></p>
                     </article>
                 </div>
             </div>
@@ -363,10 +417,10 @@
                 <div class="section-heading reveal">
                     <div>
                         <p class="eyebrow">COMPANY PROFILE</p>
-                        <h2 class="section-title">AGVS를 소개합니다.</h2>
+                        <h2 class="section-title"><?php echo htmlspecialchars(agvs_t("overview.profile.title"), ENT_QUOTES, "UTF-8"); ?></h2>
                     </div>
                     <p class="section-lead">
-                        1995년 설립 이후 무인운반차 시스템과 물류이송장비 분야의 기술을 축적해 왔습니다.
+                        <?php echo htmlspecialchars(agvs_t("overview.profile.lead"), ENT_QUOTES, "UTF-8"); ?>
                     </p>
                 </div>
 
@@ -375,31 +429,36 @@
                         <div class="profile-side-label">Automation · Logistics · Control</div>
                         <div class="profile-side-copy">
                             <strong>Moving Industry<br />Forward.</strong>
-                            <span>자동화 기술로 더 효율적인 생산과 물류의 흐름을 만듭니다.</span>
+                            <span><?php echo htmlspecialchars(agvs_t("overview.profile.sideCopy"), ENT_QUOTES, "UTF-8"); ?></span>
                         </div>
                     </div>
 
-                    <div class="profile-table" role="table" aria-label="AGVS 회사 개요">
+                    <div class="profile-table" role="table" aria-label="<?php echo htmlspecialchars(agvs_t("overview.profile.tableAria"), ENT_QUOTES, "UTF-8"); ?>">
                         <div class="profile-row" role="row">
-                            <div class="profile-label" role="rowheader">회사명</div>
+                            <div class="profile-label" role="rowheader"><?php echo htmlspecialchars(agvs_t("overview.profile.nameLabel"), ENT_QUOTES, "UTF-8"); ?></div>
                             <div class="profile-value" role="cell">AGVS CO., Ltd.</div>
                         </div>
                         <div class="profile-row" role="row">
-                            <div class="profile-label" role="rowheader">설립</div>
-                            <div class="profile-value" role="cell">1995년</div>
+                            <div class="profile-label" role="rowheader"><?php echo htmlspecialchars(agvs_t("overview.profile.foundedLabel"), ENT_QUOTES, "UTF-8"); ?></div>
+                            <div class="profile-value" role="cell"><?php echo htmlspecialchars(agvs_t("overview.profile.foundedValue"), ENT_QUOTES, "UTF-8"); ?></div>
                         </div>
                         <div class="profile-row" role="row">
-                            <div class="profile-label" role="rowheader">사업 분야</div>
+                            <div class="profile-label" role="rowheader"><?php echo htmlspecialchars(agvs_t("overview.profile.fieldLabel"), ENT_QUOTES, "UTF-8"); ?></div>
                             <div class="profile-value" role="cell">
-                                무인운반차 시스템 · 물류이송장비
+                                <?php echo htmlspecialchars(agvs_t("overview.profile.fieldValue"), ENT_QUOTES, "UTF-8"); ?>
                                 <small>Automated Guided Vehicle System · Material Handling Equipment</small>
                             </div>
                         </div>
                         <div class="profile-row" role="row">
-                            <div class="profile-label" role="rowheader">소재지</div>
+                            <div class="profile-label" role="rowheader"><?php echo htmlspecialchars(agvs_t("overview.profile.addressLabel"), ENT_QUOTES, "UTF-8"); ?></div>
                             <div class="profile-value" role="cell">
-                                경기 시흥시 서울대학로 59-21, 로얄팰리스테크노1차 703
-                                <small>703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si, Gyeonggi-do, Republic of Korea</small>
+                                <?php echo htmlspecialchars(agvs_t("overview.profile.addressValue"), ENT_QUOTES, "UTF-8"); ?>
+                                <?php
+                                $addressSub = agvs_t("overview.profile.addressSub");
+                                if ($addressSub !== ""):
+                                ?>
+                                <small><?php echo htmlspecialchars($addressSub, ENT_QUOTES, "UTF-8"); ?></small>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -411,8 +470,8 @@
             <div class="container">
                 <div class="cta-card reveal">
                     <div class="cta-copy">
-                        <h2 class="cta-title">현장에 필요한 자동화,<br />AGVS의 통합 기술로 연결합니다.</h2>
-                        <p class="cta-description">AGV부터 자동창고, 이송설비, 운영 소프트웨어까지 하나의 시스템으로 구성합니다.</p>
+                        <h2 class="cta-title"><?php echo agvs_t("overview.cta.titleHtml"); ?></h2>
+                        <p class="cta-description"><?php echo htmlspecialchars(agvs_t("overview.cta.description"), ENT_QUOTES, "UTF-8"); ?></p>
                     </div>
                     <a class="button button-primary Sec03ContactBtn" href="#">
                         Contact Us
@@ -427,8 +486,20 @@
     <?php include __DIR__ . "/include/footer.html"; ?>
     <!-- contactPop.html renders the shared popup root with id="ContactUsPop". -->
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802h"></script>
+    <script src="./js/main.js?ver=20260802n"></script>
     <script>
+        const brandImg = document.querySelector(".brand img");
+
+        window.addEventListener("scroll", () => {
+            const scrollY = window.scrollY;
+
+            if (scrollY > 50) {
+                brandImg.src = "./img/Wordmark.png";
+            } else {
+                brandImg.src = "./img/WordmarkWhite.png";
+            }
+        });
+
         (() => {
             const overview = document.querySelector(".OverviewMain");
             if (!overview) {

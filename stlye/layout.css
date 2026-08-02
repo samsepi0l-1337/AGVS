@@ -61,7 +61,8 @@ header.isMenuOpen .LogoImageWhite,
 header:has(+ .DetailListMain) .LogoImageWhite,
 header:has(+ .SitemapMain) .LogoImageWhite,
 header:has(+ .VideoMain) .LogoImageWhite,
-header:has(+ .VideoViewMain) .LogoImageWhite {
+header:has(+ .VideoViewMain) .LogoImageWhite,
+header:has(+ .ArchiveMain) .LogoImageWhite {
 	opacity: 0;
 }
 
@@ -70,6 +71,7 @@ header.isMenuOpen .LogoImageNavy,
 header:has(+ .DetailListMain) .LogoImageNavy,
 header:has(+ .SitemapMain) .LogoImageNavy,
 header:has(+ .VideoMain) .LogoImageNavy,
+header:has(+ .ArchiveMain) .LogoImageNavy,
 header:has(+ .VideoViewMain) .LogoImageNavy {
 	opacity: 1;
 }
@@ -304,7 +306,7 @@ footer .FooterTop {
 }
 
 footer .FooterBrand {
-	flex: 0 1 420px;
+	flex: 0 1 560px;
 	max-width: 100%;
 }
 
@@ -320,6 +322,8 @@ footer .FooterDesc {
 	font-size: 15px;
 	line-height: 1.7;
 	color: #999999;
+	word-break: keep-all;
+	overflow-wrap: break-word;
 }
 
 footer .FooterSns {

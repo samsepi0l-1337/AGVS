@@ -16,6 +16,24 @@
 	background-repeat: no-repeat;
 }
 
+.ViewTopBg--agv {
+	background-image:
+		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../img/sec02_01.png");
+}
+
+.ViewTopBg--forklift {
+	background-image:
+		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../img/sec02_02.png");
+}
+
+.ViewTopBg--technology {
+	background-image:
+		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../img/sec02_03.png");
+}
+
 .ViewTopBg p {
 	font-size: clamp(32px, 25.09091px + 1.81818vw, 60px);
 	font-weight: 700;
@@ -56,6 +74,31 @@
 	line-height: 1.4;
 	color: #666666;
 	letter-spacing: 0.02em;
+}
+
+.ViewModelSelect {
+	appearance: none;
+	-webkit-appearance: none;
+	font-family: inherit;
+	font-size: 15px;
+	font-weight: 400;
+	line-height: 1.4;
+	color: #666666;
+	letter-spacing: 0.02em;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
+	border-radius: 2px;
+	padding: 6px 32px 6px 12px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666666' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 10px center;
+	cursor: pointer;
+	max-width: 100%;
+}
+
+.ViewModelSelect:focus {
+	outline: 1px solid #222222;
+	outline-offset: 2px;
 }
 
 .ViewSpecList {

@@ -1,0 +1,144 @@
+{
+  "sec03": {
+    "imgAlt": "AGVSと共に実現するスマート物流自動化",
+    "titleHtml": "<strong>スマートな物流</strong>の始まり、<br />\n                    <strong>AGVS</strong>と共に",
+    "descriptionHtml": "お客様の現場と目標を共に理解し、<br\n                      class=\"desktop-only\"\n                    />\n                    <strong>生産性と運用効率を高める最適な自動化システム</strong>を共に設計します。"
+  },
+  "footer": {
+    "desc": "無人搬送車(AGV)に基づくスマート物流自動化ソリューションを設計・構築する産業自動化の専門企業です。",
+    "navAria": "フッターメニュー",
+    "privacy": "プライバシーポリシー",
+    "sitemap": "サイトマップ",
+    "topAria": "ページ上部へ移動",
+    "langAria": "言語を選択",
+    "address": "京畿道始興市ソウル大学路59-21、ロイヤルパレステクノ1次 703"
+  },
+  "contact": {
+    "closeAria": "閉じる",
+    "introHtml": "スマートファクトリーと物流自動化のための最高のパートナーとなります。\n\t\t\t\t\t<br />\n\t\t\t\t\tお問い合わせいただければ、専門担当者が迅速にご返信いたします。",
+    "addressTitle": "会社住所",
+    "address": "京畿道始興市ソウル大学路59-21、ロイヤルパレステクノ1次 703",
+    "talkTitle": "連絡先・メール"
+  },
+  "header": {
+    "langAria": "言語を選択",
+    "menuOpenAria": "メニューを開く",
+    "archive": "資料室"
+  },
+  "sitemap": {
+    "pageTitle": "サイトマップ | AGVS",
+    "heading": "サイトマップ",
+    "navAria": "サイトマップ",
+    "about": "About",
+    "support": "カスタマーサポート",
+    "contactUs": "Contact Us",
+    "archive": "資料室"
+  },
+  "overview": {
+    "pageTitle": "会社紹介・主要事業 | AGVS",
+    "metaDescription": "AGVSの会社紹介と主要事業のご案内",
+    "homeAria": "AGVSホームへ移動",
+    "navAria": "メインメニュー",
+    "hero": {
+      "titleHtml": "物流の流れを自動化し、<br />\n                        <span class=\"gradient-text\">生産の可能性を広げます。</span>",
+      "description": "AGVSは、お客様の多様な生産・物流環境に合わせた無人搬送車(AGV)と制御システムを開発・供給してきた物流自動化の専門企業です。",
+      "ctaAbout": "AGVSについて",
+      "ctaBusiness": "主要事業を見る",
+      "metricsAria": "AGVSの主要情報",
+      "metricFounded": "設立年",
+      "metricAreas": "主要事業領域",
+      "metricCapability": "統合開発力",
+      "visualAria": "AGV物流自動化システムの概念図"
+    },
+    "about": {
+      "cardTitleHtml": "現場を理解する経験と<br />統合自動化技術",
+      "cardCopy": "AGV、制御システム、機構設計、運用ソフトウェアを一つの視点でつなぎます。",
+      "sinceCopy": "蓄積された経験と技術ノウハウ",
+      "titleHtml": "お客様のニーズを<br /><span class=\"accent\">実行可能な自動化</span>へつなぎます。",
+      "p1": "AGVSは設立以来、お客様の多様なご要望に合わせてAGVと制御システムを開発・供給してきました。蓄積された現場経験と技術ノウハウを基に、AGV制御システム、機構設計、オペレーターインターフェースソフトウェアを継続的に高度化しています。",
+      "p2": "単体機器の供給にとどまらず、車両・搬送設備・運用ソフトウェアが一つの流れとして機能するよう、統合の視点でシステムを設計します。信頼性、使いやすさ、拡張性、柔軟性を核に、生産・物流現場の効率的な運用を支えます。",
+      "cap1Title": "統合システム開発",
+      "cap1Copy": "機構設計から制御システム、オペレーターインターフェースまでを有機的に構成します。",
+      "cap2Title": "現場対応型自動化",
+      "cap2Copy": "工程、スペース、搬送対象、運用条件を踏まえ、適用可能なシステムを設計します。",
+      "cap3Title": "持続可能な拡張性",
+      "cap3Copy": "ライン変更や設備増設など、現場の変化に対応できる構造を目指します。"
+    },
+    "business": {
+      "titleHtml": "移動機器から制御まで、<br /><span class=\"accent\">一つの物流フロー</span>でつなぎます。",
+      "lead": "AGVSは無人搬送車、無人フォークリフト、自動倉庫、自動搬送、コンベヤ、物流・AGV管理ソフトウェアを基盤に、生産および物流自動化システムを構成します。",
+      "wheelAria": "AGVS主要事業6領域",
+      "wheel1": "無人搬送車",
+      "wheel2": "無人フォークリフト",
+      "wheel3": "自動倉庫システム",
+      "wheel4": "自動搬送",
+      "wheel5": "コンベヤシステム",
+      "wheel6Html": "物流・AGV管理<br />ソフトウェアおよび制御",
+      "note": "機器・設備・ソフトウェアを統合し、物流フロー全体を設計します。",
+      "b1Title": "無人搬送車",
+      "b1Desc": "生産・物流現場で資材や部品を自動搬送する無人搬送システムです。",
+      "b2Title": "無人フォークリフト",
+      "b2Desc": "パレットや積載物を無人で搬送し、入出庫作業を自動化するシステムです。",
+      "b3Title": "自動倉庫システム",
+      "b3Desc": "保管スペースの活用度と入出庫精度を高める自動保管・検索システムです。",
+      "b4Title": "自動搬送",
+      "b4Desc": "工程と設備のあいだの物流フローをつなぐ自動搬送ソリューションです。",
+      "b5Title": "コンベヤシステム",
+      "b5Desc": "製品、部品、梱包物を連続的かつ安定的に搬送するカスタムシステムです。",
+      "b6Title": "物流・AGV管理ソフトウェアおよび制御システム",
+      "b6Desc": "車両配車、経路、状態、作業情報を統合管理する運用ソフトウェアと制御システムです。"
+    },
+    "values": {
+      "titleHtml": "システムの完成度を決める<br /><span class=\"accent\">4つの基準</span>",
+      "lead": "AGVSは信頼性、使いやすさ、拡張性、柔軟性を軸に、現場で安定稼働し変化に対応できる自動化システムを目指します。",
+      "v1Label": "信頼性",
+      "v1Copy": "生産現場で安定して運用できるよう、システムの一貫性と持続性を重視します。",
+      "v2Label": "使いやすさ",
+      "v2Copy": "オペレーターがシステムの状態を素早く把握し、効率的に操作できる環境を設計します。",
+      "v3Label": "拡張性",
+      "v3Copy": "設備増設、車両追加、工程変化に合わせて機能と運用範囲を広げられる構造を目指します。",
+      "v4Label": "柔軟性",
+      "v4Copy": "お客様ごとの物流条件や多様な運用シナリオを反映できるよう、システムを柔軟に構成します。"
+    },
+    "profile": {
+      "title": "AGVSのご紹介",
+      "lead": "1995年の設立以来、無人搬送車システムと物流搬送機器分野の技術を積み重ねてきました。",
+      "sideCopy": "自動化技術で、より効率的な生産と物流の流れをつくります。",
+      "tableAria": "AGVS会社概要",
+      "nameLabel": "会社名",
+      "foundedLabel": "設立",
+      "foundedValue": "1995年",
+      "fieldLabel": "事業分野",
+      "fieldValue": "無人搬送車システム · 物流搬送機器",
+      "addressLabel": "所在地",
+      "addressValue": "京畿道始興市ソウル大学路59-21、ロイヤルパレステクノ1次 703",
+      "addressSub": "703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si, Gyeonggi-do, Republic of Korea"
+    },
+    "cta": {
+      "titleHtml": "現場に必要な自動化を、<br />AGVSの統合技術でつなぎます。",
+      "description": "AGVから自動倉庫、搬送設備、運用ソフトウェアまで、一つのシステムとして構成します。"
+    }
+  },
+  "archive": {
+    "pageTitle": "資料室 | AGVS",
+    "bannerTitle": "資料室",
+    "listTitle": "資料室",
+    "items": [
+      {
+        "title": "説明文",
+        "body": "テスト説明文です。",
+        "image": "./img/products/box/01.jpg"
+      },
+      {
+        "title": "説明文",
+        "body": "テスト説明文です。",
+        "image": "./img/products/forklift1/01.jpg"
+      },
+      {
+        "title": "説明文",
+        "body": "テスト説明文です。",
+        "image": "./img/sec02_01.png"
+      }
+    ]
+  }
+}
