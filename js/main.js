@@ -824,16 +824,59 @@
 			});
 		}
 
+		function buildStaticLangUrl(code) {
+			var url = new URL(window.location.href);
+			var segments = url.pathname.split("/");
+			var file = segments.pop() || "";
+			if (!file) {
+				// pathname ended with /
+				file = "index.html";
+			}
+			if (file === "en" || file === "jp") {
+				segments.push(file);
+				file = "index.html";
+			}
+			if (
+				segments.length &&
+				(segments[segments.length - 1] === "en" ||
+					segments[segments.length - 1] === "jp")
+			) {
+				segments.pop();
+			}
+			if (code !== "KR") {
+				segments.push(code.toLowerCase());
+			}
+			segments.push(file);
+			url.pathname = segments.join("/") || "/";
+			return url.pathname + url.search + url.hash;
+		}
+
 		function setLang(code) {
 			var next = normalizeLang(code);
 			if (!next) return;
 			var prev = switches[0].current.textContent.trim().toUpperCase();
+			if (next === prev) {
+				syncLangUI(next);
+				return;
+			}
 			document.cookie =
 				"agvs_lang=" +
 				encodeURIComponent(next) +
 				"; path=/; max-age=31536000; SameSite=Lax";
-			syncLangUI(next);
-			if (next !== prev) window.location.reload();
+
+			var path = window.location.pathname;
+			var isStatic = /\.html$/i.test(path) || /\/(en|jp)(\/|$)/i.test(path);
+
+			if (isStatic) {
+				window.location.assign(buildStaticLangUrl(next));
+				return;
+			}
+
+			// PHP local server: keep ?lang=
+			var url = new URL(window.location.href);
+			if (next === "KR") url.searchParams.delete("lang");
+			else url.searchParams.set("lang", next);
+			window.location.assign(url.toString());
 		}
 
 		function focusOption(langSwitch, index) {
