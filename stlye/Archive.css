@@ -43,7 +43,7 @@ header:has(+ .ArchiveMain) .ContactUsWrap {
 	padding: 100px 0 120px;
 }
 
-.ListTittleWrap {
+.ListTitleWrap {
 	display: flex;
 	flex-flow: row;
 	justify-content: space-between;
@@ -52,7 +52,7 @@ header:has(+ .ArchiveMain) .ContactUsWrap {
 	margin-bottom: 40px;
 }
 
-.ListTittle h2 {
+.ListTitle h2 {
 	font-size: clamp(17px, 15.27273px + 0.45455vw, 24px);
 	font-weight: 700;
 	line-height: 1.2;

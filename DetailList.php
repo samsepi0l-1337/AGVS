@@ -53,26 +53,26 @@ if (
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802n"
+    href="./stlye/reset.css?ver=20260802q"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802n"
+    href="./stlye/layout.css?ver=20260802q"
     >
     <link
     rel="stylesheet"
-    href="./stlye/DetailList.css?ver=20260802n"
+    href="./stlye/DetailList.css?ver=20260802q"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802n"
+    href="./stlye/Pop.css?ver=20260802q"
     >
 </head>
 <body>
     <?php include __DIR__ . "/include/header.html"; ?>
     <main class="DetailListMain">
-        <div class="TopBg TopBg--<?php echo htmlspecialchars(
-        	$initialBannerCategory,
+        <div class="TopBg TopBg<?php echo htmlspecialchars(
+        	ucfirst($initialBannerCategory),
         	ENT_QUOTES,
         	"UTF-8",
         ); ?>"><!-- 백그라운드 이미지 넣어서 하기 백그라운드비지쓰면됨 -->
@@ -83,8 +83,8 @@ if (
             ); ?></p><!--tittle에따라 이름변경되어야함ex)전체,AGV-->
         </div>
         <div class="DetailListInner">
-            <div class="ListTittleWrap">
-                <div class="ListTittle">
+            <div class="ListTitleWrap">
+                <div class="ListTitle">
                     <?php $initialCategoryLabel =
                     	$categoryLabels[$initialBannerCategory] ??
                     	$catalogCategories[0]["label"]; ?>
@@ -151,7 +151,7 @@ if (
                             <?php endforeach; ?>
                         </ul>
                     </div>
-                    <div class="ListTittleHidden" hidden aria-hidden="true">
+                    <div class="ListTitleHidden" hidden aria-hidden="true">
                         <?php foreach (
                         	$catalogCategories
                         	as $catalogCategory
@@ -178,11 +178,11 @@ if (
                         <?php endforeach; ?>
                     </div>
                 </div>
-                <div class="SerchBar"><!--form태그 써서 서치바 만들기-->
-                    <form class="SerchForm" role="search" onsubmit="return false;">
-                        <label class="SerchLabel" for="ItemSerch">아이템 검색</label>
-                        <input type="search" id="ItemSerch" class="SerchInput" placeholder="검색어를 입력해 주세요" autocomplete="off">
-                        <button type="submit" class="SerchBtn" aria-label="검색"></button>
+                <div class="SearchBar"><!--form태그 써서 서치바 만들기-->
+                    <form class="SearchForm" role="search" onsubmit="return false;">
+                        <label class="SearchLabel" for="ItemSerch">아이템 검색</label>
+                        <input type="search" id="ItemSerch" class="SearchInput" placeholder="검색어를 입력해 주세요" autocomplete="off">
+                        <button type="submit" class="SearchBtn" aria-label="검색"></button>
                     </form>
                 </div>
             </div>
@@ -241,6 +241,6 @@ if (
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802n"></script>
+    <script src="./js/main.js?ver=20260802q"></script>
 </body>
 </html>

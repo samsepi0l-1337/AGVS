@@ -42,19 +42,18 @@
   `label`, `specs`, `images[]`). UI chrome/Section 3/contact/overview/archive
   copy lives in `data/ui{KR|EN|JP}.json` and is read through `agvs_t()`.
 - Pages include `index.php`, `DetailList.php`, `view.php` (model `<select>`
-  drives specs/images; also `?archive=slug` for Archive detail),
-  `Overview.php`, `Video.php`, `VideoView.php`, `Archive.php`, and
-  `Sitemap.php`.
+  drives specs/images; also `?archive=slug` for Archive detail), `Overview.php`,
+  `Video.php`, `VideoView.php`, `Archive.php`, and `Sitemap.php`.
 - `Overview.php` uses its own page-local header (not `include/header.html`);
-  copy is keyed under `overview.*` in the ui JSON files. Japanese Overview
-  needs `html[lang="ja"]` scoped layout tweaks because fixed `minmax()` floors
+  copy is keyed under `overview.*` in the ui JSON files. Japanese Overview needs
+  `html[lang="ja"]` scoped layout tweaks because fixed `minmax()` floors
   overflow longer JP text.
 - `Archive.php` (자료실) is a GNB top-level page; Sitemap lists it under
   고객지원 with Contact Us; archive items live in `archive.*` ui JSON and open
   via `view.php?archive=slug`.
 - `DetailList.php` is the item list page (filters: 전체, AGV, ForkLift,
-  Technology) with a HeaderLang-style `CategorySwitch` filter UI and page
-  styles in `stlye/DetailList.css`.
+  Technology) with a HeaderLang-style `CategorySwitch` filter UI and page styles
+  in `stlye/DetailList.css`.
 - Section 2 is three equal hover-expand panels using `img/sec02_01.png`,
   `img/sec02_02.png`, and `img/sec02_03.png`.
 - Section 3 is ~70% left `img/sec03.png` and ~30% right vision copy on a soft

@@ -36,19 +36,19 @@ $videos =
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802k"
+    href="./stlye/reset.css?ver=20260802q"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802k"
+    href="./stlye/layout.css?ver=20260802q"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Video.css?ver=20260802k"
+    href="./stlye/Video.css?ver=20260802q"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802k"
+    href="./stlye/Pop.css?ver=20260802q"
     >
 </head>
 <body>
@@ -62,8 +62,8 @@ $videos =
             ); ?></p>
         </div>
         <div class="VideoInner">
-            <div class="ListTittleWrap">
-                <div class="ListTittle">
+            <div class="ListTitleWrap">
+                <div class="ListTitle">
                     <h2><?php echo htmlspecialchars(
                     	$sectionTitle,
                     	ENT_QUOTES,
@@ -110,6 +110,6 @@ $videos =
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802k"></script>
+    <script src="./js/main.js?ver=20260802q"></script>
 </body>
 </html>

@@ -921,7 +921,7 @@
 
 		var listWrap = root.querySelector(".ListItemWrap");
 		var buttons = Array.prototype.slice.call(
-			root.querySelectorAll(".ListTittle button[data-category]"),
+			root.querySelectorAll(".ListTitle button[data-category]"),
 		);
 		var items =
 			listWrap ?
@@ -951,7 +951,7 @@
 
 		var banner = root.querySelector(".TopBg");
 		var title = root.querySelector(".TopBg p");
-		var input = root.querySelector(".SerchInput");
+		var input = root.querySelector(".SearchInput");
 		var empty = root.querySelector(".ListEmpty");
 
 		function buttonFor(value) {
@@ -1000,11 +1000,13 @@
 
 			if (banner) {
 				banner.classList.forEach(function (className) {
-					if (className.indexOf("TopBg--") === 0) {
+					if (className !== "TopBg" && className.indexOf("TopBg") === 0) {
 						banner.classList.remove(className);
 					}
 				});
-				banner.classList.add("TopBg--" + category);
+				banner.classList.add(
+					"TopBg" + category.charAt(0).toUpperCase() + category.slice(1),
+				);
 			}
 
 			buttons.forEach(function (other) {

@@ -2,7 +2,7 @@
 	"sec03": {
 		"imgAlt": "AGVS와 함께하는 스마트 물류 자동화",
 		"titleHtml": "<strong>스마트한 물류</strong>의 시작,<br />\n                    <strong>AGVS</strong>와 함께",
-		"descriptionHtml": "고객의 현장과 목표를 함께 이해하고,<br\n                      class=\"desktop-only\"\n                    />\n                    <strong>생산성과 운영 효율을 높이는 최적의 자동화 시스템</strong>을 함께 설계합니다."
+		"descriptionHtml": "고객의 현장과 목표를 함께 이해하고,<br\n                      class=\"DesktopOnly\"\n                    />\n                    <strong>생산성과 운영 효율을 높이는 최적의 자동화 시스템</strong>을 함께 설계합니다."
 	},
 	"footer": {
 		"desc": "무인운반차(AGV) 기반의 스마트 물류 자동화 솔루션을 설계하고 구축하는 산업 자동화 전문 기업입니다.",
@@ -40,7 +40,7 @@
 		"homeAria": "AGVS 홈으로 이동",
 		"navAria": "주요 메뉴",
 		"hero": {
-			"titleHtml": "물류의 흐름을 자동화하고,<br />\n                        <span class=\"gradient-text\">생산의 가능성을 확장합니다.</span>",
+			"titleHtml": "물류의 흐름을 자동화하고,<br />\n                        <span class=\"GradientText\">생산의 가능성을 확장합니다.</span>",
 			"description": "AGVS는 고객의 다양한 생산·물류 환경에 맞춘 무인운반차(AGV)와 제어 시스템을 개발·공급해 온 물류 자동화 전문기업입니다.",
 			"ctaAbout": "AGVS 소개",
 			"ctaBusiness": "주요사업 보기",

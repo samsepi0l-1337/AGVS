@@ -163,26 +163,26 @@ if ($isArchiveView) {
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802p"
+    href="./stlye/reset.css?ver=20260802r"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802p"
+    href="./stlye/layout.css?ver=20260802r"
     >
     <link
     rel="stylesheet"
-    href="./stlye/view.css?ver=20260802p"
+    href="./stlye/view.css?ver=20260802r"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802p"
+    href="./stlye/Pop.css?ver=20260802r"
     >
 </head>
 <body>
     <?php include __DIR__ . "/include/header.html"; ?>
     <main class="ViewMain">
         <?php if ($isArchiveView): ?>
-        <div class="ViewTopBg ViewTopBg--archive">
+        <div class="ViewTopBg ViewTopBgArchive">
             <p><?php echo htmlspecialchars(
             	agvs_t("archive.bannerTitle"),
             	ENT_QUOTES,
@@ -190,8 +190,8 @@ if ($isArchiveView) {
             ); ?></p>
         </div>
         <?php else: ?>
-        <div class="ViewTopBg ViewTopBg--<?php echo htmlspecialchars(
-        	$item["category"],
+        <div class="ViewTopBg ViewTopBg<?php echo htmlspecialchars(
+        	ucfirst($item["category"]),
         	ENT_QUOTES,
         	"UTF-8",
         ); ?>">
@@ -210,25 +210,46 @@ if ($isArchiveView) {
                 	"UTF-8",
                 ); ?></h2>
                 <?php if (!$isArchiveView && !empty($models)): ?>
-                <select class="ViewModelSelect" aria-label="Model">
+                <?php $activeModelLabel =
+                	$activeModel !== null && isset($activeModel["label"])
+                		? $activeModel["label"]
+                		: ""; ?>
+                <div class="ViewModelSwitch">
+                  <button type="button" class="ViewModelSwitchBtn" aria-expanded="false" aria-haspopup="listbox" aria-label="Model">
+                    <span class="ViewModelSwitchCurrent"><?php echo htmlspecialchars(
+                    	$activeModelLabel,
+                    	ENT_QUOTES,
+                    	"UTF-8",
+                    ); ?></span>
+                    <svg class="ViewModelSwitchChevron" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fill="currentColor" d="M7 10l5 5 5-5H7z"></path>
+                    </svg>
+                  </button>
+                  <ul class="ViewModelSwitchMenu" role="listbox" hidden>
                     <?php foreach ($models as $modelOption): ?>
-                    <option
-                    value="<?php echo htmlspecialchars(
-                    	$modelOption["id"],
-                    	ENT_QUOTES,
-                    	"UTF-8",
-                    ); ?>"
-                    <?php echo $activeModel !== null &&
-                    $activeModel["id"] === $modelOption["id"]
-                    	? " selected"
-                    	: ""; ?>
-                    ><?php echo htmlspecialchars(
-                    	$modelOption["label"],
-                    	ENT_QUOTES,
-                    	"UTF-8",
-                    ); ?></option>
+                    <?php $isActiveModel =
+                    	$activeModel !== null &&
+                    	$activeModel["id"] === $modelOption["id"]; ?>
+                    <li role="option" <?php echo $isActiveModel
+                    	? 'aria-selected="true"'
+                    	: 'aria-selected="false"'; ?>>
+                      <button type="button" class="ViewModelSwitchOption<?php echo $isActiveModel
+                      	? " isActive"
+                      	: ""; ?>" data-model="<?php echo htmlspecialchars(
+	$modelOption["id"],
+	ENT_QUOTES,
+	"UTF-8",
+); ?>">
+                        <?php echo htmlspecialchars(
+                        	$modelOption["label"],
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?>
+                      </button>
+                    </li>
                     <?php endforeach; ?>
-                </select>
+                  </ul>
+                </div>
                 <?php endif; ?>
             </div>
             <?php if (!$isArchiveView && !empty($activeSpecs)): ?>
@@ -400,18 +421,37 @@ if ($isArchiveView) {
     <?php if (!$isArchiveView): ?>
     <script>
     (function () {
-      var select = document.querySelector(".ViewModelSelect");
-      if (!select) return;
-      select.addEventListener("change", function () {
-        var url = new URL(window.location.href);
-        url.searchParams.set("item", <?php echo json_encode($item["slug"]); ?>);
-        url.searchParams.set("model", select.value);
-        window.location.href = url.toString();
+      var wrap = document.querySelector(".ViewModelSwitch");
+      if (!wrap) return;
+      var btn = wrap.querySelector(".ViewModelSwitchBtn");
+      var menu = wrap.querySelector(".ViewModelSwitchMenu");
+      var itemSlug = <?php echo json_encode($item["slug"]); ?>;
+      function setOpen(open) {
+        wrap.classList.toggle("isOpen", open);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        menu.hidden = !open;
+      }
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        setOpen(menu.hidden);
+      });
+      wrap.querySelectorAll(".ViewModelSwitchOption").forEach(function (opt) {
+        opt.addEventListener("click", function () {
+          var model = opt.getAttribute("data-model");
+          var url = new URL(window.location.href);
+          url.searchParams.set("item", itemSlug);
+          url.searchParams.set("model", model);
+          window.location.href = url.toString();
+        });
+      });
+      document.addEventListener("click", function () { setOpen(false); });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") setOpen(false);
       });
     })();
     </script>
     <?php endif; ?>
-    <script src="./js/main.js?ver=20260802p"></script>
+    <script src="./js/main.js?ver=20260802r"></script>
 </body>
 </html>
 

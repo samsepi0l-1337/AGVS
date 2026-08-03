@@ -5,11 +5,21 @@
 	"singleAttributePerLine": true,
 	"htmlWhitespaceSensitivity": "ignore",
 	"experimentalTernaries": true,
-	"plugins": ["@prettier/plugin-php"],
+	"vueIndentScriptAndStyle": true,
+	"importOrder": [
+		"^.+\\.(css|scss|sass|less|styl|svg|png|jpg|jpeg|gif|webp)$",
+		"<THIRD_PARTY_TS_TYPES>",
+		"<TS_TYPES>^[./]",
+		"<THIRD_PARTY_MODULES>",
+		"^[./]"
+	],
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true,
+	"plugins": [ "@trivago/prettier-plugin-sort-imports", "@prettier/plugin-php" ],
 	"phpVersion": "8.2",
 	"overrides": [
 		{
-			"files": ["include/**/*.html"],
+			"files": [ "include/**/*.html" ],
 			"options": { "parser": "php" }
 		}
 	]

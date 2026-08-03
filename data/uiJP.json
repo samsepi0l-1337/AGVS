@@ -2,7 +2,7 @@
 	"sec03": {
 		"imgAlt": "AGVSと共に実現するスマート物流自動化",
 		"titleHtml": "<strong>スマートな物流</strong>の始まり、<br />\n                    <strong>AGVS</strong>と共に",
-		"descriptionHtml": "お客様の現場と目標を共に理解し、<br\n                      class=\"desktop-only\"\n                    />\n                    <strong>生産性と運用効率を高める最適な自動化システム</strong>を共に設計します。"
+		"descriptionHtml": "お客様の現場と目標を共に理解し、<br\n                      class=\"DesktopOnly\"\n                    />\n                    <strong>生産性と運用効率を高める最適な自動化システム</strong>を共に設計します。"
 	},
 	"footer": {
 		"desc": "無人搬送車(AGV)に基づくスマート物流自動化ソリューションを設計・構築する産業自動化の専門企業です。",
@@ -40,7 +40,7 @@
 		"homeAria": "AGVSホームへ移動",
 		"navAria": "メインメニュー",
 		"hero": {
-			"titleHtml": "物流の流れを自動化し、<br />\n                        <span class=\"gradient-text\">生産の可能性を広げます。</span>",
+			"titleHtml": "物流の流れを自動化し、<br />\n                        <span class=\"GradientText\">生産の可能性を広げます。</span>",
 			"description": "AGVSは、お客様の多様な生産・物流環境に合わせた無人搬送車(AGV)と制御システムを開発・供給してきた物流自動化の専門企業です。",
 			"ctaAbout": "AGVSについて",
 			"ctaBusiness": "主要事業を見る",

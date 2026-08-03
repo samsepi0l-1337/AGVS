@@ -41,19 +41,19 @@ if (
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802p"
+    href="./stlye/reset.css?ver=20260802q"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802p"
+    href="./stlye/layout.css?ver=20260802q"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Archive.css?ver=20260802p"
+    href="./stlye/Archive.css?ver=20260802q"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802p"
+    href="./stlye/Pop.css?ver=20260802q"
     >
 </head>
 <body>
@@ -67,8 +67,8 @@ if (
             ); ?></p>
         </div>
         <div class="ArchiveInner">
-            <div class="ListTittleWrap">
-                <div class="ListTittle">
+            <div class="ListTitleWrap">
+                <div class="ListTitle">
                     <h2><?php echo htmlspecialchars(
                     	agvs_t("archive.listTitle"),
                     	ENT_QUOTES,
@@ -125,6 +125,6 @@ if (
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802p"></script>
+    <script src="./js/main.js?ver=20260802q"></script>
 </body>
 </html>

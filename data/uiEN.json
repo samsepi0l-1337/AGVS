@@ -2,7 +2,7 @@
 	"sec03": {
 		"imgAlt": "Smart logistics automation with AGVS",
 		"titleHtml": "<strong>The start of smart logistics</strong>,<br />\n                    together with <strong>AGVS</strong>",
-		"descriptionHtml": "We understand your site and goals,<br\n                      class=\"desktop-only\"\n                    />\n                    and design <strong>the optimal automation system to raise productivity and operational efficiency</strong> together."
+		"descriptionHtml": "We understand your site and goals,<br\n                      class=\"DesktopOnly\"\n                    />\n                    and design <strong>the optimal automation system to raise productivity and operational efficiency</strong> together."
 	},
 	"footer": {
 		"desc": "An industrial automation company that designs and builds smart logistics automation solutions based on Automated Guided Vehicles (AGV).",
@@ -40,7 +40,7 @@
 		"homeAria": "Go to AGVS home",
 		"navAria": "Primary menu",
 		"hero": {
-			"titleHtml": "We automate the flow of materials,<br />\n                        <span class=\"gradient-text\">and expand what production can do.</span>",
+			"titleHtml": "We automate the flow of materials,<br />\n                        <span class=\"GradientText\">and expand what production can do.</span>",
 			"description": "AGVS is a logistics automation specialist that develops and supplies automated guided vehicles (AGVs) and control systems tailored to diverse production and logistics environments.",
 			"ctaAbout": "About AGVS",
 			"ctaBusiness": "View Our Business",

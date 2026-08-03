@@ -11,6 +11,7 @@
 	"prettier.singleAttributePerLine": true,
 	"prettier.htmlWhitespaceSensitivity": "ignore",
 	"prettier.experimentalTernaries": true,
+	"prettier.vueIndentScriptAndStyle": true,
 	"prettier.withNodeModules": true,
 	"prettier.documentSelectors": [
 		"**/*.{js,css,html,json,md,php,yml,yaml}",

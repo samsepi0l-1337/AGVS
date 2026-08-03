@@ -35,23 +35,23 @@
     />
     <link
       rel="stylesheet"
-      href="./stlye/reset.css?ver=20260802k"
+      href="./stlye/reset.css?ver=20260802q"
     />
     <link
       rel="stylesheet"
-      href="./stlye/layout.css?ver=20260802k"
+      href="./stlye/layout.css?ver=20260802q"
     />
     <link
       rel="stylesheet"
-      href="./stlye/main.css?ver=20260802k"
+      href="./stlye/main.css?ver=20260802q"
     />
     <link
       rel="stylesheet"
-      href="./stlye/Pop.css?ver=20260802k"
+      href="./stlye/Pop.css?ver=20260802q"
     />
   </head>
   <body>
-    <div class="OverView">
+    <div class="Overview">
       <?php include __DIR__ . "/include/header.html"; ?>
       <main>
         <div id="FullPage">
@@ -149,10 +149,10 @@
             id="Section03"
           >
             <section
-              class="contact-banner"
+              class="ContactBanner"
               id="contact"
             >
-              <div class="contact-banner__visual">
+              <div class="ContactBannerVisual">
                 <img
                   src="./img/sec03.png"
                   alt="<?php echo htmlspecialchars(
@@ -162,21 +162,21 @@
                   ); ?>"
                 />
               </div>
-              <div class="contact-banner__content">
-                <div class="contact-banner__inner">
-                  <h2 class="contact-banner__title">
+              <div class="ContactBannerContent">
+                <div class="ContactBannerInner">
+                  <h2 class="ContactBannerTitle">
                     <?php echo agvs_t("sec03.titleHtml"); ?>
                   </h2>
-                  <p class="contact-banner__description">
+                  <p class="ContactBannerDescription">
                     <?php echo agvs_t("sec03.descriptionHtml"); ?>
                   </p>
                   <a
                     href="#"
-                    class="contact-banner__link Sec03ContactBtn"
+                    class="ContactBannerLink Sec03ContactBtn"
                   >
                     <span>CONTACT US</span>
                     <span
-                      class="contact-banner__arrow"
+                      class="ContactBannerArrow"
                       aria-hidden="true"
                     ></span>
                   </a>
@@ -211,6 +211,6 @@
       <?php include __DIR__ . "/include/footer.html"; ?>
       <?php include __DIR__ . "/include/contactPop.html"; ?>
     </div>
-    <script src="./js/main.js?ver=20260802k"></script>
+    <script src="./js/main.js?ver=20260802q"></script>
   </body>
 </html>

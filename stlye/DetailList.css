@@ -25,23 +25,23 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 	background-repeat: no-repeat;
 }
 
-.TopBg--all {
+.TopBgAll {
 	background-size: 100% 100%;
 }
 
-.TopBg--agv {
+.TopBgAgv {
 	background-image:
 		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
 		url("../img/sec02_01.png");
 }
 
-.TopBg--forklift {
+.TopBgForklift {
 	background-image:
 		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
 		url("../img/sec02_02.png");
 }
 
-.TopBg--technology {
+.TopBgTechnology {
 	background-image:
 		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
 		url("../img/sec02_03.png");
@@ -63,7 +63,7 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 	padding: 100px 0 120px;
 }
 
-.ListTittleWrap {
+.ListTitleWrap {
 	display: flex;
 	flex-flow: row;
 	justify-content: space-between;
@@ -72,7 +72,7 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 	margin-bottom: 40px;
 }
 
-.ListTittle {
+.ListTitle {
 	position: relative;
 }
 
@@ -163,13 +163,13 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 	color: #007dcc;
 }
 
-.SerchForm {
+.SearchForm {
 	display: flex;
 	flex-flow: row;
 	align-items: center;
 }
 
-.SerchLabel {
+.SearchLabel {
 	position: absolute;
 	width: 1px;
 	height: 1px;
@@ -181,7 +181,7 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 	border: 0;
 }
 
-.SerchInput {
+.SearchInput {
 	width: 250px;
 	height: 40px;
 	padding: 0 12px;
@@ -192,11 +192,11 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 	color: #333333;
 }
 
-.SerchInput:focus {
+.SearchInput:focus {
 	border-color: #007dcc;
 }
 
-.SerchBtn {
+.SearchBtn {
 	position: relative;
 	width: 40px;
 	height: 40px;
@@ -204,12 +204,12 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 	transition: background-color 0.2s ease;
 }
 
-.SerchBtn:hover,
-.SerchBtn:focus-visible {
+.SearchBtn:hover,
+.SearchBtn:focus-visible {
 	background-color: #0069ad;
 }
 
-.SerchBtn::before {
+.SearchBtn::before {
 	content: "";
 	position: absolute;
 	top: 11px;
@@ -220,7 +220,7 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 	border-radius: 50%;
 }
 
-.SerchBtn::after {
+.SearchBtn::after {
 	content: "";
 	position: absolute;
 	top: 24px;
@@ -329,17 +329,17 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 		padding: 64px 20px 80px;
 	}
 
-	.ListTittleWrap {
+	.ListTitleWrap {
 		flex-wrap: wrap;
 		row-gap: 16px;
 	}
 
-	.SerchBar,
-	.SerchForm {
+	.SearchBar,
+	.SearchForm {
 		width: 100%;
 	}
 
-	.SerchInput {
+	.SearchInput {
 		width: auto;
 		flex: 1 1 auto;
 		max-width: 250px;
