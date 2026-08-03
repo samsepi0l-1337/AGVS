@@ -9,7 +9,12 @@ $videos =
 	isset($catalog["videos"]) && is_array($catalog["videos"])
 		? $catalog["videos"]
 		: [];
-$videos = array_values(array_filter($videos, fn($video) => !isset($video["published"]) || $video["published"] === true));
+$videos = array_values(
+	array_filter(
+		$videos,
+		fn($video) => !isset($video["published"]) || $video["published"] === true,
+	),
+);
 usort($videos, fn($a, $b) => ($a["sortOrder"] ?? 0) <=> ($b["sortOrder"] ?? 0));
 
 $slug = isset($_GET["item"]) ? $_GET["item"] : (getenv("BUILD_ITEM") ?: "");
