@@ -1,2 +1,5 @@
 node_modules/
 _site/
+
+# Track lockfile even if ignored by a global gitignore
+!pnpm-lock.yaml
