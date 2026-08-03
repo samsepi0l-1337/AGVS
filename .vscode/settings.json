@@ -20,6 +20,9 @@
 	"files.associations": {
 		"include/**/*.html": "php"
 	},
+	"[json]": {
+		"editor.defaultFormatter": "vscode.json-language-features"
+	},
 	"[php]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.wordWrap": "on",

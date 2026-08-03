@@ -1,3 +1,5 @@
+# AGENTS.md
+
 ## Learned User Preferences
 
 - Prefer camelCase for new HTML/CSS/JS identifiers; when editing nearby code,
@@ -67,7 +69,7 @@
   contact also includes TEL (+82-70-7734-7890), FAX (+82-303-0951-0852), and
   Email (<info@agvsk.com>).
 - GNB top-level label spelling is Technology.
-- GitHub Pages static build is `scripts/build-static.sh` (default catalog
-  `itemsKR.json`, images from `models[].images[].src`, pages include Archive).
-  `include/**/*.html` files that contain PHP need a Prettier `parser: "php"`
-  override.
+- The local and CI build entrypoint is `pnpm run build` (static build, then
+  formatting); `scripts/build-static.sh` defaults to `itemsKR.json`, reads
+  images from `models[].images[].src`, and includes Archive. `include/**/*.html`
+  files that contain PHP need a Prettier `parser: "php"` override.

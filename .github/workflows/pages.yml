@@ -25,8 +25,20 @@ jobs:
         with:
           php-version: "8.3"
 
-      - name: Render PHP includes to static HTML
-        run: bash scripts/build-static.sh
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build static site
+        run: pnpm run build
 
       - uses: actions/configure-pages@v5
 
