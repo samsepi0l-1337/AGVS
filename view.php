@@ -163,19 +163,19 @@ if ($isArchiveView) {
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802r"
+    href="./stlye/reset.css"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802r"
+    href="./stlye/layout.css"
     >
     <link
     rel="stylesheet"
-    href="./stlye/view.css?ver=20260802r"
+    href="./stlye/view.css"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802r"
+    href="./stlye/Pop.css"
     >
 </head>
 <body>
@@ -451,7 +451,7 @@ if ($isArchiveView) {
     })();
     </script>
     <?php endif; ?>
-    <script src="./js/main.js?ver=20260802s"></script>
+    <script src="./js/main.js"></script>
 </body>
 </html>
 

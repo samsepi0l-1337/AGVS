@@ -978,6 +978,21 @@
 		function select(btn) {
 			category = btn.getAttribute("data-category") || "all";
 
+			if (window.history && window.history.replaceState && window.URL) {
+				var url = new URL(window.location.href);
+				var cat = btn.getAttribute("data-category") || "all";
+				if (cat === "all") {
+					url.searchParams.delete("category");
+				} else {
+					url.searchParams.set("category", cat);
+				}
+				window.history.replaceState(
+					null,
+					"",
+					url.pathname + url.search + url.hash,
+				);
+			}
+
 			if (banner) {
 				banner.classList.forEach(function (className) {
 					if (className !== "TopBg" && className.indexOf("TopBg") === 0) {

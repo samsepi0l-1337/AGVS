@@ -53,19 +53,19 @@ if (
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802s"
+    href="./stlye/reset.css"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802s"
+    href="./stlye/layout.css"
     >
     <link
     rel="stylesheet"
-    href="./stlye/DetailList.css?ver=20260802s"
+    href="./stlye/DetailList.css"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802s"
+    href="./stlye/Pop.css"
     >
 </head>
 <body>
@@ -177,6 +177,6 @@ if (
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802s"></script>
+    <script src="./js/main.js"></script>
 </body>
 </html>

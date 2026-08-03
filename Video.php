@@ -36,19 +36,19 @@ $videos =
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802q"
+    href="./stlye/reset.css"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802r"
+    href="./stlye/layout.css"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Video.css?ver=20260802q"
+    href="./stlye/Video.css"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802q"
+    href="./stlye/Pop.css"
     >
 </head>
 <body>
@@ -110,6 +110,6 @@ $videos =
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802s"></script>
+    <script src="./js/main.js"></script>
 </body>
 </html>
