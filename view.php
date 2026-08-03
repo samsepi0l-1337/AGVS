@@ -333,6 +333,15 @@ if ($isArchiveView) {
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>
+            <?php if ($isArchiveView && !empty($archiveItem["attachments"])): ?>
+            <ul class="ViewSpecList">
+                <?php foreach ($archiveItem["attachments"] as $attachment): ?>
+                <?php if (!empty($attachment["path"])): ?>
+                <li><a href="download.php?id=<?php echo rawurlencode($attachment["path"]); ?>"><?php echo htmlspecialchars($attachment["originalName"] ?? basename($attachment["path"]), ENT_QUOTES, "UTF-8"); ?></a></li>
+                <?php endif; ?>
+                <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
             <div class="ViewNav">
                 <div class="ViewNavSide ViewNavPrev">
                     <?php if ($isArchiveView): ?>
