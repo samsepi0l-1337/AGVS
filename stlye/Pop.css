@@ -7,8 +7,8 @@
 	left: 20%;
 	z-index: 1000;
 	width: 55%;
-	background-color: #1A1C1E;
-	color: #999B9C;
+	background-color: #1a1c1e;
+	color: #999b9c;
 	padding: 10px 13px;
 }
 
@@ -76,9 +76,11 @@ body.isPopupOpen {
 	font-weight: 500;
 }
 
-#ContactUsPop .ContactUsWrap .ContactTop {}
+#ContactUsPop .ContactUsWrap .ContactTop {
+}
 
-#ContactUsPop .ContactUsWrap .ContactTop p {}
+#ContactUsPop .ContactUsWrap .ContactTop p {
+}
 
 #ContactUsPop .ContactUsWrap .ContactUnder {
 	margin-top: 30px;
@@ -100,7 +102,12 @@ body.isPopupOpen {
 	width: 100%;
 }
 
-#ContactUsPop .ContactUsWrap .ContactUnder .ContactLeft .ContactUsInputGroup > input,
+#ContactUsPop
+	.ContactUsWrap
+	.ContactUnder
+	.ContactLeft
+	.ContactUsInputGroup
+	> input,
 #ContactUsPop .ContactUsInputGroup > textarea {
 	margin-bottom: 12px;
 	padding: 6px 0;
@@ -120,7 +127,8 @@ body.isPopupOpen {
 	margin-top: 13px;
 }
 
-#ContactUsPop .ContactUsWrap .ContactUnder .ContactRight {}
+#ContactUsPop .ContactUsWrap .ContactUnder .ContactRight {
+}
 
 #ContactUsPop .ContactForm textarea {
 	resize: none;
@@ -131,7 +139,12 @@ body.isPopupOpen {
 	color: #b8b8b8;
 }
 
-#ContactUsPop .ContactUsWrap .ContactUnder .ContactLeft .ContactUsInputGroup > input:focus,
+#ContactUsPop
+	.ContactUsWrap
+	.ContactUnder
+	.ContactLeft
+	.ContactUsInputGroup
+	> input:focus,
 #ContactUsPop .ContactUsInputGroup > input {
 	color: #ffffff;
 }
@@ -196,7 +209,7 @@ body.isPopupOpen {
 		position: sticky;
 		top: 0;
 		z-index: 1;
-		background-color: #1A1C1E;
+		background-color: #1a1c1e;
 	}
 
 	#ContactUsPop .ContactUsWrap h2 {

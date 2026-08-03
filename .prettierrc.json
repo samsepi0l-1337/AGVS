@@ -1,0 +1,16 @@
+{
+	"useTabs": true,
+	"tabWidth": 2,
+	"proseWrap": "always",
+	"singleAttributePerLine": true,
+	"htmlWhitespaceSensitivity": "ignore",
+	"experimentalTernaries": true,
+	"plugins": ["@prettier/plugin-php"],
+	"phpVersion": "8.2",
+	"overrides": [
+		{
+			"files": ["include/**/*.html"],
+			"options": { "parser": "php" }
+		}
+	]
+}

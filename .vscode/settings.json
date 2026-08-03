@@ -1,0 +1,45 @@
+{
+	"editor.wordWrap": "on",
+	"editor.tabSize": 2,
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"prettier.useTabs": true,
+	"prettier.tabWidth": 2,
+	"prettier.proseWrap": "always",
+	"prettier.singleAttributePerLine": true,
+	"prettier.htmlWhitespaceSensitivity": "ignore",
+	"prettier.experimentalTernaries": true,
+	"prettier.withNodeModules": true,
+	"prettier.documentSelectors": [
+		"**/*.{js,css,html,json,md,php,yml,yaml}",
+		"_site/**/*.{js,css,html,json}"
+	],
+	"files.associations": {
+		"include/**/*.html": "php"
+	},
+	"[php]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.wordWrap": "on",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false,
+		"editor.formatOnSave": true
+	},
+	"[html]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.wordWrap": "on",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false
+	},
+	"[css]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false
+	}
+}

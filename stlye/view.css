@@ -1,3 +1,12 @@
+header:has(+ .ViewMain) {
+	background-color: #ffffff;
+	color: #333333;
+}
+
+header:has(+ .ViewMain) .ContactUsWrap {
+	color: #ffffff;
+}
+
 .ViewMain {
 	width: 100%;
 	max-width: 1920px;
@@ -32,6 +41,12 @@
 	background-image:
 		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
 		url("../img/sec02_03.png");
+}
+
+.ViewTopBg--archive {
+	background-image:
+		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../img/sec03.png");
 }
 
 .ViewTopBg p {
@@ -127,7 +142,7 @@
 	width: 6px;
 	height: 6px;
 	border-radius: 50%;
-	background-color: #007DCC;
+	background-color: #007dcc;
 }
 
 .ViewBody {
@@ -206,7 +221,7 @@
 
 .ViewNavLink:hover,
 .ViewNavLink:focus-visible {
-	color: #007DCC;
+	color: #007dcc;
 }
 
 .ViewNavArrow {
@@ -218,7 +233,7 @@
 
 .ViewNavLink:hover .ViewNavArrow,
 .ViewNavLink:focus-visible .ViewNavArrow {
-	color: #007DCC;
+	color: #007dcc;
 }
 
 .ViewNavLabel {
@@ -244,13 +259,16 @@
 	font-size: 15px;
 	font-weight: 700;
 	color: #333333;
-	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+	transition:
+		background-color 0.2s ease,
+		border-color 0.2s ease,
+		color 0.2s ease;
 }
 
 .ViewNavList:hover,
 .ViewNavList:focus-visible {
-	background-color: #007DCC;
-	border-color: #007DCC;
+	background-color: #007dcc;
+	border-color: #007dcc;
 	color: #ffffff;
 }
 

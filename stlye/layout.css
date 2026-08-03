@@ -33,7 +33,6 @@ header .LogoWrap {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
 }
 
 header .LogoWrap a {
@@ -62,7 +61,8 @@ header:has(+ .DetailListMain) .LogoImageWhite,
 header:has(+ .SitemapMain) .LogoImageWhite,
 header:has(+ .VideoMain) .LogoImageWhite,
 header:has(+ .VideoViewMain) .LogoImageWhite,
-header:has(+ .ArchiveMain) .LogoImageWhite {
+header:has(+ .ArchiveMain) .LogoImageWhite,
+header:has(+ .ViewMain) .LogoImageWhite {
 	opacity: 0;
 }
 
@@ -72,10 +72,10 @@ header:has(+ .DetailListMain) .LogoImageNavy,
 header:has(+ .SitemapMain) .LogoImageNavy,
 header:has(+ .VideoMain) .LogoImageNavy,
 header:has(+ .ArchiveMain) .LogoImageNavy,
-header:has(+ .VideoViewMain) .LogoImageNavy {
+header:has(+ .VideoViewMain) .LogoImageNavy,
+header:has(+ .ViewMain) .LogoImageNavy {
 	opacity: 1;
 }
-
 
 header .GnbContainer {
 	width: 80%;
@@ -83,7 +83,6 @@ header .GnbContainer {
 	flex-flow: row;
 	justify-content: space-between;
 	align-items: center;
-
 }
 
 header .HeaderActions {
@@ -137,7 +136,10 @@ header .GnbWrap #Gnb > li > ul {
 	visibility: hidden;
 	transform: translateY(-10px);
 	pointer-events: none;
-	transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+	transition:
+		opacity 0.35s ease,
+		transform 0.35s ease,
+		visibility 0.35s ease;
 }
 
 header .GnbWrap #Gnb > li.isOpen > ul {
@@ -160,11 +162,11 @@ header .GnbWrap #Gnb > li > ul > li > a {
 
 header .GnbWrap #Gnb > li > ul > li > a:hover,
 header .GnbWrap #Gnb > li > ul > li > a:focus-visible {
-	color: #007DCC;
+	color: #007dcc;
 }
 
 header .GnbWrap #Gnb > li.isOpen > a {
-	color: #007DCC;
+	color: #007dcc;
 }
 
 header .GnbBackdrop {
@@ -208,15 +210,17 @@ header .HeaderLangBtn {
 	line-height: 1;
 	color: inherit;
 	cursor: pointer;
-	transition: color 0.2s ease, border-color 0.2s ease,
+	transition:
+		color 0.2s ease,
+		border-color 0.2s ease,
 		background-color 0.2s ease;
 }
 
 header .HeaderLangBtn:hover,
 header .HeaderLangBtn:focus-visible,
 header .HeaderLang.isOpen .HeaderLangBtn {
-	border-color: #007DCC;
-	color: #007DCC;
+	border-color: #007dcc;
+	color: #007dcc;
 }
 
 header .HeaderLangChevron {
@@ -256,7 +260,9 @@ header .HeaderLangOption {
 	color: #666666;
 	text-align: left;
 	cursor: pointer;
-	transition: color 0.2s ease, background-color 0.2s ease;
+	transition:
+		color 0.2s ease,
+		background-color 0.2s ease;
 }
 
 header .HeaderLangOption:hover,
@@ -266,11 +272,11 @@ header .HeaderLangOption:focus-visible {
 }
 
 header .HeaderLangOption.isActive {
-	color: #007DCC;
+	color: #007dcc;
 }
 
-
-header .ContactUsWrap {}
+header .ContactUsWrap {
+}
 
 header .ContactUsWrap a {
 	display: flex;
@@ -279,7 +285,7 @@ header .ContactUsWrap a {
 	max-width: 190px;
 	width: 190px;
 	height: 81px;
-	background-color: #007DCC;
+	background-color: #007dcc;
 }
 
 footer {
@@ -342,12 +348,14 @@ footer .FooterSnsLink {
 	border-radius: 8px;
 	background-color: #1a1a1a;
 	color: #cccccc;
-	transition: background-color 0.2s ease, color 0.2s ease;
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease;
 }
 
 footer .FooterSnsLink:hover,
 footer .FooterSnsLink:focus-visible {
-	background-color: #007DCC;
+	background-color: #007dcc;
 	color: #ffffff;
 }
 
@@ -382,7 +390,7 @@ footer .FooterLinkTitle a {
 
 footer .FooterLinkTitle a:hover,
 footer .FooterLinkTitle a:focus-visible {
-	color: #007DCC;
+	color: #007dcc;
 }
 
 footer .FooterLinks a {
@@ -393,7 +401,7 @@ footer .FooterLinks a {
 
 footer .FooterLinks a:hover,
 footer .FooterLinks a:focus-visible {
-	color: #007DCC;
+	color: #007dcc;
 }
 
 footer .FooterTopBtn {
@@ -411,13 +419,16 @@ footer .FooterTopBtn {
 	background-color: #1a1a1a;
 	color: #ffffff;
 	cursor: pointer;
-	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+	transition:
+		background-color 0.2s ease,
+		border-color 0.2s ease,
+		color 0.2s ease;
 }
 
 footer .FooterTopBtn:hover,
 footer .FooterTopBtn:focus-visible {
-	background-color: #007DCC;
-	border-color: #007DCC;
+	background-color: #007dcc;
+	border-color: #007dcc;
 	color: #ffffff;
 }
 
@@ -467,7 +478,7 @@ footer .FooterContactLine a {
 
 footer .FooterContactLine a:hover,
 footer .FooterContactLine a:focus-visible {
-	color: #007DCC;
+	color: #007dcc;
 }
 
 footer .FooterLang {
@@ -495,7 +506,7 @@ footer .FooterLangBtn {
 footer .FooterLangBtn:hover,
 footer .FooterLangBtn:focus-visible,
 footer .FooterLang.isOpen .FooterLangBtn {
-	border-color: #007DCC;
+	border-color: #007dcc;
 }
 
 footer .FooterLangBtn .FooterLangChevron {
@@ -534,7 +545,9 @@ footer .FooterLangOption {
 	color: #999999;
 	text-align: left;
 	cursor: pointer;
-	transition: color 0.2s ease, background-color 0.2s ease;
+	transition:
+		color 0.2s ease,
+		background-color 0.2s ease;
 }
 
 footer .FooterLangOption:hover,
@@ -544,7 +557,7 @@ footer .FooterLangOption:focus-visible {
 }
 
 footer .FooterLangOption.isActive {
-	color: #007DCC;
+	color: #007dcc;
 }
 
 header .GnbToggle {
@@ -616,7 +629,6 @@ header.isMenuOpen .GnbToggleClose {
 		display: flex;
 		justify-content: left;
 		align-items: left;
-
 	}
 
 	header.isMenuOpen {

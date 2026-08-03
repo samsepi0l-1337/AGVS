@@ -98,15 +98,17 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 	line-height: 1;
 	color: #333333;
 	cursor: pointer;
-	transition: color 0.2s ease, border-color 0.2s ease,
+	transition:
+		color 0.2s ease,
+		border-color 0.2s ease,
 		background-color 0.2s ease;
 }
 
 .CategorySwitchBtn:hover,
 .CategorySwitchBtn:focus-visible,
 .CategorySwitch.isOpen .CategorySwitchBtn {
-	border-color: #007DCC;
-	color: #007DCC;
+	border-color: #007dcc;
+	color: #007dcc;
 }
 
 .CategorySwitchChevron {
@@ -146,7 +148,9 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 	color: #666666;
 	text-align: left;
 	cursor: pointer;
-	transition: color 0.2s ease, background-color 0.2s ease;
+	transition:
+		color 0.2s ease,
+		background-color 0.2s ease;
 }
 
 .CategorySwitchOption:hover,
@@ -156,7 +160,7 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 }
 
 .CategorySwitchOption.isActive {
-	color: #007DCC;
+	color: #007dcc;
 }
 
 .SerchForm {
@@ -189,14 +193,14 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 }
 
 .SerchInput:focus {
-	border-color: #007DCC;
+	border-color: #007dcc;
 }
 
 .SerchBtn {
 	position: relative;
 	width: 40px;
 	height: 40px;
-	background-color: #007DCC;
+	background-color: #007dcc;
 	transition: background-color 0.2s ease;
 }
 

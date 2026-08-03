@@ -1,144 +1,151 @@
 {
-  "sec03": {
-    "imgAlt": "AGVS와 함께하는 스마트 물류 자동화",
-    "titleHtml": "<strong>스마트한 물류</strong>의 시작,<br />\n                    <strong>AGVS</strong>와 함께",
-    "descriptionHtml": "고객의 현장과 목표를 함께 이해하고,<br\n                      class=\"desktop-only\"\n                    />\n                    <strong>생산성과 운영 효율을 높이는 최적의 자동화 시스템</strong>을 함께 설계합니다."
-  },
-  "footer": {
-    "desc": "무인운반차(AGV) 기반의 스마트 물류 자동화 솔루션을 설계하고 구축하는 산업 자동화 전문 기업입니다.",
-    "navAria": "푸터 메뉴",
-    "privacy": "개인정보 처리방침",
-    "sitemap": "사이트맵",
-    "topAria": "페이지 최상단으로 이동",
-    "langAria": "언어 선택",
-    "address": "경기 시흥시 서울대학로 59-21, 로얄팰리스테크노1차 703"
-  },
-  "contact": {
-    "closeAria": "닫기",
-    "introHtml": "스마트 팩토리와 물류 자동화를 위한 최고의 파트너가 되겠습니다.\n\t\t\t\t\t<br />\n\t\t\t\t\t문의를 남겨주시면 전문 담당자가 빠르게 답변드리겠습니다.",
-    "addressTitle": "회사주소",
-    "address": "경기 시흥시 서울대학로 59-21, 로얄팰리스테크노1차 703",
-    "talkTitle": "연락처 및 이메일"
-  },
-  "header": {
-    "langAria": "언어 선택",
-    "menuOpenAria": "메뉴 열기",
-    "archive": "자료실"
-  },
-  "sitemap": {
-    "pageTitle": "사이트맵 | AGVS",
-    "heading": "사이트맵",
-    "navAria": "사이트맵",
-    "about": "About",
-    "support": "고객지원",
-    "contactUs": "Contact Us",
-    "archive": "자료실"
-  },
-  "overview": {
-    "pageTitle": "회사소개 및 주요사업 | AGVS",
-    "metaDescription": "AGVS 회사 소개 및 주요사업 안내",
-    "homeAria": "AGVS 홈으로 이동",
-    "navAria": "주요 메뉴",
-    "hero": {
-      "titleHtml": "물류의 흐름을 자동화하고,<br />\n                        <span class=\"gradient-text\">생산의 가능성을 확장합니다.</span>",
-      "description": "AGVS는 고객의 다양한 생산·물류 환경에 맞춘 무인운반차(AGV)와 제어 시스템을 개발·공급해 온 물류 자동화 전문기업입니다.",
-      "ctaAbout": "AGVS 소개",
-      "ctaBusiness": "주요사업 보기",
-      "metricsAria": "AGVS 핵심 정보",
-      "metricFounded": "설립연도",
-      "metricAreas": "핵심 사업영역",
-      "metricCapability": "통합 개발역량",
-      "visualAria": "AGV 물류 자동화 시스템 개념도"
-    },
-    "about": {
-      "cardTitleHtml": "현장을 이해하는 경험과<br />통합 자동화 기술",
-      "cardCopy": "AGV, 제어 시스템, 기구 설계, 운영 소프트웨어를 하나의 관점에서 연결합니다.",
-      "sinceCopy": "축적된 경험과 기술 노하우",
-      "titleHtml": "고객의 요구를<br /><span class=\"accent\">실행 가능한 자동화</span>로 연결합니다.",
-      "p1": "AGVS는 설립 이래 고객의 다양한 요구에 맞춰 AGV와 제어 시스템을 개발·공급해 왔습니다. 축적된 현장 경험과 기술 노하우를 바탕으로 AGV 제어 시스템, 기구 설계, 운영자 인터페이스 소프트웨어를 지속적으로 고도화합니다.",
-      "p2": "장비 단위의 공급을 넘어 차량, 이송설비, 운영 소프트웨어가 하나의 흐름으로 작동하도록 통합 관점에서 시스템을 설계합니다. 신뢰성, 사용성, 확장성, 유연성을 핵심 기준으로 생산과 물류 현장의 효율적인 운영을 지원합니다.",
-      "cap1Title": "통합 시스템 개발",
-      "cap1Copy": "기구 설계부터 제어 시스템, 운영자 인터페이스까지 유기적으로 구성합니다.",
-      "cap2Title": "현장 맞춤형 자동화",
-      "cap2Copy": "공정, 공간, 운반 대상과 운영 조건을 고려해 적용 가능한 시스템을 설계합니다.",
-      "cap3Title": "지속 가능한 확장성",
-      "cap3Copy": "라인 변경과 설비 증설 등 현장의 변화에 대응할 수 있는 구조를 지향합니다."
-    },
-    "business": {
-      "titleHtml": "이동 장비부터 제어까지,<br /><span class=\"accent\">하나의 물류 흐름</span>으로 연결합니다.",
-      "lead": "AGVS는 무인운반차와 무인지게차, 자동창고, 자동이송, 컨베이어, 물류·AGV 관리 소프트웨어를 기반으로 생산 및 물류 자동화 시스템을 구성합니다.",
-      "wheelAria": "AGVS 주요사업 6개 영역",
-      "wheel1": "무인운반차",
-      "wheel2": "무인지게차",
-      "wheel3": "자동창고 시스템",
-      "wheel4": "자동이송",
-      "wheel5": "컨베이어 시스템",
-      "wheel6Html": "물류·AGV 관리<br />소프트웨어 및 제어",
-      "note": "장비·설비·소프트웨어를 통합해 물류 흐름 전체를 설계합니다.",
-      "b1Title": "무인운반차",
-      "b1Desc": "생산·물류 현장에서 자재와 부품을 자동으로 이송하는 무인운반 시스템입니다.",
-      "b2Title": "무인지게차",
-      "b2Desc": "팔레트와 적재물을 무인으로 운반하고 입·출고 작업을 자동화하는 시스템입니다.",
-      "b3Title": "자동창고 시스템",
-      "b3Desc": "보관 공간의 활용도와 입·출고 정확도를 높이는 자동 저장·검색 시스템입니다.",
-      "b4Title": "자동이송",
-      "b4Desc": "공정과 설비 사이의 물류 흐름을 연결하는 자동 이송 솔루션입니다.",
-      "b5Title": "컨베이어 시스템",
-      "b5Desc": "제품, 부품, 포장물을 연속적이고 안정적으로 이송하는 맞춤형 시스템입니다.",
-      "b6Title": "물류·AGV 관리 소프트웨어 및 제어시스템",
-      "b6Desc": "차량 배차, 경로, 상태, 작업 정보를 통합 관리하는 운영 소프트웨어와 제어 시스템입니다."
-    },
-    "values": {
-      "titleHtml": "시스템의 완성도를 결정하는<br /><span class=\"accent\">네 가지 기준</span>",
-      "lead": "AGVS는 신뢰성, 사용성, 확장성, 유연성을 중심으로 현장에서 안정적으로 운영되고 변화에 대응할 수 있는 자동화 시스템을 지향합니다.",
-      "v1Label": "신뢰성",
-      "v1Copy": "생산 현장에서 안정적으로 운용될 수 있도록 시스템의 일관성과 지속성을 고려합니다.",
-      "v2Label": "사용성",
-      "v2Copy": "운영자가 시스템의 상태를 빠르게 이해하고 효율적으로 조작할 수 있는 환경을 설계합니다.",
-      "v3Label": "확장성",
-      "v3Copy": "설비 증설, 차량 추가, 공정 변화에 맞춰 기능과 운용 범위를 확장할 수 있는 구조를 지향합니다.",
-      "v4Label": "유연성",
-      "v4Copy": "고객별 물류 조건과 다양한 운영 시나리오를 반영할 수 있도록 시스템을 유연하게 구성합니다."
-    },
-    "profile": {
-      "title": "AGVS를 소개합니다.",
-      "lead": "1995년 설립 이후 무인운반차 시스템과 물류이송장비 분야의 기술을 축적해 왔습니다.",
-      "sideCopy": "자동화 기술로 더 효율적인 생산과 물류의 흐름을 만듭니다.",
-      "tableAria": "AGVS 회사 개요",
-      "nameLabel": "회사명",
-      "foundedLabel": "설립",
-      "foundedValue": "1995년",
-      "fieldLabel": "사업 분야",
-      "fieldValue": "무인운반차 시스템 · 물류이송장비",
-      "addressLabel": "소재지",
-      "addressValue": "경기 시흥시 서울대학로 59-21, 로얄팰리스테크노1차 703",
-      "addressSub": "703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si, Gyeonggi-do, Republic of Korea"
-    },
-    "cta": {
-      "titleHtml": "현장에 필요한 자동화,<br />AGVS의 통합 기술로 연결합니다.",
-      "description": "AGV부터 자동창고, 이송설비, 운영 소프트웨어까지 하나의 시스템으로 구성합니다."
-    }
-  },
-  "archive": {
-    "pageTitle": "자료실 | AGVS",
-    "bannerTitle": "자료실",
-    "listTitle": "자료실",
-    "items": [
-      {
-        "title": "설명글",
-        "body": "테스트 설명글",
-        "image": "./img/products/box/01.jpg"
-      },
-      {
-        "title": "설명글",
-        "body": "테스트 설명글",
-        "image": "./img/products/forklift1/01.jpg"
-      },
-      {
-        "title": "설명글",
-        "body": "테스트 설명글",
-        "image": "./img/sec02_01.png"
-      }
-    ]
-  }
+	"sec03": {
+		"imgAlt": "AGVS와 함께하는 스마트 물류 자동화",
+		"titleHtml": "<strong>스마트한 물류</strong>의 시작,<br />\n                    <strong>AGVS</strong>와 함께",
+		"descriptionHtml": "고객의 현장과 목표를 함께 이해하고,<br\n                      class=\"desktop-only\"\n                    />\n                    <strong>생산성과 운영 효율을 높이는 최적의 자동화 시스템</strong>을 함께 설계합니다."
+	},
+	"footer": {
+		"desc": "무인운반차(AGV) 기반의 스마트 물류 자동화 솔루션을 설계하고 구축하는 산업 자동화 전문 기업입니다.",
+		"navAria": "푸터 메뉴",
+		"privacy": "개인정보 처리방침",
+		"sitemap": "사이트맵",
+		"topAria": "페이지 최상단으로 이동",
+		"langAria": "언어 선택",
+		"address": "경기 시흥시 서울대학로 59-21, 로얄팰리스테크노1차 703"
+	},
+	"contact": {
+		"closeAria": "닫기",
+		"introHtml": "스마트 팩토리와 물류 자동화를 위한 최고의 파트너가 되겠습니다.\n\t\t\t\t\t<br />\n\t\t\t\t\t문의를 남겨주시면 전문 담당자가 빠르게 답변드리겠습니다.",
+		"addressTitle": "회사주소",
+		"address": "경기 시흥시 서울대학로 59-21, 로얄팰리스테크노1차 703",
+		"talkTitle": "연락처 및 이메일"
+	},
+	"header": {
+		"langAria": "언어 선택",
+		"menuOpenAria": "메뉴 열기",
+		"archive": "자료실"
+	},
+	"sitemap": {
+		"pageTitle": "사이트맵 | AGVS",
+		"heading": "사이트맵",
+		"navAria": "사이트맵",
+		"about": "About",
+		"support": "고객지원",
+		"contactUs": "Contact Us",
+		"archive": "자료실"
+	},
+	"overview": {
+		"pageTitle": "회사소개 및 주요사업 | AGVS",
+		"metaDescription": "AGVS 회사 소개 및 주요사업 안내",
+		"homeAria": "AGVS 홈으로 이동",
+		"navAria": "주요 메뉴",
+		"hero": {
+			"titleHtml": "물류의 흐름을 자동화하고,<br />\n                        <span class=\"gradient-text\">생산의 가능성을 확장합니다.</span>",
+			"description": "AGVS는 고객의 다양한 생산·물류 환경에 맞춘 무인운반차(AGV)와 제어 시스템을 개발·공급해 온 물류 자동화 전문기업입니다.",
+			"ctaAbout": "AGVS 소개",
+			"ctaBusiness": "주요사업 보기",
+			"metricsAria": "AGVS 핵심 정보",
+			"metricFounded": "설립연도",
+			"metricAreas": "핵심 사업영역",
+			"metricCapability": "통합 개발역량",
+			"visualAria": "AGV 물류 자동화 시스템 개념도"
+		},
+		"about": {
+			"cardTitleHtml": "현장을 이해하는 경험과<br />통합 자동화 기술",
+			"cardCopy": "AGV, 제어 시스템, 기구 설계, 운영 소프트웨어를 하나의 관점에서 연결합니다.",
+			"sinceCopy": "축적된 경험과 기술 노하우",
+			"titleHtml": "고객의 요구를<br /><span class=\"accent\">실행 가능한 자동화</span>로 연결합니다.",
+			"p1": "AGVS는 설립 이래 고객의 다양한 요구에 맞춰 AGV와 제어 시스템을 개발·공급해 왔습니다. 축적된 현장 경험과 기술 노하우를 바탕으로 AGV 제어 시스템, 기구 설계, 운영자 인터페이스 소프트웨어를 지속적으로 고도화합니다.",
+			"p2": "장비 단위의 공급을 넘어 차량, 이송설비, 운영 소프트웨어가 하나의 흐름으로 작동하도록 통합 관점에서 시스템을 설계합니다. 신뢰성, 사용성, 확장성, 유연성을 핵심 기준으로 생산과 물류 현장의 효율적인 운영을 지원합니다.",
+			"cap1Title": "통합 시스템 개발",
+			"cap1Copy": "기구 설계부터 제어 시스템, 운영자 인터페이스까지 유기적으로 구성합니다.",
+			"cap2Title": "현장 맞춤형 자동화",
+			"cap2Copy": "공정, 공간, 운반 대상과 운영 조건을 고려해 적용 가능한 시스템을 설계합니다.",
+			"cap3Title": "지속 가능한 확장성",
+			"cap3Copy": "라인 변경과 설비 증설 등 현장의 변화에 대응할 수 있는 구조를 지향합니다."
+		},
+		"business": {
+			"titleHtml": "이동 장비부터 제어까지,<br /><span class=\"accent\">하나의 물류 흐름</span>으로 연결합니다.",
+			"lead": "AGVS는 무인운반차와 무인지게차, 자동창고, 자동이송, 컨베이어, 물류·AGV 관리 소프트웨어를 기반으로 생산 및 물류 자동화 시스템을 구성합니다.",
+			"wheelAria": "AGVS 주요사업 6개 영역",
+			"wheel1": "무인운반차",
+			"wheel2": "무인지게차",
+			"wheel3": "자동창고 시스템",
+			"wheel4": "자동이송",
+			"wheel5": "컨베이어 시스템",
+			"wheel6Html": "물류·AGV 관리<br />소프트웨어 및 제어",
+			"note": "장비·설비·소프트웨어를 통합해 물류 흐름 전체를 설계합니다.",
+			"b1Title": "무인운반차",
+			"b1Desc": "생산·물류 현장에서 자재와 부품을 자동으로 이송하는 무인운반 시스템입니다.",
+			"b2Title": "무인지게차",
+			"b2Desc": "팔레트와 적재물을 무인으로 운반하고 입·출고 작업을 자동화하는 시스템입니다.",
+			"b3Title": "자동창고 시스템",
+			"b3Desc": "보관 공간의 활용도와 입·출고 정확도를 높이는 자동 저장·검색 시스템입니다.",
+			"b4Title": "자동이송",
+			"b4Desc": "공정과 설비 사이의 물류 흐름을 연결하는 자동 이송 솔루션입니다.",
+			"b5Title": "컨베이어 시스템",
+			"b5Desc": "제품, 부품, 포장물을 연속적이고 안정적으로 이송하는 맞춤형 시스템입니다.",
+			"b6Title": "물류·AGV 관리 소프트웨어 및 제어시스템",
+			"b6Desc": "차량 배차, 경로, 상태, 작업 정보를 통합 관리하는 운영 소프트웨어와 제어 시스템입니다."
+		},
+		"values": {
+			"titleHtml": "시스템의 완성도를 결정하는<br /><span class=\"accent\">네 가지 기준</span>",
+			"lead": "AGVS는 신뢰성, 사용성, 확장성, 유연성을 중심으로 현장에서 안정적으로 운영되고 변화에 대응할 수 있는 자동화 시스템을 지향합니다.",
+			"v1Label": "신뢰성",
+			"v1Copy": "생산 현장에서 안정적으로 운용될 수 있도록 시스템의 일관성과 지속성을 고려합니다.",
+			"v2Label": "사용성",
+			"v2Copy": "운영자가 시스템의 상태를 빠르게 이해하고 효율적으로 조작할 수 있는 환경을 설계합니다.",
+			"v3Label": "확장성",
+			"v3Copy": "설비 증설, 차량 추가, 공정 변화에 맞춰 기능과 운용 범위를 확장할 수 있는 구조를 지향합니다.",
+			"v4Label": "유연성",
+			"v4Copy": "고객별 물류 조건과 다양한 운영 시나리오를 반영할 수 있도록 시스템을 유연하게 구성합니다."
+		},
+		"profile": {
+			"title": "AGVS를 소개합니다.",
+			"lead": "1995년 설립 이후 무인운반차 시스템과 물류이송장비 분야의 기술을 축적해 왔습니다.",
+			"sideCopy": "자동화 기술로 더 효율적인 생산과 물류의 흐름을 만듭니다.",
+			"tableAria": "AGVS 회사 개요",
+			"nameLabel": "회사명",
+			"foundedLabel": "설립",
+			"foundedValue": "1995년",
+			"fieldLabel": "사업 분야",
+			"fieldValue": "무인운반차 시스템 · 물류이송장비",
+			"addressLabel": "소재지",
+			"addressValue": "경기 시흥시 서울대학로 59-21, 로얄팰리스테크노1차 703",
+			"addressSub": "703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si, Gyeonggi-do, Republic of Korea"
+		},
+		"cta": {
+			"titleHtml": "현장에 필요한 자동화,<br />AGVS의 통합 기술로 연결합니다.",
+			"description": "AGV부터 자동창고, 이송설비, 운영 소프트웨어까지 하나의 시스템으로 구성합니다."
+		}
+	},
+	"archive": {
+		"pageTitle": "자료실 | AGVS",
+		"bannerTitle": "자료실",
+		"listTitle": "자료실",
+		"listLabel": "목록",
+		"items": [
+			{
+				"slug": "archive-01",
+				"title": "설명글 01",
+				"body": "테스트 글입니다. 테스트 글입니다. 테스트 글입니다.",
+				"image": "./img/products/box/01.jpg",
+				"detail": ["테스트 글입니다.", "테스트 글입니다.", "테스트 글입니다."]
+			},
+			{
+				"slug": "archive-02",
+				"title": "설명글 02",
+				"body": "테스트 글입니다. 테스트 글입니다. 테스트 글입니다.",
+				"image": "./img/products/forklift1/01.jpg",
+				"detail": ["테스트 글입니다.", "테스트 글입니다.", "테스트 글입니다."]
+			},
+			{
+				"slug": "archive-03",
+				"title": "설명글 03",
+				"body": "테스트 글입니다. 테스트 글입니다. 테스트 글입니다.",
+				"image": "./img/sec02_01.png",
+				"detail": ["테스트 글입니다.", "테스트 글입니다.", "테스트 글입니다."]
+			}
+		]
+	}
 }

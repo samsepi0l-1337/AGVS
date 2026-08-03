@@ -841,9 +841,7 @@
 			langSwitch.options[(index + count) % count].focus();
 		}
 
-		syncLangUI(
-			normalizeLang(switches[0].current.textContent) || "KR",
-		);
+		syncLangUI(normalizeLang(switches[0].current.textContent) || "KR");
 
 		switches.forEach(function (langSwitch) {
 			langSwitch.btn.addEventListener("click", function (e) {
@@ -932,20 +930,24 @@
 		if (!listWrap || !buttons.length || !items.length) return;
 
 		var categorySwitch = root.querySelector(".CategorySwitch");
-		var categorySwitchBtn = categorySwitch
-			? categorySwitch.querySelector(".CategorySwitchBtn")
-			: null;
-		var categorySwitchMenu = categorySwitch
-			? categorySwitch.querySelector(".CategorySwitchMenu")
-			: null;
-		var categorySwitchCurrent = categorySwitch
-			? categorySwitch.querySelector(".CategorySwitchCurrent")
-			: null;
-		var categorySwitchOptions = categorySwitch
-			? Array.prototype.slice.call(
+		var categorySwitchBtn =
+			categorySwitch ?
+				categorySwitch.querySelector(".CategorySwitchBtn")
+			:	null;
+		var categorySwitchMenu =
+			categorySwitch ?
+				categorySwitch.querySelector(".CategorySwitchMenu")
+			:	null;
+		var categorySwitchCurrent =
+			categorySwitch ?
+				categorySwitch.querySelector(".CategorySwitchCurrent")
+			:	null;
+		var categorySwitchOptions =
+			categorySwitch ?
+				Array.prototype.slice.call(
 					categorySwitch.querySelectorAll(".CategorySwitchOption"),
 				)
-			: [];
+			:	[];
 
 		var banner = root.querySelector(".TopBg");
 		var title = root.querySelector(".TopBg p");
@@ -1025,10 +1027,7 @@
 					option.classList.toggle("isActive", active);
 					var roleOption = option.closest('[role="option"]');
 					if (roleOption) {
-						roleOption.setAttribute(
-							"aria-selected",
-							active ? "true" : "false",
-						);
+						roleOption.setAttribute("aria-selected", active ? "true" : "false");
 					}
 				});
 			}
@@ -1037,10 +1036,7 @@
 		function setCategorySwitchOpen(open) {
 			if (!categorySwitch || !categorySwitchBtn || !categorySwitchMenu) return;
 			categorySwitch.classList.toggle("isOpen", open);
-			categorySwitchBtn.setAttribute(
-				"aria-expanded",
-				open ? "true" : "false",
-			);
+			categorySwitchBtn.setAttribute("aria-expanded", open ? "true" : "false");
 			if (open) categorySwitchMenu.removeAttribute("hidden");
 			else categorySwitchMenu.setAttribute("hidden", "");
 		}

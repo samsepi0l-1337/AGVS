@@ -1,8 +1,7 @@
 <?php
 if (!defined("AGVS_LANG_LOADED")) {
-  require_once __DIR__ . "/lang.php";
-}
-?>
+	require_once __DIR__ . "/lang.php";
+} ?>
 <div
 	id="ContactUsPop"
 	class="PopOverlay"
@@ -15,7 +14,11 @@ if (!defined("AGVS_LANG_LOADED")) {
 		<button
 			type="button"
 			class="PopClose"
-			aria-label="<?php echo htmlspecialchars(agvs_t("contact.closeAria"), ENT_QUOTES, "UTF-8"); ?>"
+			aria-label="<?php echo htmlspecialchars(
+   	agvs_t("contact.closeAria"),
+   	ENT_QUOTES,
+   	"UTF-8",
+   ); ?>"
 		>
 			<svg
 				class="GnbToggleClose"
@@ -86,11 +89,23 @@ if (!defined("AGVS_LANG_LOADED")) {
 				</div>
 				<div class="ContactRight">
 					<div class="ContactRightVisit">
-						<h3><?php echo htmlspecialchars(agvs_t("contact.addressTitle"), ENT_QUOTES, "UTF-8"); ?></h3>
-						<p><?php echo htmlspecialchars(agvs_t("contact.address"), ENT_QUOTES, "UTF-8"); ?></p>
+						<h3><?php echo htmlspecialchars(
+      	agvs_t("contact.addressTitle"),
+      	ENT_QUOTES,
+      	"UTF-8",
+      ); ?></h3>
+						<p><?php echo htmlspecialchars(
+      	agvs_t("contact.address"),
+      	ENT_QUOTES,
+      	"UTF-8",
+      ); ?></p>
 					</div>
 					<div class="ContactRightTalk">
-						<h3><?php echo htmlspecialchars(agvs_t("contact.talkTitle"), ENT_QUOTES, "UTF-8"); ?></h3>
+						<h3><?php echo htmlspecialchars(
+      	agvs_t("contact.talkTitle"),
+      	ENT_QUOTES,
+      	"UTF-8",
+      ); ?></h3>
 						<p>
 							TEL. +82-70-7734-7890
 							<br />

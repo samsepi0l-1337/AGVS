@@ -1,6 +1,10 @@
 <?php require_once __DIR__ . "/include/lang.php"; ?>
 <!doctype html>
-<html lang="<?php echo htmlspecialchars($agvsHtmlLang, ENT_QUOTES, "UTF-8"); ?>">
+<html lang="<?php echo htmlspecialchars(
+	$agvsHtmlLang,
+	ENT_QUOTES,
+	"UTF-8",
+); ?>">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -151,7 +155,11 @@
               <div class="contact-banner__visual">
                 <img
                   src="./img/sec03.png"
-                  alt="<?php echo htmlspecialchars(agvs_t("sec03.imgAlt"), ENT_QUOTES, "UTF-8"); ?>"
+                  alt="<?php echo htmlspecialchars(
+                  	agvs_t("sec03.imgAlt"),
+                  	ENT_QUOTES,
+                  	"UTF-8",
+                  ); ?>"
                 />
               </div>
               <div class="contact-banner__content">

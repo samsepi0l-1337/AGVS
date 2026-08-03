@@ -1,25 +1,35 @@
 <?php
 require_once __DIR__ . "/include/lang.php";
 $catalog = agvs_load_catalog();
-$catalogCategories = isset($catalog["categories"]) && is_array($catalog["categories"]) ? $catalog["categories"] : array();
-$catalogItems = isset($catalog["items"]) && is_array($catalog["items"]) ? $catalog["items"] : array();
+$catalogCategories =
+	isset($catalog["categories"]) && is_array($catalog["categories"])
+		? $catalog["categories"]
+		: [];
+$catalogItems =
+	isset($catalog["items"]) && is_array($catalog["items"])
+		? $catalog["items"]
+		: [];
 
-$categoryLabels = array();
+$categoryLabels = [];
 foreach ($catalogCategories as $catalogCategory) {
-    $categoryLabels[$catalogCategory["id"]] = $catalogCategory["label"];
+	$categoryLabels[$catalogCategory["id"]] = $catalogCategory["label"];
 }
 
 $initialBannerCategory = "all";
 if (
-    isset($_GET["category"]) &&
-    is_string($_GET["category"]) &&
-    array_key_exists($_GET["category"], $categoryLabels)
+	isset($_GET["category"]) &&
+	is_string($_GET["category"]) &&
+	array_key_exists($_GET["category"], $categoryLabels)
 ) {
-    $initialBannerCategory = $_GET["category"];
+	$initialBannerCategory = $_GET["category"];
 }
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo htmlspecialchars($agvsHtmlLang, ENT_QUOTES, "UTF-8"); ?>">
+<html lang="<?php echo htmlspecialchars(
+	$agvsHtmlLang,
+	ENT_QUOTES,
+	"UTF-8",
+); ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,15 +71,23 @@ if (
 <body>
     <?php include __DIR__ . "/include/header.html"; ?>
     <main class="DetailListMain">
-        <div class="TopBg TopBg--<?php echo htmlspecialchars($initialBannerCategory, ENT_QUOTES, "UTF-8"); ?>"><!-- 백그라운드 이미지 넣어서 하기 백그라운드비지쓰면됨 -->
-            <p><?php echo htmlspecialchars($catalogCategories[0]["title"], ENT_QUOTES, "UTF-8"); ?></p><!--tittle에따라 이름변경되어야함ex)전체,AGV-->
+        <div class="TopBg TopBg--<?php echo htmlspecialchars(
+        	$initialBannerCategory,
+        	ENT_QUOTES,
+        	"UTF-8",
+        ); ?>"><!-- 백그라운드 이미지 넣어서 하기 백그라운드비지쓰면됨 -->
+            <p><?php echo htmlspecialchars(
+            	$catalogCategories[0]["title"],
+            	ENT_QUOTES,
+            	"UTF-8",
+            ); ?></p><!--tittle에따라 이름변경되어야함ex)전체,AGV-->
         </div>
         <div class="DetailListInner">
             <div class="ListTittleWrap">
                 <div class="ListTittle">
-                    <?php
-                    $initialCategoryLabel = $categoryLabels[$initialBannerCategory] ?? $catalogCategories[0]["label"];
-                    ?>
+                    <?php $initialCategoryLabel =
+                    	$categoryLabels[$initialBannerCategory] ??
+                    	$catalogCategories[0]["label"]; ?>
                     <div class="CategorySwitch">
                         <button
                             type="button"
@@ -78,7 +96,11 @@ if (
                             aria-haspopup="listbox"
                             aria-label="카테고리 선택"
                         >
-                            <span class="CategorySwitchCurrent"><?php echo htmlspecialchars($initialCategoryLabel, ENT_QUOTES, "UTF-8"); ?></span>
+                            <span class="CategorySwitchCurrent"><?php echo htmlspecialchars(
+                            	$initialCategoryLabel,
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></span>
                             <svg
                                 class="CategorySwitchChevron"
                                 viewBox="0 0 24 24"
@@ -95,23 +117,64 @@ if (
                             role="listbox"
                             hidden
                         >
-                            <?php foreach ($catalogCategories as $catalogCategory): ?>
-                            <?php $isInitialCategory = $catalogCategory["id"] === $initialBannerCategory; ?>
-                            <li role="option" aria-selected="<?php echo $isInitialCategory ? "true" : "false"; ?>">
+                            <?php foreach (
+                            	$catalogCategories
+                            	as $catalogCategory
+                            ): ?>
+                            <?php $isInitialCategory =
+                            	$catalogCategory["id"] ===
+                            	$initialBannerCategory; ?>
+                            <li role="option" aria-selected="<?php echo $isInitialCategory
+                            	? "true"
+                            	: "false"; ?>">
                                 <button
                                     type="button"
-                                    class="CategorySwitchOption<?php echo $isInitialCategory ? " isActive" : ""; ?>"
-                                    data-category="<?php echo htmlspecialchars($catalogCategory["id"], ENT_QUOTES, "UTF-8"); ?>"
-                                    data-title="<?php echo htmlspecialchars($catalogCategory["title"], ENT_QUOTES, "UTF-8"); ?>"
-                                ><?php echo htmlspecialchars($catalogCategory["label"], ENT_QUOTES, "UTF-8"); ?></button>
+                                    class="CategorySwitchOption<?php echo $isInitialCategory
+                                    	? " isActive"
+                                    	: ""; ?>"
+                                    data-category="<?php echo htmlspecialchars(
+                                    	$catalogCategory["id"],
+                                    	ENT_QUOTES,
+                                    	"UTF-8",
+                                    ); ?>"
+                                    data-title="<?php echo htmlspecialchars(
+                                    	$catalogCategory["title"],
+                                    	ENT_QUOTES,
+                                    	"UTF-8",
+                                    ); ?>"
+                                ><?php echo htmlspecialchars(
+                                	$catalogCategory["label"],
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></button>
                             </li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
                     <div class="ListTittleHidden" hidden aria-hidden="true">
-                        <?php foreach ($catalogCategories as $catalogCategory): ?>
-                        <?php $isInitialCategory = $catalogCategory["id"] === $initialBannerCategory; ?>
-                        <button type="button"<?php echo $isInitialCategory ? ' class="isOn"' : ""; ?> data-category="<?php echo htmlspecialchars($catalogCategory["id"], ENT_QUOTES, "UTF-8"); ?>" aria-pressed="<?php echo $isInitialCategory ? "true" : "false"; ?>" data-title="<?php echo htmlspecialchars($catalogCategory["title"], ENT_QUOTES, "UTF-8"); ?>"><?php echo htmlspecialchars($catalogCategory["label"], ENT_QUOTES, "UTF-8"); ?></button>
+                        <?php foreach (
+                        	$catalogCategories
+                        	as $catalogCategory
+                        ): ?>
+                        <?php $isInitialCategory =
+                        	$catalogCategory["id"] === $initialBannerCategory; ?>
+                        <button type="button"<?php echo $isInitialCategory
+                        	? ' class="isOn"'
+                        	: ""; ?> data-category="<?php echo htmlspecialchars(
+ 	$catalogCategory["id"],
+ 	ENT_QUOTES,
+ 	"UTF-8",
+ ); ?>" aria-pressed="<?php echo $isInitialCategory
+	? "true"
+	: "false"; ?>" data-title="<?php echo htmlspecialchars(
+	$catalogCategory["title"],
+	ENT_QUOTES,
+	"UTF-8",
+); ?>"><?php echo htmlspecialchars(
+	$catalogCategory["label"],
+	ENT_QUOTES,
+	"UTF-8",
+); ?></button>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -125,23 +188,50 @@ if (
             </div>
             <div class="ListItemWrap">
                 <?php foreach ($catalogItems as $catalogItem): ?>
-                <div class="ItemWrap" data-category="<?php echo htmlspecialchars($catalogItem["category"], ENT_QUOTES, "UTF-8"); ?>"><!--랩크기는 자유-->
-                    <a href="view.php?item=<?php echo rawurlencode($catalogItem["slug"]); ?>">
+                <div class="ItemWrap" data-category="<?php echo htmlspecialchars(
+                	$catalogItem["category"],
+                	ENT_QUOTES,
+                	"UTF-8",
+                ); ?>"><!--랩크기는 자유-->
+                    <a href="view.php?item=<?php echo rawurlencode(
+                    	$catalogItem["slug"],
+                    ); ?>">
                         <div class="ItemThumb"><!--320x230-->
                             <?php
                             $thumbSrc = "";
-                            if (!empty($catalogItem["models"][0]["images"][0]["src"])) {
-                                $thumbSrc = $catalogItem["models"][0]["images"][0]["src"];
+                            if (
+                            	!empty(
+                            		$catalogItem["models"][0]["images"][0]["src"]
+                            	)
+                            ) {
+                            	$thumbSrc =
+                            		$catalogItem["models"][0]["images"][0]["src"];
                             }
                             ?>
                             <?php if ($thumbSrc !== ""): ?>
-                            <img src="<?php echo htmlspecialchars($thumbSrc, ENT_QUOTES, "UTF-8"); ?>" alt="<?php echo htmlspecialchars($catalogItem["name"], ENT_QUOTES, "UTF-8"); ?>">
+                            <img src="<?php echo htmlspecialchars(
+                            	$thumbSrc,
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?>" alt="<?php echo htmlspecialchars(
+	$catalogItem["name"],
+	ENT_QUOTES,
+	"UTF-8",
+); ?>">
                             <?php endif; ?>
                         </div>
                         <h3>
-                            <?php echo htmlspecialchars($catalogItem["name"], ENT_QUOTES, "UTF-8"); ?>
+                            <?php echo htmlspecialchars(
+                            	$catalogItem["name"],
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?>
                         </h3><!--크기18px굵기700-->
-                        <p class="ItemCategory"><?php echo htmlspecialchars($categoryLabels[$catalogItem["category"]], ENT_QUOTES, "UTF-8"); ?></p>
+                        <p class="ItemCategory"><?php echo htmlspecialchars(
+                        	$categoryLabels[$catalogItem["category"]],
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></p>
                     </a>
                 </div>
                 <?php endforeach; ?>

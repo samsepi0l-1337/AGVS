@@ -1,5 +1,3 @@
-@AGENTS.md
-
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with
@@ -193,10 +191,10 @@ Claude-family author lane (`designer`/`writer` subagents) does the authoring for
 this repo; Codex+AGY, the two non-author vendor lanes, critically review that
 work. Authoring for this repo must **NOT** be routed to the isolated
 scratch-based `codex-author` lane used by the LOGIC domain. That lane is
-reserved for LOGIC repos, and this repo is FDW, not LOGIC.
-PLAN is authored by `planner`/`architect`, TEST/ACCEPTANCE by `test-engineer`,
-and content by `designer`/`writer` — all Claude-family lanes; the two non-author
-verify lanes remain the two other vendors.
+reserved for LOGIC repos, and this repo is FDW, not LOGIC. PLAN is authored by
+`planner`/`architect`, TEST/ACCEPTANCE by `test-engineer`, and content by
+`designer`/`writer` — all Claude-family lanes; the two non-author verify lanes
+remain the two other vendors.
 
 The **measuring in a real browser** via `Chrome DevTools MCP` procedure
 described earlier is this project's mechanical check. There is no build, lint,
@@ -208,3 +206,5 @@ Drive the Orca-visible browser tab with `orca tab`, `orca snapshot`,
 `Chrome DevTools MCP` measurement tool for actual measurement (computed styles,
 geometry, Lighthouse), since Orca has no equivalent. The `Playwright` tool is
 deliberately off for this repo because Orca replaces it.
+
+@AGENTS.md

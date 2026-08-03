@@ -1,11 +1,23 @@
 <?php require_once __DIR__ . "/include/lang.php"; ?>
 <!DOCTYPE html>
-<html lang="<?php echo htmlspecialchars($agvsHtmlLang, ENT_QUOTES, "UTF-8"); ?>">
+<html lang="<?php echo htmlspecialchars(
+	$agvsHtmlLang,
+	ENT_QUOTES,
+	"UTF-8",
+); ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?php echo htmlspecialchars(agvs_t("overview.metaDescription"), ENT_QUOTES, "UTF-8"); ?>">
-    <title><?php echo htmlspecialchars(agvs_t("overview.pageTitle"), ENT_QUOTES, "UTF-8"); ?></title>
+    <meta name="description" content="<?php echo htmlspecialchars(
+    	agvs_t("overview.metaDescription"),
+    	ENT_QUOTES,
+    	"UTF-8",
+    ); ?>">
+    <title><?php echo htmlspecialchars(
+    	agvs_t("overview.pageTitle"),
+    	ENT_QUOTES,
+    	"UTF-8",
+    ); ?></title>
     <link
     rel="preconnect"
     href="https://fonts.googleapis.com"
@@ -25,28 +37,36 @@
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802n"
+    href="./stlye/reset.css?ver=20260802o"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802n"
+    href="./stlye/layout.css?ver=20260802o"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Overview.css?ver=20260802n"
+    href="./stlye/Overview.css?ver=20260802o"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802n"
+    href="./stlye/Pop.css?ver=20260802o"
     >
 </head>
 <body>
     <header class="header" id="header">
         <div class="header-inner">
-            <a class="brand" href="index.php" aria-label="<?php echo htmlspecialchars(agvs_t("overview.homeAria"), ENT_QUOTES, "UTF-8"); ?>">
+            <a class="brand" href="index.php" aria-label="<?php echo htmlspecialchars(
+            	agvs_t("overview.homeAria"),
+            	ENT_QUOTES,
+            	"UTF-8",
+            ); ?>">
                 <img src="./img/WordmarkWhite.png" alt="">
             </a>
-            <nav class="nav" id="main-nav" aria-label="<?php echo htmlspecialchars(agvs_t("overview.navAria"), ENT_QUOTES, "UTF-8"); ?>">
+            <nav class="nav" id="main-nav" aria-label="<?php echo htmlspecialchars(
+            	agvs_t("overview.navAria"),
+            	ENT_QUOTES,
+            	"UTF-8",
+            ); ?>">
                 <a class="nav-link" href="#about">ABOUT</a>
                 <a class="nav-link" href="#business">OUR BUSINESS</a>
                 <a class="nav-link" href="#values">CORE VALUE</a>
@@ -58,9 +78,17 @@
 					class="HeaderLangBtn LangSwitchBtn"
 					aria-expanded="false"
 					aria-haspopup="listbox"
-					aria-label="<?php echo htmlspecialchars(agvs_t("header.langAria"), ENT_QUOTES, "UTF-8"); ?>"
+					aria-label="<?php echo htmlspecialchars(
+     	agvs_t("header.langAria"),
+     	ENT_QUOTES,
+     	"UTF-8",
+     ); ?>"
 				>
-					<span class="HeaderLangCurrent LangSwitchCurrent"><?php echo htmlspecialchars($agvsLang, ENT_QUOTES, "UTF-8"); ?></span>
+					<span class="HeaderLangCurrent LangSwitchCurrent"><?php echo htmlspecialchars(
+     	$agvsLang,
+     	ENT_QUOTES,
+     	"UTF-8",
+     ); ?></span>
 					<svg
 						class="HeaderLangChevron LangSwitchChevron"
 						viewBox="0 0 24 24"
@@ -120,35 +148,67 @@
                         <?php echo agvs_t("overview.hero.titleHtml"); ?>
                     </h1>
                     <p class="hero-description">
-                        <?php echo htmlspecialchars(agvs_t("overview.hero.description"), ENT_QUOTES, "UTF-8"); ?>
+                        <?php echo htmlspecialchars(
+                        	agvs_t("overview.hero.description"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?>
                     </p>
                     <div class="hero-actions">
                         <a class="button button-primary" href="#about">
-                            <?php echo htmlspecialchars(agvs_t("overview.hero.ctaAbout"), ENT_QUOTES, "UTF-8"); ?>
+                            <?php echo htmlspecialchars(
+                            	agvs_t("overview.hero.ctaAbout"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?>
                             <svg class="button-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </a>
-                        <a class="button button-ghost" href="#business"><?php echo htmlspecialchars(agvs_t("overview.hero.ctaBusiness"), ENT_QUOTES, "UTF-8"); ?></a>
+                        <a class="button button-ghost" href="#business"><?php echo htmlspecialchars(
+                        	agvs_t("overview.hero.ctaBusiness"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></a>
                     </div>
 
-                    <div class="hero-metrics" aria-label="<?php echo htmlspecialchars(agvs_t("overview.hero.metricsAria"), ENT_QUOTES, "UTF-8"); ?>">
+                    <div class="hero-metrics" aria-label="<?php echo htmlspecialchars(
+                    	agvs_t("overview.hero.metricsAria"),
+                    	ENT_QUOTES,
+                    	"UTF-8",
+                    ); ?>">
                         <div class="hero-metric">
                             <strong class="metric-value">1995</strong>
-                            <span class="metric-label"><?php echo htmlspecialchars(agvs_t("overview.hero.metricFounded"), ENT_QUOTES, "UTF-8"); ?></span>
+                            <span class="metric-label"><?php echo htmlspecialchars(
+                            	agvs_t("overview.hero.metricFounded"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></span>
                         </div>
                         <div class="hero-metric">
                             <strong class="metric-value">6</strong>
-                            <span class="metric-label"><?php echo htmlspecialchars(agvs_t("overview.hero.metricAreas"), ENT_QUOTES, "UTF-8"); ?></span>
+                            <span class="metric-label"><?php echo htmlspecialchars(
+                            	agvs_t("overview.hero.metricAreas"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></span>
                         </div>
                         <div class="hero-metric">
                             <strong class="metric-value">HW + SW</strong>
-                            <span class="metric-label"><?php echo htmlspecialchars(agvs_t("overview.hero.metricCapability"), ENT_QUOTES, "UTF-8"); ?></span>
+                            <span class="metric-label"><?php echo htmlspecialchars(
+                            	agvs_t("overview.hero.metricCapability"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></span>
                         </div>
                     </div>
                 </div>
 
-                <div class="hero-visual reveal reveal-delay-2 is-visible" aria-label="<?php echo htmlspecialchars(agvs_t("overview.hero.visualAria"), ENT_QUOTES, "UTF-8"); ?>">
+                <div class="hero-visual reveal reveal-delay-2 is-visible" aria-label="<?php echo htmlspecialchars(
+                	agvs_t("overview.hero.visualAria"),
+                	ENT_QUOTES,
+                	"UTF-8",
+                ); ?>">
                     <div class="system-board">
                         <div class="board-topbar">
                             <div class="board-dots" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -203,26 +263,46 @@
                     <div class="about-main-card">
                         <div class="about-card-content">
                             <div class="about-card-kicker">Integrated Automation Partner</div>
-                            <h2 class="about-card-title"><?php echo agvs_t("overview.about.cardTitleHtml"); ?></h2>
-                            <p class="about-card-copy"><?php echo htmlspecialchars(agvs_t("overview.about.cardCopy"), ENT_QUOTES, "UTF-8"); ?></p>
+                            <h2 class="about-card-title"><?php echo agvs_t(
+                            	"overview.about.cardTitleHtml",
+                            ); ?></h2>
+                            <p class="about-card-copy"><?php echo htmlspecialchars(
+                            	agvs_t("overview.about.cardCopy"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></p>
                         </div>
                     </div>
                     <div class="since-card">
                         <span class="since-label">Established</span>
                         <strong class="since-year">1995</strong>
-                        <span class="since-copy"><?php echo htmlspecialchars(agvs_t("overview.about.sinceCopy"), ENT_QUOTES, "UTF-8"); ?></span>
+                        <span class="since-copy"><?php echo htmlspecialchars(
+                        	agvs_t("overview.about.sinceCopy"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></span>
                     </div>
                 </div>
 
                 <div class="about-copy reveal reveal-delay-1">
                     <p class="eyebrow">ABOUT AGVS</p>
-                    <h2 class="section-title"><?php echo agvs_t("overview.about.titleHtml"); ?></h2>
+                    <h2 class="section-title"><?php echo agvs_t(
+                    	"overview.about.titleHtml",
+                    ); ?></h2>
                     <div class="about-paragraphs">
                         <p>
-                            <?php echo htmlspecialchars(agvs_t("overview.about.p1"), ENT_QUOTES, "UTF-8"); ?>
+                            <?php echo htmlspecialchars(
+                            	agvs_t("overview.about.p1"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?>
                         </p>
                         <p>
-                            <?php echo htmlspecialchars(agvs_t("overview.about.p2"), ENT_QUOTES, "UTF-8"); ?>
+                            <?php echo htmlspecialchars(
+                            	agvs_t("overview.about.p2"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?>
                         </p>
                     </div>
 
@@ -230,22 +310,46 @@
                         <article class="capability-item">
                             <div class="capability-number">01</div>
                             <div>
-                                <h3 class="capability-title"><?php echo htmlspecialchars(agvs_t("overview.about.cap1Title"), ENT_QUOTES, "UTF-8"); ?></h3>
-                                <p class="capability-copy"><?php echo htmlspecialchars(agvs_t("overview.about.cap1Copy"), ENT_QUOTES, "UTF-8"); ?></p>
+                                <h3 class="capability-title"><?php echo htmlspecialchars(
+                                	agvs_t("overview.about.cap1Title"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></h3>
+                                <p class="capability-copy"><?php echo htmlspecialchars(
+                                	agvs_t("overview.about.cap1Copy"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></p>
                             </div>
                         </article>
                         <article class="capability-item">
                             <div class="capability-number">02</div>
                             <div>
-                                <h3 class="capability-title"><?php echo htmlspecialchars(agvs_t("overview.about.cap2Title"), ENT_QUOTES, "UTF-8"); ?></h3>
-                                <p class="capability-copy"><?php echo htmlspecialchars(agvs_t("overview.about.cap2Copy"), ENT_QUOTES, "UTF-8"); ?></p>
+                                <h3 class="capability-title"><?php echo htmlspecialchars(
+                                	agvs_t("overview.about.cap2Title"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></h3>
+                                <p class="capability-copy"><?php echo htmlspecialchars(
+                                	agvs_t("overview.about.cap2Copy"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></p>
                             </div>
                         </article>
                         <article class="capability-item">
                             <div class="capability-number">03</div>
                             <div>
-                                <h3 class="capability-title"><?php echo htmlspecialchars(agvs_t("overview.about.cap3Title"), ENT_QUOTES, "UTF-8"); ?></h3>
-                                <p class="capability-copy"><?php echo htmlspecialchars(agvs_t("overview.about.cap3Copy"), ENT_QUOTES, "UTF-8"); ?></p>
+                                <h3 class="capability-title"><?php echo htmlspecialchars(
+                                	agvs_t("overview.about.cap3Title"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></h3>
+                                <p class="capability-copy"><?php echo htmlspecialchars(
+                                	agvs_t("overview.about.cap3Copy"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></p>
                             </div>
                         </article>
                     </div>
@@ -258,49 +362,85 @@
                 <div class="section-heading reveal">
                     <div>
                         <p class="eyebrow">OUR BUSINESS</p>
-                        <h2 class="section-title"><?php echo agvs_t("overview.business.titleHtml"); ?></h2>
+                        <h2 class="section-title"><?php echo agvs_t(
+                        	"overview.business.titleHtml",
+                        ); ?></h2>
                     </div>
                     <p class="section-lead">
-                        <?php echo htmlspecialchars(agvs_t("overview.business.lead"), ENT_QUOTES, "UTF-8"); ?>
+                        <?php echo htmlspecialchars(
+                        	agvs_t("overview.business.lead"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?>
                     </p>
                 </div>
 
                 <div class="business-layout">
-                    <div class="wheel-wrap reveal reveal-delay-1" aria-label="<?php echo htmlspecialchars(agvs_t("overview.business.wheelAria"), ENT_QUOTES, "UTF-8"); ?>">
+                    <div class="wheel-wrap reveal reveal-delay-1" aria-label="<?php echo htmlspecialchars(
+                    	agvs_t("overview.business.wheelAria"),
+                    	ENT_QUOTES,
+                    	"UTF-8",
+                    ); ?>">
                         <div class="business-wheel">
                             <div class="wheel-item wheel-1">
                                 <span class="wheel-number">1</span>
-                                <span class="wheel-name"><?php echo htmlspecialchars(agvs_t("overview.business.wheel1"), ENT_QUOTES, "UTF-8"); ?></span>
+                                <span class="wheel-name"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.wheel1"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></span>
                                 <span class="wheel-sub">AGV</span>
                             </div>
                             <div class="wheel-item wheel-2">
                                 <span class="wheel-number">2</span>
-                                <span class="wheel-name"><?php echo htmlspecialchars(agvs_t("overview.business.wheel2"), ENT_QUOTES, "UTF-8"); ?></span>
+                                <span class="wheel-name"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.wheel2"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></span>
                                 <span class="wheel-sub">FLA</span>
                             </div>
                             <div class="wheel-item wheel-3">
                                 <span class="wheel-number">3</span>
-                                <span class="wheel-name"><?php echo htmlspecialchars(agvs_t("overview.business.wheel3"), ENT_QUOTES, "UTF-8"); ?></span>
+                                <span class="wheel-name"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.wheel3"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></span>
                                 <span class="wheel-sub">AS/RS</span>
                             </div>
                             <div class="wheel-item wheel-4">
                                 <span class="wheel-number">4</span>
-                                <span class="wheel-name"><?php echo htmlspecialchars(agvs_t("overview.business.wheel4"), ENT_QUOTES, "UTF-8"); ?></span>
+                                <span class="wheel-name"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.wheel4"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></span>
                                 <span class="wheel-sub">Automatic Transfer</span>
                             </div>
                             <div class="wheel-item wheel-5">
                                 <span class="wheel-number">5</span>
-                                <span class="wheel-name"><?php echo htmlspecialchars(agvs_t("overview.business.wheel5"), ENT_QUOTES, "UTF-8"); ?></span>
+                                <span class="wheel-name"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.wheel5"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></span>
                                 <span class="wheel-sub">Conveyor</span>
                             </div>
                             <div class="wheel-item wheel-6">
                                 <span class="wheel-number">6</span>
-                                <span class="wheel-name"><?php echo agvs_t("overview.business.wheel6Html"); ?></span>
+                                <span class="wheel-name"><?php echo agvs_t(
+                                	"overview.business.wheel6Html",
+                                ); ?></span>
                             </div>
                         </div>
                         <div class="business-note">
                             <strong>Integrated Solution</strong>
-                            <span><?php echo htmlspecialchars(agvs_t("overview.business.note"), ENT_QUOTES, "UTF-8"); ?></span>
+                            <span><?php echo htmlspecialchars(
+                            	agvs_t("overview.business.note"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></span>
                         </div>
                     </div>
 
@@ -308,8 +448,16 @@
                         <article class="business-card reveal">
                             <div class="business-index">01</div>
                             <div>
-                                <h3 class="business-title"><?php echo htmlspecialchars(agvs_t("overview.business.b1Title"), ENT_QUOTES, "UTF-8"); ?> <small>AGV</small></h3>
-                                <p class="business-description"><?php echo htmlspecialchars(agvs_t("overview.business.b1Desc"), ENT_QUOTES, "UTF-8"); ?></p>
+                                <h3 class="business-title"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.b1Title"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?> <small>AGV</small></h3>
+                                <p class="business-description"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.b1Desc"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></p>
                             </div>
                             <span class="business-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -319,8 +467,16 @@
                         <article class="business-card reveal reveal-delay-1">
                             <div class="business-index">02</div>
                             <div>
-                                <h3 class="business-title"><?php echo htmlspecialchars(agvs_t("overview.business.b2Title"), ENT_QUOTES, "UTF-8"); ?> <small>FLA</small></h3>
-                                <p class="business-description"><?php echo htmlspecialchars(agvs_t("overview.business.b2Desc"), ENT_QUOTES, "UTF-8"); ?></p>
+                                <h3 class="business-title"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.b2Title"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?> <small>FLA</small></h3>
+                                <p class="business-description"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.b2Desc"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></p>
                             </div>
                             <span class="business-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -330,8 +486,16 @@
                         <article class="business-card reveal reveal-delay-2">
                             <div class="business-index">03</div>
                             <div>
-                                <h3 class="business-title"><?php echo htmlspecialchars(agvs_t("overview.business.b3Title"), ENT_QUOTES, "UTF-8"); ?> <small>AS/RS</small></h3>
-                                <p class="business-description"><?php echo htmlspecialchars(agvs_t("overview.business.b3Desc"), ENT_QUOTES, "UTF-8"); ?></p>
+                                <h3 class="business-title"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.b3Title"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?> <small>AS/RS</small></h3>
+                                <p class="business-description"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.b3Desc"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></p>
                             </div>
                             <span class="business-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -341,8 +505,16 @@
                         <article class="business-card reveal">
                             <div class="business-index">04</div>
                             <div>
-                                <h3 class="business-title"><?php echo htmlspecialchars(agvs_t("overview.business.b4Title"), ENT_QUOTES, "UTF-8"); ?> <small>Automatic Transfer</small></h3>
-                                <p class="business-description"><?php echo htmlspecialchars(agvs_t("overview.business.b4Desc"), ENT_QUOTES, "UTF-8"); ?></p>
+                                <h3 class="business-title"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.b4Title"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?> <small>Automatic Transfer</small></h3>
+                                <p class="business-description"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.b4Desc"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></p>
                             </div>
                             <span class="business-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -352,8 +524,16 @@
                         <article class="business-card reveal reveal-delay-1">
                             <div class="business-index">05</div>
                             <div>
-                                <h3 class="business-title"><?php echo htmlspecialchars(agvs_t("overview.business.b5Title"), ENT_QUOTES, "UTF-8"); ?> <small>Conveyor</small></h3>
-                                <p class="business-description"><?php echo htmlspecialchars(agvs_t("overview.business.b5Desc"), ENT_QUOTES, "UTF-8"); ?></p>
+                                <h3 class="business-title"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.b5Title"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?> <small>Conveyor</small></h3>
+                                <p class="business-description"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.b5Desc"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></p>
                             </div>
                             <span class="business-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -363,8 +543,16 @@
                         <article class="business-card reveal reveal-delay-2">
                             <div class="business-index">06</div>
                             <div>
-                                <h3 class="business-title"><?php echo htmlspecialchars(agvs_t("overview.business.b6Title"), ENT_QUOTES, "UTF-8"); ?></h3>
-                                <p class="business-description"><?php echo htmlspecialchars(agvs_t("overview.business.b6Desc"), ENT_QUOTES, "UTF-8"); ?></p>
+                                <h3 class="business-title"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.b6Title"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></h3>
+                                <p class="business-description"><?php echo htmlspecialchars(
+                                	agvs_t("overview.business.b6Desc"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></p>
                             </div>
                             <span class="business-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -380,33 +568,71 @@
                 <div class="section-heading reveal">
                     <div>
                         <p class="eyebrow">CORE VALUE</p>
-                        <h2 class="section-title"><?php echo agvs_t("overview.values.titleHtml"); ?></h2>
+                        <h2 class="section-title"><?php echo agvs_t(
+                        	"overview.values.titleHtml",
+                        ); ?></h2>
                     </div>
                     <p class="section-lead">
-                        <?php echo htmlspecialchars(agvs_t("overview.values.lead"), ENT_QUOTES, "UTF-8"); ?>
+                        <?php echo htmlspecialchars(
+                        	agvs_t("overview.values.lead"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?>
                     </p>
                 </div>
 
                 <div class="values-grid">
                     <article class="value-card reveal">
                         <div class="value-index">VALUE 01</div>
-                        <div class="value-english">Reliability<span class="value-korean"><?php echo htmlspecialchars(agvs_t("overview.values.v1Label"), ENT_QUOTES, "UTF-8"); ?></span></div>
-                        <p class="value-copy"><?php echo htmlspecialchars(agvs_t("overview.values.v1Copy"), ENT_QUOTES, "UTF-8"); ?></p>
+                        <div class="value-english">Reliability<span class="value-korean"><?php echo htmlspecialchars(
+                        	agvs_t("overview.values.v1Label"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></span></div>
+                        <p class="value-copy"><?php echo htmlspecialchars(
+                        	agvs_t("overview.values.v1Copy"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></p>
                     </article>
                     <article class="value-card reveal reveal-delay-1">
                         <div class="value-index">VALUE 02</div>
-                        <div class="value-english">Usability<span class="value-korean"><?php echo htmlspecialchars(agvs_t("overview.values.v2Label"), ENT_QUOTES, "UTF-8"); ?></span></div>
-                        <p class="value-copy"><?php echo htmlspecialchars(agvs_t("overview.values.v2Copy"), ENT_QUOTES, "UTF-8"); ?></p>
+                        <div class="value-english">Usability<span class="value-korean"><?php echo htmlspecialchars(
+                        	agvs_t("overview.values.v2Label"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></span></div>
+                        <p class="value-copy"><?php echo htmlspecialchars(
+                        	agvs_t("overview.values.v2Copy"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></p>
                     </article>
                     <article class="value-card reveal reveal-delay-2">
                         <div class="value-index">VALUE 03</div>
-                        <div class="value-english">Scalability<span class="value-korean"><?php echo htmlspecialchars(agvs_t("overview.values.v3Label"), ENT_QUOTES, "UTF-8"); ?></span></div>
-                        <p class="value-copy"><?php echo htmlspecialchars(agvs_t("overview.values.v3Copy"), ENT_QUOTES, "UTF-8"); ?></p>
+                        <div class="value-english">Scalability<span class="value-korean"><?php echo htmlspecialchars(
+                        	agvs_t("overview.values.v3Label"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></span></div>
+                        <p class="value-copy"><?php echo htmlspecialchars(
+                        	agvs_t("overview.values.v3Copy"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></p>
                     </article>
                     <article class="value-card reveal reveal-delay-3">
                         <div class="value-index">VALUE 04</div>
-                        <div class="value-english">Flexibility<span class="value-korean"><?php echo htmlspecialchars(agvs_t("overview.values.v4Label"), ENT_QUOTES, "UTF-8"); ?></span></div>
-                        <p class="value-copy"><?php echo htmlspecialchars(agvs_t("overview.values.v4Copy"), ENT_QUOTES, "UTF-8"); ?></p>
+                        <div class="value-english">Flexibility<span class="value-korean"><?php echo htmlspecialchars(
+                        	agvs_t("overview.values.v4Label"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></span></div>
+                        <p class="value-copy"><?php echo htmlspecialchars(
+                        	agvs_t("overview.values.v4Copy"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></p>
                     </article>
                 </div>
             </div>
@@ -417,10 +643,18 @@
                 <div class="section-heading reveal">
                     <div>
                         <p class="eyebrow">COMPANY PROFILE</p>
-                        <h2 class="section-title"><?php echo htmlspecialchars(agvs_t("overview.profile.title"), ENT_QUOTES, "UTF-8"); ?></h2>
+                        <h2 class="section-title"><?php echo htmlspecialchars(
+                        	agvs_t("overview.profile.title"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></h2>
                     </div>
                     <p class="section-lead">
-                        <?php echo htmlspecialchars(agvs_t("overview.profile.lead"), ENT_QUOTES, "UTF-8"); ?>
+                        <?php echo htmlspecialchars(
+                        	agvs_t("overview.profile.lead"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?>
                     </p>
                 </div>
 
@@ -429,36 +663,78 @@
                         <div class="profile-side-label">Automation · Logistics · Control</div>
                         <div class="profile-side-copy">
                             <strong>Moving Industry<br />Forward.</strong>
-                            <span><?php echo htmlspecialchars(agvs_t("overview.profile.sideCopy"), ENT_QUOTES, "UTF-8"); ?></span>
+                            <span><?php echo htmlspecialchars(
+                            	agvs_t("overview.profile.sideCopy"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></span>
                         </div>
                     </div>
 
-                    <div class="profile-table" role="table" aria-label="<?php echo htmlspecialchars(agvs_t("overview.profile.tableAria"), ENT_QUOTES, "UTF-8"); ?>">
+                    <div class="profile-table" role="table" aria-label="<?php echo htmlspecialchars(
+                    	agvs_t("overview.profile.tableAria"),
+                    	ENT_QUOTES,
+                    	"UTF-8",
+                    ); ?>">
                         <div class="profile-row" role="row">
-                            <div class="profile-label" role="rowheader"><?php echo htmlspecialchars(agvs_t("overview.profile.nameLabel"), ENT_QUOTES, "UTF-8"); ?></div>
+                            <div class="profile-label" role="rowheader"><?php echo htmlspecialchars(
+                            	agvs_t("overview.profile.nameLabel"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></div>
                             <div class="profile-value" role="cell">AGVS CO., Ltd.</div>
                         </div>
                         <div class="profile-row" role="row">
-                            <div class="profile-label" role="rowheader"><?php echo htmlspecialchars(agvs_t("overview.profile.foundedLabel"), ENT_QUOTES, "UTF-8"); ?></div>
-                            <div class="profile-value" role="cell"><?php echo htmlspecialchars(agvs_t("overview.profile.foundedValue"), ENT_QUOTES, "UTF-8"); ?></div>
+                            <div class="profile-label" role="rowheader"><?php echo htmlspecialchars(
+                            	agvs_t("overview.profile.foundedLabel"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></div>
+                            <div class="profile-value" role="cell"><?php echo htmlspecialchars(
+                            	agvs_t("overview.profile.foundedValue"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></div>
                         </div>
                         <div class="profile-row" role="row">
-                            <div class="profile-label" role="rowheader"><?php echo htmlspecialchars(agvs_t("overview.profile.fieldLabel"), ENT_QUOTES, "UTF-8"); ?></div>
+                            <div class="profile-label" role="rowheader"><?php echo htmlspecialchars(
+                            	agvs_t("overview.profile.fieldLabel"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></div>
                             <div class="profile-value" role="cell">
-                                <?php echo htmlspecialchars(agvs_t("overview.profile.fieldValue"), ENT_QUOTES, "UTF-8"); ?>
+                                <?php echo htmlspecialchars(
+                                	agvs_t("overview.profile.fieldValue"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?>
                                 <small>Automated Guided Vehicle System · Material Handling Equipment</small>
                             </div>
                         </div>
                         <div class="profile-row" role="row">
-                            <div class="profile-label" role="rowheader"><?php echo htmlspecialchars(agvs_t("overview.profile.addressLabel"), ENT_QUOTES, "UTF-8"); ?></div>
+                            <div class="profile-label" role="rowheader"><?php echo htmlspecialchars(
+                            	agvs_t("overview.profile.addressLabel"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></div>
                             <div class="profile-value" role="cell">
-                                <?php echo htmlspecialchars(agvs_t("overview.profile.addressValue"), ENT_QUOTES, "UTF-8"); ?>
+                                <?php echo htmlspecialchars(
+                                	agvs_t("overview.profile.addressValue"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?>
                                 <?php
-                                $addressSub = agvs_t("overview.profile.addressSub");
-                                if ($addressSub !== ""):
+                                $addressSub = agvs_t(
+                                	"overview.profile.addressSub",
+                                );
+                                if ($addressSub !== ""): ?>
+                                <small><?php echo htmlspecialchars(
+                                	$addressSub,
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?></small>
+                                <?php endif;
                                 ?>
-                                <small><?php echo htmlspecialchars($addressSub, ENT_QUOTES, "UTF-8"); ?></small>
-                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -470,8 +746,14 @@
             <div class="container">
                 <div class="cta-card reveal">
                     <div class="cta-copy">
-                        <h2 class="cta-title"><?php echo agvs_t("overview.cta.titleHtml"); ?></h2>
-                        <p class="cta-description"><?php echo htmlspecialchars(agvs_t("overview.cta.description"), ENT_QUOTES, "UTF-8"); ?></p>
+                        <h2 class="cta-title"><?php echo agvs_t(
+                        	"overview.cta.titleHtml",
+                        ); ?></h2>
+                        <p class="cta-description"><?php echo htmlspecialchars(
+                        	agvs_t("overview.cta.description"),
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?></p>
                     </div>
                     <a class="button button-primary Sec03ContactBtn" href="#">
                         Contact Us
@@ -486,7 +768,7 @@
     <?php include __DIR__ . "/include/footer.html"; ?>
     <!-- contactPop.html renders the shared popup root with id="ContactUsPop". -->
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802n"></script>
+    <script src="./js/main.js?ver=20260802o"></script>
     <script>
         const brandImg = document.querySelector(".brand img");
 

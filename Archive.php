@@ -1,16 +1,27 @@
 <?php
 require_once __DIR__ . "/include/lang.php";
-$archiveItems = array();
-if (isset($agvsUi["archive"]["items"]) && is_array($agvsUi["archive"]["items"])) {
-    $archiveItems = $agvsUi["archive"]["items"];
+$archiveItems = [];
+if (
+	isset($agvsUi["archive"]["items"]) &&
+	is_array($agvsUi["archive"]["items"])
+) {
+	$archiveItems = $agvsUi["archive"]["items"];
 }
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo htmlspecialchars($agvsHtmlLang, ENT_QUOTES, "UTF-8"); ?>">
+<html lang="<?php echo htmlspecialchars(
+	$agvsHtmlLang,
+	ENT_QUOTES,
+	"UTF-8",
+); ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars(agvs_t("archive.pageTitle"), ENT_QUOTES, "UTF-8"); ?></title>
+    <title><?php echo htmlspecialchars(
+    	agvs_t("archive.pageTitle"),
+    	ENT_QUOTES,
+    	"UTF-8",
+    ); ?></title>
     <link
     rel="preconnect"
     href="https://fonts.googleapis.com"
@@ -30,55 +41,90 @@ if (isset($agvsUi["archive"]["items"]) && is_array($agvsUi["archive"]["items"]))
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802n"
+    href="./stlye/reset.css?ver=20260802p"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802n"
+    href="./stlye/layout.css?ver=20260802p"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Archive.css?ver=20260802n"
+    href="./stlye/Archive.css?ver=20260802p"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802n"
+    href="./stlye/Pop.css?ver=20260802p"
     >
 </head>
 <body>
     <?php include __DIR__ . "/include/header.html"; ?>
     <main class="ArchiveMain">
         <div class="TopBg">
-            <p><?php echo htmlspecialchars(agvs_t("archive.bannerTitle"), ENT_QUOTES, "UTF-8"); ?></p>
+            <p><?php echo htmlspecialchars(
+            	agvs_t("archive.bannerTitle"),
+            	ENT_QUOTES,
+            	"UTF-8",
+            ); ?></p>
         </div>
         <div class="ArchiveInner">
             <div class="ListTittleWrap">
                 <div class="ListTittle">
-                    <h2><?php echo htmlspecialchars(agvs_t("archive.listTitle"), ENT_QUOTES, "UTF-8"); ?></h2>
+                    <h2><?php echo htmlspecialchars(
+                    	agvs_t("archive.listTitle"),
+                    	ENT_QUOTES,
+                    	"UTF-8",
+                    ); ?></h2>
                 </div>
             </div>
             <div class="ListItemWrap">
                 <?php foreach ($archiveItems as $archiveItem): ?>
                 <?php
-                $itemTitle = isset($archiveItem["title"]) ? $archiveItem["title"] : "";
-                $itemBody = isset($archiveItem["body"]) ? $archiveItem["body"] : "";
-                $itemImage = isset($archiveItem["image"]) ? $archiveItem["image"] : "";
+                $itemTitle = isset($archiveItem["title"])
+                	? $archiveItem["title"]
+                	: "";
+                $itemBody = isset($archiveItem["body"])
+                	? $archiveItem["body"]
+                	: "";
+                $itemImage = isset($archiveItem["image"])
+                	? $archiveItem["image"]
+                	: "";
+                $itemSlug = isset($archiveItem["slug"])
+                	? $archiveItem["slug"]
+                	: "";
                 ?>
-                <article class="ItemWrap">
+                <a class="ItemWrap" href="view.php?archive=<?php echo rawurlencode(
+                	$itemSlug,
+                ); ?>">
                     <div class="ItemThumb">
                         <?php if ($itemImage !== ""): ?>
-                        <img src="<?php echo htmlspecialchars($itemImage, ENT_QUOTES, "UTF-8"); ?>" alt="<?php echo htmlspecialchars($itemTitle, ENT_QUOTES, "UTF-8"); ?>">
+                        <img src="<?php echo htmlspecialchars(
+                        	$itemImage,
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?>" alt="<?php echo htmlspecialchars(
+	$itemTitle,
+	ENT_QUOTES,
+	"UTF-8",
+); ?>">
                         <?php endif; ?>
                     </div>
-                    <h3><?php echo htmlspecialchars($itemTitle, ENT_QUOTES, "UTF-8"); ?></h3>
-                    <p class="ItemBody"><?php echo htmlspecialchars($itemBody, ENT_QUOTES, "UTF-8"); ?></p>
-                </article>
+                    <h3><?php echo htmlspecialchars(
+                    	$itemTitle,
+                    	ENT_QUOTES,
+                    	"UTF-8",
+                    ); ?></h3>
+                    <p class="ItemBody"><?php echo htmlspecialchars(
+                    	$itemBody,
+                    	ENT_QUOTES,
+                    	"UTF-8",
+                    ); ?></p>
+                </a>
                 <?php endforeach; ?>
             </div>
         </div>
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802n"></script>
+    <script src="./js/main.js?ver=20260802p"></script>
 </body>
 </html>

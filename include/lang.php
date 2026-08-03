@@ -2,7 +2,7 @@
 if (!defined("AGVS_LANG_LOADED")) {
 	define("AGVS_LANG_LOADED", true);
 
-	$agvsAllowedLangs = array("KR", "EN", "JP");
+	$agvsAllowedLangs = ["KR", "EN", "JP"];
 	$agvsLang = "KR";
 	$agvsLangResolved = false;
 
@@ -13,7 +13,11 @@ if (!defined("AGVS_LANG_LOADED")) {
 			$agvsLangResolved = true;
 		}
 	}
-	if (!$agvsLangResolved && isset($_COOKIE["agvs_lang"]) && is_string($_COOKIE["agvs_lang"])) {
+	if (
+		!$agvsLangResolved &&
+		isset($_COOKIE["agvs_lang"]) &&
+		is_string($_COOKIE["agvs_lang"])
+	) {
 		$candidate = strtoupper($_COOKIE["agvs_lang"]);
 		if (in_array($candidate, $agvsAllowedLangs, true)) {
 			$agvsLang = $candidate;
@@ -21,35 +25,36 @@ if (!defined("AGVS_LANG_LOADED")) {
 	}
 
 	if (!headers_sent()) {
-		setcookie("agvs_lang", $agvsLang, array(
+		setcookie("agvs_lang", $agvsLang, [
 			"expires" => time() + 365 * 24 * 60 * 60,
 			"path" => "/",
 			"samesite" => "Lax",
-		));
+		]);
 	}
 
-	$agvsHtmlLangMap = array(
+	$agvsHtmlLangMap = [
 		"KR" => "ko",
 		"EN" => "en",
 		"JP" => "ja",
-	);
+	];
 	$agvsHtmlLang = $agvsHtmlLangMap[$agvsLang];
 
-	$agvsAboutLabelMap = array(
+	$agvsAboutLabelMap = [
 		"KR" => "회사소개",
 		"EN" => "About",
 		"JP" => "会社紹介",
-	);
+	];
 	$agvsAboutLabel = $agvsAboutLabelMap[$agvsLang];
 
-	function agvs_load_catalog() {
+	function agvs_load_catalog()
+	{
 		global $agvsLang;
 		$file = "items" . $agvsLang . ".json";
 		$path = dirname(__DIR__) . "/data/" . $file;
-		$empty = array(
-			"categories" => array(),
-			"items" => array(),
-		);
+		$empty = [
+			"categories" => [],
+			"items" => [],
+		];
 		if (!is_readable($path)) {
 			return $empty;
 		}
@@ -61,23 +66,30 @@ if (!defined("AGVS_LANG_LOADED")) {
 		if (!is_array($decoded)) {
 			return $empty;
 		}
-		return array(
-			"categories" => isset($decoded["categories"]) && is_array($decoded["categories"])
-				? $decoded["categories"]
-				: array(),
-			"items" => isset($decoded["items"]) && is_array($decoded["items"])
-				? $decoded["items"]
-				: array(),
-		);
+		return [
+			"categories" =>
+				isset($decoded["categories"]) && is_array($decoded["categories"])
+					? $decoded["categories"]
+					: [],
+			"items" =>
+				isset($decoded["items"]) && is_array($decoded["items"])
+					? $decoded["items"]
+					: [],
+		];
 	}
 
-	function agvs_load_ui() {
+	function agvs_load_ui()
+	{
 		global $agvsLang;
 		$path = dirname(__DIR__) . "/data/ui" . $agvsLang . ".json";
-		$empty = array();
-		if (!is_readable($path)) return $empty;
+		$empty = [];
+		if (!is_readable($path)) {
+			return $empty;
+		}
 		$raw = file_get_contents($path);
-		if ($raw === false) return $empty;
+		if ($raw === false) {
+			return $empty;
+		}
 		$decoded = json_decode($raw, true);
 		return is_array($decoded) ? $decoded : $empty;
 	}
@@ -86,7 +98,8 @@ if (!defined("AGVS_LANG_LOADED")) {
 	 * Read a dotted UI key, e.g. agvs_t("footer.privacy").
 	 * Returns empty string if missing.
 	 */
-	function agvs_t($key) {
+	function agvs_t($key)
+	{
 		static $ui = null;
 		if ($ui === null) {
 			$ui = agvs_load_ui();
@@ -94,7 +107,9 @@ if (!defined("AGVS_LANG_LOADED")) {
 		$parts = explode(".", $key);
 		$cur = $ui;
 		foreach ($parts as $part) {
-			if (!is_array($cur) || !array_key_exists($part, $cur)) return "";
+			if (!is_array($cur) || !array_key_exists($part, $cur)) {
+				return "";
+			}
 			$cur = $cur[$part];
 		}
 		return is_string($cur) ? $cur : "";

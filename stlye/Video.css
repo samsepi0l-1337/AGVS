@@ -23,7 +23,9 @@ header:has(+ .VideoViewMain) .ContactUsWrap {
 	justify-content: center;
 	align-items: center;
 	background-color: #1b3a52;
-	background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url("../img/sec03.png");
+	background-image:
+		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../img/sec03.png");
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -60,7 +62,7 @@ header:has(+ .VideoViewMain) .ContactUsWrap {
 	font-size: clamp(17px, 15.27273px + 0.45455vw, 24px);
 	font-weight: 700;
 	line-height: 1.2;
-	color: #007DCC;
+	color: #007dcc;
 }
 
 .ListItemWrap {
@@ -163,7 +165,6 @@ header:has(+ .VideoViewMain) .ContactUsWrap {
 	gap: 24px;
 }
 
-
 .ViewSpecList {
 	margin: 0 0 50px;
 	padding: 24px;
@@ -190,7 +191,7 @@ header:has(+ .VideoViewMain) .ContactUsWrap {
 	width: 6px;
 	height: 6px;
 	border-radius: 50%;
-	background-color: #007DCC;
+	background-color: #007dcc;
 }
 
 .VideoPlayer {
@@ -256,7 +257,7 @@ header:has(+ .VideoViewMain) .ContactUsWrap {
 
 .ViewNavLink:hover,
 .ViewNavLink:focus-visible {
-	color: #007DCC;
+	color: #007dcc;
 }
 
 .ViewNavArrow {
@@ -268,7 +269,7 @@ header:has(+ .VideoViewMain) .ContactUsWrap {
 
 .ViewNavLink:hover .ViewNavArrow,
 .ViewNavLink:focus-visible .ViewNavArrow {
-	color: #007DCC;
+	color: #007dcc;
 }
 
 .ViewNavLabel {
@@ -294,13 +295,16 @@ header:has(+ .VideoViewMain) .ContactUsWrap {
 	font-size: 15px;
 	font-weight: 700;
 	color: #333333;
-	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+	transition:
+		background-color 0.2s ease,
+		border-color 0.2s ease,
+		color 0.2s ease;
 }
 
 .ViewNavList:hover,
 .ViewNavList:focus-visible {
-	background-color: #007DCC;
-	border-color: #007DCC;
+	background-color: #007dcc;
+	border-color: #007dcc;
 	color: #ffffff;
 }
 

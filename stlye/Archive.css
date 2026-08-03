@@ -19,7 +19,9 @@ header:has(+ .ArchiveMain) .ContactUsWrap {
 	justify-content: center;
 	align-items: center;
 	background-color: #1b3a52;
-	background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url("../img/sec03.png");
+	background-image:
+		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../img/sec03.png");
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -126,4 +128,12 @@ header:has(+ .ArchiveMain) .ContactUsWrap {
 		grid-template-columns: 1fr;
 		gap: 32px;
 	}
+}
+
+.ItemWrap {
+	text-decoration: none;
+}
+
+.ItemWrap:hover h3 {
+	color: #007dcc;
 }

@@ -56,6 +56,22 @@ renderedVideoCount="$(ls -1 "$OUT"/video-*.html 2>/dev/null | wc -l | tr -d ' ')
 [ "$renderedVideoCount" -eq "$videoSlugCount" ] \
   || { echo "FAIL: 렌더된 영상 상세 페이지 수($renderedVideoCount)가 슬러그 수($videoSlugCount)와 일치하지 않습니다."; exit 1; }
 
+# 자료실 상세 페이지: uiKR.json 의 archive.items[].slug 마다 view.php 를 한 번씩 렌더한다.
+ARCHIVE_SLUGS="$(php -r '$d=json_decode(file_get_contents("'"$ROOT"'/data/uiKR.json"),true); if(!is_array($d) || !isset($d["archive"]["items"]) || !is_array($d["archive"]["items"])){fwrite(STDERR,"ui parse failed\n"); exit(1);} foreach($d["archive"]["items"] as $i) echo $i["slug"],"\n";')" \
+  || { echo "FAIL: 자료실 슬러그 목록을 읽지 못했습니다."; exit 1; }
+[ -n "$ARCHIVE_SLUGS" ] || { echo "FAIL: 자료실에 항목이 없습니다."; exit 1; }
+
+archiveSlugCount=0
+while IFS= read -r slug; do
+  [ -n "$slug" ] || continue
+  BUILD_ARCHIVE="$slug" php "$ROOT/view.php" > "$OUT/archive-$slug.html"
+  archiveSlugCount=$((archiveSlugCount + 1))
+done <<< "$ARCHIVE_SLUGS"
+
+renderedArchiveCount="$(ls -1 "$OUT"/archive-*.html 2>/dev/null | wc -l | tr -d ' ')"
+[ "$renderedArchiveCount" -eq "$archiveSlugCount" ] \
+  || { echo "FAIL: 렌더된 자료실 상세 페이지 수($renderedArchiveCount)가 슬러그 수($archiveSlugCount)와 일치하지 않습니다."; exit 1; }
+
 # 페이지 간 링크를 .php -> .html 로 치환 (?category= 같은 쿼리는 보존)
 # 1) 상세 페이지 쿼리 링크를 먼저 생성된 파일명으로 치환한다 — VideoView.php?item=...
 #    를 view.php?item=... 보다 먼저 치환해야, VideoView.php 문자열이 뒤이은
@@ -67,6 +83,7 @@ renderedVideoCount="$(ls -1 "$OUT"/video-*.html 2>/dev/null | wc -l | tr -d ' ')
 #    \b...\.php\b 로 완전한 파일명 전체를 앵커링한다.
 for f in "$OUT"/*.html; do
   perl -pi -e 's/VideoView\.php\?item=([A-Za-z0-9_-]+)/video-$1.html/g' "$f"
+  perl -pi -e 's/view\.php\?archive=([A-Za-z0-9_-]+)/archive-$1.html/g' "$f"
   perl -pi -e 's/view\.php\?item=([A-Za-z0-9_-]+)/view-$1.html/g' "$f"
   perl -pi -e 's/\b(index|DetailList|Overview|Sitemap|Video|Archive)\.php\b/$1.html/g' "$f"
 done

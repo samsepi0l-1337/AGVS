@@ -1,144 +1,163 @@
 {
-  "sec03": {
-    "imgAlt": "Smart logistics automation with AGVS",
-    "titleHtml": "<strong>The start of smart logistics</strong>,<br />\n                    together with <strong>AGVS</strong>",
-    "descriptionHtml": "We understand your site and goals,<br\n                      class=\"desktop-only\"\n                    />\n                    and design <strong>the optimal automation system to raise productivity and operational efficiency</strong> together."
-  },
-  "footer": {
-    "desc": "An industrial automation company that designs and builds smart logistics automation solutions based on Automated Guided Vehicles (AGV).",
-    "navAria": "Footer menu",
-    "privacy": "Privacy Policy",
-    "sitemap": "Sitemap",
-    "topAria": "Back to top",
-    "langAria": "Select language",
-    "address": "703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si, Gyeonggi-do, Republic of Korea"
-  },
-  "contact": {
-    "closeAria": "Close",
-    "introHtml": "We will be your best partner for smart factories and logistics automation.\n\t\t\t\t\t<br />\n\t\t\t\t\tLeave an inquiry and our specialists will respond promptly.",
-    "addressTitle": "Address",
-    "address": "703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si, Gyeonggi-do, Republic of Korea",
-    "talkTitle": "Phone & Email"
-  },
-  "header": {
-    "langAria": "Select language",
-    "menuOpenAria": "Open menu",
-    "archive": "Archive"
-  },
-  "sitemap": {
-    "pageTitle": "Sitemap | AGVS",
-    "heading": "Sitemap",
-    "navAria": "Sitemap",
-    "about": "About",
-    "support": "Customer Support",
-    "contactUs": "Contact Us",
-    "archive": "Archive"
-  },
-  "overview": {
-    "pageTitle": "About Us & Our Business | AGVS",
-    "metaDescription": "Learn about AGVS and our core material-handling businesses.",
-    "homeAria": "Go to AGVS home",
-    "navAria": "Primary menu",
-    "hero": {
-      "titleHtml": "We automate the flow of materials,<br />\n                        <span class=\"gradient-text\">and expand what production can do.</span>",
-      "description": "AGVS is a logistics automation specialist that develops and supplies automated guided vehicles (AGVs) and control systems tailored to diverse production and logistics environments.",
-      "ctaAbout": "About AGVS",
-      "ctaBusiness": "View Our Business",
-      "metricsAria": "AGVS key facts",
-      "metricFounded": "Year founded",
-      "metricAreas": "Core business areas",
-      "metricCapability": "Integrated development",
-      "visualAria": "Conceptual diagram of an AGV logistics automation system"
-    },
-    "about": {
-      "cardTitleHtml": "Field-proven experience and<br />integrated automation technology",
-      "cardCopy": "We connect AGVs, control systems, mechanical design, and operations software as one system.",
-      "sinceCopy": "Accumulated experience and technical know-how",
-      "titleHtml": "We turn customer needs into<br /><span class=\"accent\">automation that works on site.</span>",
-      "p1": "Since our founding, AGVS has developed and supplied AGVs and control systems to meet a wide range of customer requirements. Building on field experience and technical know-how, we continue to advance AGV control systems, mechanical design, and operator interface software.",
-      "p2": "Beyond delivering individual machines, we design systems so vehicles, transfer equipment, and operations software work as one continuous flow. Guided by reliability, usability, scalability, and flexibility, we support efficient production and logistics operations.",
-      "cap1Title": "Integrated system development",
-      "cap1Copy": "From mechanical design to control systems and operator interfaces, we build each layer to work together.",
-      "cap2Title": "Site-specific automation",
-      "cap2Copy": "We design practical systems around process, space, payloads, and operating conditions.",
-      "cap3Title": "Sustainable scalability",
-      "cap3Copy": "We aim for architectures that can adapt to line changes and equipment expansion."
-    },
-    "business": {
-      "titleHtml": "From mobile equipment to control,<br /><span class=\"accent\">one continuous logistics flow.</span>",
-      "lead": "AGVS builds production and logistics automation systems around AGVs, autonomous forklifts, automated warehouses, automatic transfer, conveyors, and logistics/AGV management software.",
-      "wheelAria": "Six core AGVS business areas",
-      "wheel1": "AGV",
-      "wheel2": "Autonomous Forklift",
-      "wheel3": "AS/RS",
-      "wheel4": "Automatic Transfer",
-      "wheel5": "Conveyor System",
-      "wheel6Html": "Logistics & AGV<br />Management Software",
-      "note": "We integrate machines, equipment, and software to design the entire material flow.",
-      "b1Title": "Automated Guided Vehicle",
-      "b1Desc": "An unmanned transport system that automatically moves materials and parts on production and logistics floors.",
-      "b2Title": "Autonomous Forklift",
-      "b2Desc": "A system that moves pallets and loads without an operator and automates inbound and outbound handling.",
-      "b3Title": "Automated Storage & Retrieval",
-      "b3Desc": "An AS/RS solution that improves storage utilization and inbound/outbound accuracy.",
-      "b4Title": "Automatic Transfer",
-      "b4Desc": "An automatic transfer solution that connects material flow between processes and equipment.",
-      "b5Title": "Conveyor System",
-      "b5Desc": "A tailored system for continuous, stable transfer of products, parts, and packaged goods.",
-      "b6Title": "Logistics & AGV Management Software and Control",
-      "b6Desc": "Operations software and control systems that centrally manage dispatching, routes, status, and work information."
-    },
-    "values": {
-      "titleHtml": "Four standards that define<br /><span class=\"accent\">system quality</span>",
-      "lead": "AGVS designs automation around reliability, usability, scalability, and flexibility so systems run stably on site and adapt to change.",
-      "v1Label": "Reliability",
-      "v1Copy": "We prioritize consistency and durability so systems can operate steadily on the production floor.",
-      "v2Label": "Usability",
-      "v2Copy": "We design environments where operators can quickly understand system status and work efficiently.",
-      "v3Label": "Scalability",
-      "v3Copy": "We aim for structures that can expand functions and operating range as equipment, vehicles, and processes grow.",
-      "v4Label": "Flexibility",
-      "v4Copy": "We configure systems flexibly so they can reflect each customer’s logistics conditions and operating scenarios."
-    },
-    "profile": {
-      "title": "Introducing AGVS.",
-      "lead": "Since 1995, we have built expertise in automated guided vehicle systems and material handling equipment.",
-      "sideCopy": "With automation technology, we create more efficient production and logistics flows.",
-      "tableAria": "AGVS company profile",
-      "nameLabel": "Company",
-      "foundedLabel": "Founded",
-      "foundedValue": "1995",
-      "fieldLabel": "Business",
-      "fieldValue": "AGV systems · Material handling equipment",
-      "addressLabel": "Address",
-      "addressValue": "703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si, Gyeonggi-do, Republic of Korea",
-      "addressSub": ""
-    },
-    "cta": {
-      "titleHtml": "Automation your site needs,<br />connected by AGVS integrated technology.",
-      "description": "From AGVs to automated warehouses, transfer equipment, and operations software, we build it as one system."
-    }
-  },
-  "archive": {
-    "pageTitle": "Archive | AGVS",
-    "bannerTitle": "Archive",
-    "listTitle": "Archive",
-    "items": [
-      {
-        "title": "Description",
-        "body": "Sample description text.",
-        "image": "./img/products/box/01.jpg"
-      },
-      {
-        "title": "Description",
-        "body": "Sample description text.",
-        "image": "./img/products/forklift1/01.jpg"
-      },
-      {
-        "title": "Description",
-        "body": "Sample description text.",
-        "image": "./img/sec02_01.png"
-      }
-    ]
-  }
+	"sec03": {
+		"imgAlt": "Smart logistics automation with AGVS",
+		"titleHtml": "<strong>The start of smart logistics</strong>,<br />\n                    together with <strong>AGVS</strong>",
+		"descriptionHtml": "We understand your site and goals,<br\n                      class=\"desktop-only\"\n                    />\n                    and design <strong>the optimal automation system to raise productivity and operational efficiency</strong> together."
+	},
+	"footer": {
+		"desc": "An industrial automation company that designs and builds smart logistics automation solutions based on Automated Guided Vehicles (AGV).",
+		"navAria": "Footer menu",
+		"privacy": "Privacy Policy",
+		"sitemap": "Sitemap",
+		"topAria": "Back to top",
+		"langAria": "Select language",
+		"address": "703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si, Gyeonggi-do, Republic of Korea"
+	},
+	"contact": {
+		"closeAria": "Close",
+		"introHtml": "We will be your best partner for smart factories and logistics automation.\n\t\t\t\t\t<br />\n\t\t\t\t\tLeave an inquiry and our specialists will respond promptly.",
+		"addressTitle": "Address",
+		"address": "703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si, Gyeonggi-do, Republic of Korea",
+		"talkTitle": "Phone & Email"
+	},
+	"header": {
+		"langAria": "Select language",
+		"menuOpenAria": "Open menu",
+		"archive": "Archive"
+	},
+	"sitemap": {
+		"pageTitle": "Sitemap | AGVS",
+		"heading": "Sitemap",
+		"navAria": "Sitemap",
+		"about": "About",
+		"support": "Customer Support",
+		"contactUs": "Contact Us",
+		"archive": "Archive"
+	},
+	"overview": {
+		"pageTitle": "About Us & Our Business | AGVS",
+		"metaDescription": "Learn about AGVS and our core material-handling businesses.",
+		"homeAria": "Go to AGVS home",
+		"navAria": "Primary menu",
+		"hero": {
+			"titleHtml": "We automate the flow of materials,<br />\n                        <span class=\"gradient-text\">and expand what production can do.</span>",
+			"description": "AGVS is a logistics automation specialist that develops and supplies automated guided vehicles (AGVs) and control systems tailored to diverse production and logistics environments.",
+			"ctaAbout": "About AGVS",
+			"ctaBusiness": "View Our Business",
+			"metricsAria": "AGVS key facts",
+			"metricFounded": "Year founded",
+			"metricAreas": "Core business areas",
+			"metricCapability": "Integrated development",
+			"visualAria": "Conceptual diagram of an AGV logistics automation system"
+		},
+		"about": {
+			"cardTitleHtml": "Field-proven experience and<br />integrated automation technology",
+			"cardCopy": "We connect AGVs, control systems, mechanical design, and operations software as one system.",
+			"sinceCopy": "Accumulated experience and technical know-how",
+			"titleHtml": "We turn customer needs into<br /><span class=\"accent\">automation that works on site.</span>",
+			"p1": "Since our founding, AGVS has developed and supplied AGVs and control systems to meet a wide range of customer requirements. Building on field experience and technical know-how, we continue to advance AGV control systems, mechanical design, and operator interface software.",
+			"p2": "Beyond delivering individual machines, we design systems so vehicles, transfer equipment, and operations software work as one continuous flow. Guided by reliability, usability, scalability, and flexibility, we support efficient production and logistics operations.",
+			"cap1Title": "Integrated system development",
+			"cap1Copy": "From mechanical design to control systems and operator interfaces, we build each layer to work together.",
+			"cap2Title": "Site-specific automation",
+			"cap2Copy": "We design practical systems around process, space, payloads, and operating conditions.",
+			"cap3Title": "Sustainable scalability",
+			"cap3Copy": "We aim for architectures that can adapt to line changes and equipment expansion."
+		},
+		"business": {
+			"titleHtml": "From mobile equipment to control,<br /><span class=\"accent\">one continuous logistics flow.</span>",
+			"lead": "AGVS builds production and logistics automation systems around AGVs, autonomous forklifts, automated warehouses, automatic transfer, conveyors, and logistics/AGV management software.",
+			"wheelAria": "Six core AGVS business areas",
+			"wheel1": "AGV",
+			"wheel2": "Autonomous Forklift",
+			"wheel3": "AS/RS",
+			"wheel4": "Automatic Transfer",
+			"wheel5": "Conveyor System",
+			"wheel6Html": "Logistics & AGV<br />Management Software",
+			"note": "We integrate machines, equipment, and software to design the entire material flow.",
+			"b1Title": "Automated Guided Vehicle",
+			"b1Desc": "An unmanned transport system that automatically moves materials and parts on production and logistics floors.",
+			"b2Title": "Autonomous Forklift",
+			"b2Desc": "A system that moves pallets and loads without an operator and automates inbound and outbound handling.",
+			"b3Title": "Automated Storage & Retrieval",
+			"b3Desc": "An AS/RS solution that improves storage utilization and inbound/outbound accuracy.",
+			"b4Title": "Automatic Transfer",
+			"b4Desc": "An automatic transfer solution that connects material flow between processes and equipment.",
+			"b5Title": "Conveyor System",
+			"b5Desc": "A tailored system for continuous, stable transfer of products, parts, and packaged goods.",
+			"b6Title": "Logistics & AGV Management Software and Control",
+			"b6Desc": "Operations software and control systems that centrally manage dispatching, routes, status, and work information."
+		},
+		"values": {
+			"titleHtml": "Four standards that define<br /><span class=\"accent\">system quality</span>",
+			"lead": "AGVS designs automation around reliability, usability, scalability, and flexibility so systems run stably on site and adapt to change.",
+			"v1Label": "Reliability",
+			"v1Copy": "We prioritize consistency and durability so systems can operate steadily on the production floor.",
+			"v2Label": "Usability",
+			"v2Copy": "We design environments where operators can quickly understand system status and work efficiently.",
+			"v3Label": "Scalability",
+			"v3Copy": "We aim for structures that can expand functions and operating range as equipment, vehicles, and processes grow.",
+			"v4Label": "Flexibility",
+			"v4Copy": "We configure systems flexibly so they can reflect each customer’s logistics conditions and operating scenarios."
+		},
+		"profile": {
+			"title": "Introducing AGVS.",
+			"lead": "Since 1995, we have built expertise in automated guided vehicle systems and material handling equipment.",
+			"sideCopy": "With automation technology, we create more efficient production and logistics flows.",
+			"tableAria": "AGVS company profile",
+			"nameLabel": "Company",
+			"foundedLabel": "Founded",
+			"foundedValue": "1995",
+			"fieldLabel": "Business",
+			"fieldValue": "AGV systems · Material handling equipment",
+			"addressLabel": "Address",
+			"addressValue": "703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si, Gyeonggi-do, Republic of Korea",
+			"addressSub": ""
+		},
+		"cta": {
+			"titleHtml": "Automation your site needs,<br />connected by AGVS integrated technology.",
+			"description": "From AGVs to automated warehouses, transfer equipment, and operations software, we build it as one system."
+		}
+	},
+	"archive": {
+		"pageTitle": "Archive | AGVS",
+		"bannerTitle": "Archive",
+		"listTitle": "Archive",
+		"listLabel": "List",
+		"items": [
+			{
+				"slug": "archive-01",
+				"title": "Description 01",
+				"body": "This is test text. This is test text. This is test text.",
+				"image": "./img/products/box/01.jpg",
+				"detail": [
+					"This is test text.",
+					"This is test text.",
+					"This is test text."
+				]
+			},
+			{
+				"slug": "archive-02",
+				"title": "Description 02",
+				"body": "This is test text. This is test text. This is test text.",
+				"image": "./img/products/forklift1/01.jpg",
+				"detail": [
+					"This is test text.",
+					"This is test text.",
+					"This is test text."
+				]
+			},
+			{
+				"slug": "archive-03",
+				"title": "Description 03",
+				"body": "This is test text. This is test text. This is test text.",
+				"image": "./img/sec02_01.png",
+				"detail": [
+					"This is test text.",
+					"This is test text.",
+					"This is test text."
+				]
+			}
+		]
+	}
 }

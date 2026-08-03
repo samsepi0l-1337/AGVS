@@ -16,8 +16,9 @@
 - Footer copyright uses the form `Copyrights(C) YYYY AGVS. All Rights Reserved.`
 - Share header/footer via server-side PHP includes:
   `<?php include __DIR__ . "/include/header.html"; ?>` and the footer
-  equivalent, pulling `include/header.html` and `include/footer.html`. Put
-  chrome CSS in `stlye/layout.css`; keep chrome JS (GNB, footer lang, Top) and
+  equivalent, pulling `include/header.html` and `include/footer.html`
+  (Overview.php keeps its own page-local header). Put chrome CSS in
+  `stlye/layout.css`; keep chrome JS (GNB, footer lang, Top) and
   FullPage/section snap together in `js/main.js`, which both pages load.
   (Superseded 2026-07-30: this was previously a JS-fetched `data-include` scheme
   with `partials/` and a separate `js/layout.js`; both are gone.)
@@ -34,24 +35,40 @@
 
 - Static AGVS marketing site (multi-page): plain HTML/CSS/vanilla JS with
   KR/EN/JP i18n via `include/lang.php` and cookie `agvs_lang`; assets under
-  `stlye/` (intentional misspelling), `js/`, and `img/`.
-- Product catalog is `data/items{KR|EN|JP}.json`; items use `models[]`
-  (`id`, `label`, `specs`, `images[]`). UI chrome/Section 3/contact copy lives
-  in `data/ui{KR|EN|JP}.json` and is read through `agvs_t()`.
+  `stlye/` (intentional misspelling), `js/`, and `img/`. Wrappers keep an
+  intentional `max-width: 1920px` even when inner widths are %-based; 1920px
+  parity remains the acceptance criterion.
+- Product catalog is `data/items{KR|EN|JP}.json`; items use `models[]` (`id`,
+  `label`, `specs`, `images[]`). UI chrome/Section 3/contact/overview/archive
+  copy lives in `data/ui{KR|EN|JP}.json` and is read through `agvs_t()`.
 - Pages include `index.php`, `DetailList.php`, `view.php` (model `<select>`
-  drives specs/images), `Overview.php`, `Video.php`, `VideoView.php`, and
+  drives specs/images; also `?archive=slug` for Archive detail),
+  `Overview.php`, `Video.php`, `VideoView.php`, `Archive.php`, and
   `Sitemap.php`.
+- `Overview.php` uses its own page-local header (not `include/header.html`);
+  copy is keyed under `overview.*` in the ui JSON files. Japanese Overview
+  needs `html[lang="ja"]` scoped layout tweaks because fixed `minmax()` floors
+  overflow longer JP text.
+- `Archive.php` (자료실) is a GNB top-level page; Sitemap lists it under
+  고객지원 with Contact Us; archive items live in `archive.*` ui JSON and open
+  via `view.php?archive=slug`.
 - `DetailList.php` is the item list page (filters: 전체, AGV, ForkLift,
-  Technology) with page styles in `stlye/DetailList.css`.
+  Technology) with a HeaderLang-style `CategorySwitch` filter UI and page
+  styles in `stlye/DetailList.css`.
 - Section 2 is three equal hover-expand panels using `img/sec02_01.png`,
   `img/sec02_02.png`, and `img/sec02_03.png`.
 - Section 3 is ~70% left `img/sec03.png` and ~30% right vision copy on a soft
-  teal panel (`#E8F6F5`), with localized title/description via `agvs_t("sec03.*")`
-  and an untranslated Contact us CTA.
+  teal panel (`#E8F6F5`), with localized title/description via
+  `agvs_t("sec03.*")` and an untranslated Contact us CTA.
 - Footer link columns are 개인정보 처리방침 (AGV, ForkLift) and 사이트맵
   (Technology); no "빠른 링크" column.
-- Footer/contact address is KR `경기 시흥시 서울대학로 59-21, 로얄팰리스테크노1차
-  703` and EN `703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si,
-  Gyeonggi-do, Republic of Korea`; contact also includes TEL
-  (+82-70-7734-7890), FAX (+82-303-0951-0852), and Email (info@agvsk.com).
+- Footer/contact address is KR
+  `경기 시흥시 서울대학로 59-21, 로얄팰리스테크노1차 703` and EN
+  `703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si, Gyeonggi-do, Republic of Korea`;
+  contact also includes TEL (+82-70-7734-7890), FAX (+82-303-0951-0852), and
+  Email (info@agvsk.com).
 - GNB top-level label spelling is Technology.
+- GitHub Pages static build is `scripts/build-static.sh` (default catalog
+  `itemsKR.json`, images from `models[].images[].src`, pages include Archive).
+  `include/**/*.html` files that contain PHP need a Prettier `parser: "php"`
+  override.
