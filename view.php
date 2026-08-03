@@ -451,7 +451,7 @@ if ($isArchiveView) {
     })();
     </script>
     <?php endif; ?>
-    <script src="./js/main.js?ver=20260802r"></script>
+    <script src="./js/main.js?ver=20260802s"></script>
 </body>
 </html>
 

@@ -929,26 +929,6 @@
 			:	[];
 		if (!listWrap || !buttons.length || !items.length) return;
 
-		var categorySwitch = root.querySelector(".CategorySwitch");
-		var categorySwitchBtn =
-			categorySwitch ?
-				categorySwitch.querySelector(".CategorySwitchBtn")
-			:	null;
-		var categorySwitchMenu =
-			categorySwitch ?
-				categorySwitch.querySelector(".CategorySwitchMenu")
-			:	null;
-		var categorySwitchCurrent =
-			categorySwitch ?
-				categorySwitch.querySelector(".CategorySwitchCurrent")
-			:	null;
-		var categorySwitchOptions =
-			categorySwitch ?
-				Array.prototype.slice.call(
-					categorySwitch.querySelectorAll(".CategorySwitchOption"),
-				)
-			:	[];
-
 		var banner = root.querySelector(".TopBg");
 		var title = root.querySelector(".TopBg p");
 		var input = root.querySelector(".SearchInput");
@@ -1018,29 +998,6 @@
 			if (title) {
 				title.textContent = btn.getAttribute("data-title") || "ALL Item";
 			}
-
-			if (categorySwitch && categorySwitchCurrent) {
-				categorySwitchCurrent.textContent = btn.textContent.trim();
-			}
-			if (categorySwitchOptions.length) {
-				var catId = btn.getAttribute("data-category");
-				categorySwitchOptions.forEach(function (option) {
-					var active = option.getAttribute("data-category") === catId;
-					option.classList.toggle("isActive", active);
-					var roleOption = option.closest('[role="option"]');
-					if (roleOption) {
-						roleOption.setAttribute("aria-selected", active ? "true" : "false");
-					}
-				});
-			}
-		}
-
-		function setCategorySwitchOpen(open) {
-			if (!categorySwitch || !categorySwitchBtn || !categorySwitchMenu) return;
-			categorySwitch.classList.toggle("isOpen", open);
-			categorySwitchBtn.setAttribute("aria-expanded", open ? "true" : "false");
-			if (open) categorySwitchMenu.removeAttribute("hidden");
-			else categorySwitchMenu.setAttribute("hidden", "");
 		}
 
 		buttons.forEach(function (btn) {
@@ -1051,47 +1008,6 @@
 		});
 
 		if (initial) select(initial);
-
-		if (categorySwitch && categorySwitchBtn && categorySwitchOptions.length) {
-			categorySwitchBtn.addEventListener("click", function (e) {
-				e.stopPropagation();
-				var opening = !categorySwitch.classList.contains("isOpen");
-				setCategorySwitchOpen(opening);
-			});
-
-			categorySwitchOptions.forEach(function (option) {
-				option.addEventListener("click", function (e) {
-					e.stopPropagation();
-					var catId = option.getAttribute("data-category");
-					var hiddenBtn = buttonFor(catId);
-					if (hiddenBtn) {
-						select(hiddenBtn);
-						apply();
-					}
-					setCategorySwitchOpen(false);
-				});
-			});
-
-			categorySwitch.addEventListener("focusout", function (e) {
-				if (!categorySwitch.contains(e.relatedTarget)) {
-					setCategorySwitchOpen(false);
-				}
-			});
-
-			document.addEventListener("click", function (e) {
-				if (!categorySwitch.contains(e.target)) {
-					setCategorySwitchOpen(false);
-				}
-			});
-
-			document.addEventListener("keydown", function (e) {
-				if (e.key !== "Escape") return;
-				if (!categorySwitch.classList.contains("isOpen")) return;
-				e.preventDefault();
-				setCategorySwitchOpen(false);
-				categorySwitchBtn.focus();
-			});
-		}
 
 		if (input) {
 			input.addEventListener("input", apply);

@@ -72,94 +72,50 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 	margin-bottom: 40px;
 }
 
-.ListTitle {
-	position: relative;
-}
-
-.CategorySwitch {
-	position: relative;
-	z-index: 2;
-}
-
-.CategorySwitchBtn {
+.ListTitle ul {
 	display: flex;
-	flex-flow: row;
-	justify-content: center;
+	flex-flow: row wrap;
 	align-items: center;
-	gap: 6px;
-	min-width: 120px;
-	height: 40px;
-	padding: 8px 14px;
-	border: 1px solid #333333;
-	border-radius: 999px;
-	background-color: transparent;
-	font-size: clamp(17px, 15.27273px + 0.45455vw, 24px);
-	font-weight: 700;
-	line-height: 1;
-	color: #333333;
-	cursor: pointer;
-	transition:
-		color 0.2s ease,
-		border-color 0.2s ease,
-		background-color 0.2s ease;
 }
 
-.CategorySwitchBtn:hover,
-.CategorySwitchBtn:focus-visible,
-.CategorySwitch.isOpen .CategorySwitchBtn {
-	border-color: #007dcc;
-	color: #007dcc;
+.ListTitle li:not(:last-child) {
+	padding-right: 25px;
 }
 
-.CategorySwitchChevron {
-	display: block;
-	width: 17px;
-	height: 17px;
-	fill: currentColor;
-	transition: transform 0.2s ease;
+.ListTitle li:not(:last-child)::after {
+	content: "";
+	display: inline-block;
+	width: 2px;
+	height: 28px;
+	margin-left: 25px;
+	background-color: #aaaaaa;
+	vertical-align: middle;
 }
 
-.CategorySwitch.isOpen .CategorySwitchChevron {
-	transform: rotate(180deg);
+.ListTitle li {
+	display: inline-flex;
+	align-items: center;
 }
 
-.CategorySwitchMenu {
-	position: absolute;
-	top: calc(100% + 8px);
-	left: 0;
-	z-index: 3;
-	min-width: 100%;
-	padding: 8px 0;
-	border: 1px solid #dddddd;
-	border-radius: 12px;
-	background-color: #ffffff;
-	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
-	overflow: hidden;
-}
-
-.CategorySwitchOption {
-	display: block;
-	width: 100%;
-	padding: 10px 16px;
+.ListTitle button {
+	padding: 0;
 	border: 0;
 	background: transparent;
-	font-size: clamp(15px, 14px + 0.25vw, 18px);
-	font-weight: 700;
-	color: #666666;
-	text-align: left;
+	font-size: clamp(17px, 15.27273px + 0.45455vw, 24px);
+	font-weight: 400;
+	line-height: 1.2;
+	color: #aaaaaa;
 	cursor: pointer;
-	transition:
-		color 0.2s ease,
-		background-color 0.2s ease;
+	transition: color 0.2s ease;
 }
 
-.CategorySwitchOption:hover,
-.CategorySwitchOption:focus-visible {
-	color: #111111;
-	background-color: #f3f7fa;
+.ListTitle button:hover,
+.ListTitle button:focus-visible {
+	color: #666666;
 }
 
-.CategorySwitchOption.isActive {
+.ListTitle button.isOn {
+	font-weight: 700;
 	color: #007dcc;
 }
 

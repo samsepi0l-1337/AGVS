@@ -53,19 +53,19 @@ if (
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802q"
+    href="./stlye/reset.css?ver=20260802s"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802r"
+    href="./stlye/layout.css?ver=20260802s"
     >
     <link
     rel="stylesheet"
-    href="./stlye/DetailList.css?ver=20260802q"
+    href="./stlye/DetailList.css?ver=20260802s"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802q"
+    href="./stlye/Pop.css?ver=20260802s"
     >
 </head>
 <body>
@@ -85,82 +85,17 @@ if (
         <div class="DetailListInner">
             <div class="ListTitleWrap">
                 <div class="ListTitle">
-                    <?php $initialCategoryLabel =
-                    	$categoryLabels[$initialBannerCategory] ??
-                    	$catalogCategories[0]["label"]; ?>
-                    <div class="CategorySwitch">
-                        <button
-                            type="button"
-                            class="CategorySwitchBtn"
-                            aria-expanded="false"
-                            aria-haspopup="listbox"
-                            aria-label="카테고리 선택"
-                        >
-                            <span class="CategorySwitchCurrent"><?php echo htmlspecialchars(
-                            	$initialCategoryLabel,
-                            	ENT_QUOTES,
-                            	"UTF-8",
-                            ); ?></span>
-                            <svg
-                                class="CategorySwitchChevron"
-                                viewBox="0 0 24 24"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    fill="currentColor"
-                                    d="M7 10l5 5 5-5H7z"
-                                ></path>
-                            </svg>
-                        </button>
-                        <ul
-                            class="CategorySwitchMenu"
-                            role="listbox"
-                            hidden
-                        >
-                            <?php foreach (
-                            	$catalogCategories
-                            	as $catalogCategory
-                            ): ?>
-                            <?php $isInitialCategory =
-                            	$catalogCategory["id"] ===
-                            	$initialBannerCategory; ?>
-                            <li role="option" aria-selected="<?php echo $isInitialCategory
-                            	? "true"
-                            	: "false"; ?>">
-                                <button
-                                    type="button"
-                                    class="CategorySwitchOption<?php echo $isInitialCategory
-                                    	? " isActive"
-                                    	: ""; ?>"
-                                    data-category="<?php echo htmlspecialchars(
-                                    	$catalogCategory["id"],
-                                    	ENT_QUOTES,
-                                    	"UTF-8",
-                                    ); ?>"
-                                    data-title="<?php echo htmlspecialchars(
-                                    	$catalogCategory["title"],
-                                    	ENT_QUOTES,
-                                    	"UTF-8",
-                                    ); ?>"
-                                ><?php echo htmlspecialchars(
-                                	$catalogCategory["label"],
-                                	ENT_QUOTES,
-                                	"UTF-8",
-                                ); ?></button>
-                            </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                    <div class="ListTitleHidden" hidden aria-hidden="true">
+                    <ul>
                         <?php foreach (
                         	$catalogCategories
                         	as $catalogCategory
                         ): ?>
                         <?php $isInitialCategory =
                         	$catalogCategory["id"] === $initialBannerCategory; ?>
-                        <button type="button"<?php echo $isInitialCategory
-                        	? ' class="isOn"'
-                        	: ""; ?> data-category="<?php echo htmlspecialchars(
+                        <li>
+                            <button type="button"<?php echo $isInitialCategory
+                            	? ' class="isOn"'
+                            	: ""; ?> data-category="<?php echo htmlspecialchars(
  	$catalogCategory["id"],
  	ENT_QUOTES,
  	"UTF-8",
@@ -175,8 +110,9 @@ if (
 	ENT_QUOTES,
 	"UTF-8",
 ); ?></button>
+                        </li>
                         <?php endforeach; ?>
-                    </div>
+                    </ul>
                 </div>
                 <div class="SearchBar"><!--form태그 써서 서치바 만들기-->
                     <form class="SearchForm" role="search" onsubmit="return false;">
@@ -241,6 +177,6 @@ if (
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802q"></script>
+    <script src="./js/main.js?ver=20260802s"></script>
 </body>
 </html>

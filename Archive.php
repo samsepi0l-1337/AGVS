@@ -125,6 +125,6 @@ if (
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802q"></script>
+    <script src="./js/main.js?ver=20260802s"></script>
 </body>
 </html>
