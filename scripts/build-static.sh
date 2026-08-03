@@ -16,15 +16,21 @@ command -v php >/dev/null 2>&1 || { echo "php 가 필요합니다."; exit 1; }
 # php 실행 결과가 반영되지 않아 set -euo pipefail 로도 실패를 잡을 수 없다.
 # 변수에 먼저 담아 종료 상태와 빈 결과를 명시적으로 검사한다.
 # 슬러그 목록은 로케일 간 동일하므로 KR 카탈로그에서 한 번만 읽는다.
-SLUGS="$(php -r '$d=json_decode(file_get_contents("'"$ROOT"'/data/itemsKR.json"),true); if(!is_array($d) || !isset($d["items"]) || !is_array($d["items"])){fwrite(STDERR,"catalog parse failed\n"); exit(1);} foreach($d["items"] as $i) echo $i["slug"],"\n";')" \
+# Prefer SQLite; rebuild from JSON seeds if the DB is missing.
+if [ ! -f "$ROOT/data/agvs.sqlite" ]; then
+  php "$ROOT/scripts/rebuild-sqlite.php" \
+    || { echo "FAIL: SQLite 콘텐츠 DB를 생성하지 못했습니다."; exit 1; }
+fi
+
+SLUGS="$(php -r 'require "'"$ROOT"'/include/contentStore.php"; foreach(agvs_load_catalog("KR")["items"] as $i) echo $i["slug"],"\n";')" \
   || { echo "FAIL: 카탈로그에서 슬러그 목록을 읽지 못했습니다."; exit 1; }
 [ -n "$SLUGS" ] || { echo "FAIL: 카탈로그에 항목이 없습니다."; exit 1; }
 
-VIDEO_SLUGS="$(php -r '$d=json_decode(file_get_contents("'"$ROOT"'/data/videos.json"),true); if(!is_array($d) || !isset($d["videos"]) || !is_array($d["videos"])){fwrite(STDERR,"catalog parse failed\n"); exit(1);} foreach($d["videos"] as $v) echo $v["slug"],"\n";')" \
+VIDEO_SLUGS="$(php -r 'require "'"$ROOT"'/include/contentStore.php"; foreach(agvs_load_videos_document()["videos"] as $v) echo $v["slug"],"\n";')" \
   || { echo "FAIL: 영상 카탈로그에서 슬러그 목록을 읽지 못했습니다."; exit 1; }
 [ -n "$VIDEO_SLUGS" ] || { echo "FAIL: 영상 카탈로그에 항목이 없습니다."; exit 1; }
 
-ARCHIVE_SLUGS="$(php -r '$d=json_decode(file_get_contents("'"$ROOT"'/data/uiKR.json"),true); if(!is_array($d) || !isset($d["archive"]["items"]) || !is_array($d["archive"]["items"])){fwrite(STDERR,"ui parse failed\n"); exit(1);} foreach($d["archive"]["items"] as $i) echo $i["slug"],"\n";')" \
+ARCHIVE_SLUGS="$(php -r 'require "'"$ROOT"'/include/contentStore.php"; foreach(agvs_load_archive_items("KR") as $i) echo $i["slug"],"\n";')" \
   || { echo "FAIL: 자료실 슬러그 목록을 읽지 못했습니다."; exit 1; }
 [ -n "$ARCHIVE_SLUGS" ] || { echo "FAIL: 자료실에 항목이 없습니다."; exit 1; }
 
@@ -100,7 +106,8 @@ render_locale() {
   # en/jp 하위 디렉터리: ./stlye ./js ./img ./video → ../… (DetailList.html 등 페이지 링크는 유지)
   case "$DEST" in
     */en|*/jp)
-      perl -pi -e 's/\b(href|src)="\.\//$1="..\//g' "$DEST"/*.html
+      perl -pi -e 's/\b(href|src|poster)="\.\//$1="..\//g' "$DEST"/*.html
+      perl -pi -e 's/\b(href|src|poster)="((?:img|stlye|js|video|storage)\/)/$1="..\/$2/g' "$DEST"/*.html
       ;;
   esac
 }
@@ -142,7 +149,7 @@ shopt -u nullglob
 
 # 카탈로그가 참조하는 이미지가 빌드 결과물(_site/)에 실제로 존재하는지 검증한다.
 # 소스 트리에만 있고 복사가 안 됐거나, 애초에 존재하지 않는 경로 오타를 잡아낸다.
-IMG_SRCS="$(php -r '$d=json_decode(file_get_contents("'"$ROOT"'/data/itemsKR.json"),true); if(!is_array($d) || !isset($d["items"]) || !is_array($d["items"])){fwrite(STDERR,"catalog parse failed\n"); exit(1);} foreach($d["items"] as $i) foreach($i["models"] as $m) if(!empty($m["images"])) foreach($m["images"] as $img) echo $img["src"],"\n";')" \
+IMG_SRCS="$(php -r 'require "'"$ROOT"'/include/contentStore.php"; foreach(agvs_load_catalog("KR")["items"] as $i) foreach($i["models"] as $m) if(!empty($m["images"])) foreach($m["images"] as $img) echo $img["src"],"\n";')" \
   || { echo "FAIL: 카탈로그에서 이미지 경로를 읽지 못했습니다."; exit 1; }
 [ -n "$IMG_SRCS" ] || { echo "FAIL: 카탈로그에 이미지가 없습니다."; exit 1; }
 

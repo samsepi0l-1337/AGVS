@@ -5,6 +5,8 @@ declare(strict_types=1);
 const AGVS_ADMIN_ROOT = __DIR__ . "/..";
 const AGVS_LANGUAGES = ["KR", "EN", "JP"];
 
+require_once __DIR__ . "/contentStore.php";
+
 function agvs_admin_start(): void
 {
 	if (session_status() !== PHP_SESSION_ACTIVE) {
@@ -64,6 +66,7 @@ function agvs_admin_require_csrf(): void
 	}
 }
 
+/** @deprecated JSON paths retained for rebuild seeds only. */
 function agvs_data_path(string $kind, string $lang = "KR"): string
 {
 	$files = [
@@ -88,36 +91,19 @@ function agvs_read_json(string $path): array
 	return $decoded;
 }
 
-function agvs_write_json(string $path, array $data): void
+function agvs_backup_sqlite(): void
 {
-	$json =
-		json_encode(
-			$data,
-			JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR,
-		) . "\n";
-	$lock = fopen($path . ".lock", "c");
-	if (!$lock || !flock($lock, LOCK_EX)) {
-		throw new RuntimeException("Unable to lock content.");
+	if (!is_file(AGVS_DB_PATH)) {
+		return;
 	}
-	try {
-		$backupDir = AGVS_ADMIN_ROOT . "/storage/backups";
-		if (!is_dir($backupDir)) {
-			mkdir($backupDir, 0775, true);
-		}
-		if (is_file($path)) {
-			copy($path, $backupDir . "/" . date("Ymd-His") . "-" . basename($path));
-		}
-		$tmp = $path . ".tmp";
-		if (
-			file_put_contents($tmp, $json, LOCK_EX) === false ||
-			!rename($tmp, $path)
-		) {
-			throw new RuntimeException("Unable to save content.");
-		}
-	} finally {
-		flock($lock, LOCK_UN);
-		fclose($lock);
+	$backupDir = AGVS_ADMIN_ROOT . "/storage/backups";
+	if (!is_dir($backupDir)) {
+		mkdir($backupDir, 0775, true);
 	}
+	copy(
+		AGVS_DB_PATH,
+		$backupDir . "/" . date("Ymd-His") . "-agvs.sqlite",
+	);
 }
 
 function agvs_slug(string $value): string

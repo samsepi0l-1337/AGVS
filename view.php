@@ -14,6 +14,27 @@ if ($isArchiveView) {
 		isset($agvsUi["archive"]["items"]) && is_array($agvsUi["archive"]["items"])
 			? $agvsUi["archive"]["items"]
 			: [];
+	$archiveItems = array_values(
+		array_filter(
+			$archiveItems,
+			fn($item) => !array_key_exists("published", $item) ||
+				$item["published"] === true,
+		),
+	);
+	usort(
+		$archiveItems,
+		fn($a, $b) => ($a["sortOrder"] ?? 0) <=> ($b["sortOrder"] ?? 0),
+	);
+	$archiveDownloadLabel = agvs_t("archive.download");
+	if ($archiveDownloadLabel === "") {
+		$archiveDownloadLabelMap = [
+			"KR" => "다운로드",
+			"EN" => "Download",
+			"JP" => "ダウンロード",
+		];
+		$archiveDownloadLabel =
+			$archiveDownloadLabelMap[$agvsLang] ?? "Download";
+	}
 	$archiveItem = null;
 	$archiveIndex = -1;
 	foreach ($archiveItems as $ai => $candidate) {
@@ -167,7 +188,7 @@ if ($isArchiveView) {
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css"
+    href="./stlye/layout.css?ver=20260804a"
     >
     <link
     rel="stylesheet"
@@ -270,7 +291,7 @@ if ($isArchiveView) {
                     <img
                     class="ViewImage"
                     src="<?php echo htmlspecialchars(
-                    	$archiveImage,
+                    	agvs_asset_url($archiveImage),
                     	ENT_QUOTES,
                     	"UTF-8",
                     ); ?>"
@@ -288,6 +309,12 @@ if ($isArchiveView) {
                     ); ?></p>
                     <?php endif; ?>
                 </div>
+                <?php elseif ($archiveBody !== ""): ?>
+                <p class="ViewImageText"><?php echo htmlspecialchars(
+                	$archiveBody,
+                	ENT_QUOTES,
+                	"UTF-8",
+                ); ?></p>
                 <?php endif; ?>
                 <?php else: ?>
                 <?php if (empty($activeImages)): ?>
@@ -300,7 +327,7 @@ if ($isArchiveView) {
                     <img
                     class="ViewImage"
                     src="<?php echo htmlspecialchars(
-                    	$image["src"],
+                    	agvs_asset_url($image["src"]),
                     	ENT_QUOTES,
                     	"UTF-8",
                     ); ?>"
@@ -334,19 +361,33 @@ if ($isArchiveView) {
             </ul>
             <?php endif; ?>
             <?php if ($isArchiveView && !empty($archiveItem["attachments"])): ?>
-            <ul class="ViewSpecList">
+            <div class="ViewDownloads">
                 <?php foreach ($archiveItem["attachments"] as $attachment): ?>
                 <?php if (!empty($attachment["path"])): ?>
-                <li><a href="download.php?id=<?php echo rawurlencode(
-                	$attachment["path"],
-                ); ?>"><?php echo htmlspecialchars(
-	$attachment["originalName"] ?? basename($attachment["path"]),
-	ENT_QUOTES,
-	"UTF-8",
-); ?></a></li>
+                <?php
+                $attPath = (string) $attachment["path"];
+                $attName = (string) ($attachment["originalName"] ??
+                	basename($attPath));
+                $attLabel =
+                	$attName !== ""
+                		? $archiveDownloadLabel . " · " . $attName
+                		: $archiveDownloadLabel;
+                ?>
+                <a
+                class="ArchiveDownloadBtn"
+                href="download.php?id=<?php echo rawurlencode(
+                	$attPath,
+                ); ?>&amp;name=<?php echo rawurlencode($attName); ?>"
+                >
+                    <?php echo htmlspecialchars(
+                    	$attLabel,
+                    	ENT_QUOTES,
+                    	"UTF-8",
+                    ); ?>
+                </a>
                 <?php endif; ?>
                 <?php endforeach; ?>
-            </ul>
+            </div>
             <?php endif; ?>
             <div class="ViewNav">
                 <div class="ViewNavSide ViewNavPrev">
@@ -466,7 +507,7 @@ if ($isArchiveView) {
     })();
     </script>
     <?php endif; ?>
-    <script src="./js/main.js"></script>
+    <script src="./js/main.js?ver=20260804a"></script>
 </body>
 </html>
 

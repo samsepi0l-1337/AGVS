@@ -46,53 +46,9 @@ if (!defined("AGVS_LANG_LOADED")) {
 	];
 	$agvsAboutLabel = $agvsAboutLabelMap[$agvsLang];
 
-	function agvs_load_catalog()
-	{
-		global $agvsLang;
-		$file = "items" . $agvsLang . ".json";
-		$path = dirname(__DIR__) . "/data/" . $file;
-		$empty = [
-			"categories" => [],
-			"items" => [],
-		];
-		if (!is_readable($path)) {
-			return $empty;
-		}
-		$raw = file_get_contents($path);
-		if ($raw === false) {
-			return $empty;
-		}
-		$decoded = json_decode($raw, true);
-		if (!is_array($decoded)) {
-			return $empty;
-		}
-		return [
-			"categories" =>
-				isset($decoded["categories"]) && is_array($decoded["categories"])
-					? $decoded["categories"]
-					: [],
-			"items" =>
-				isset($decoded["items"]) && is_array($decoded["items"])
-					? $decoded["items"]
-					: [],
-		];
-	}
+	require_once __DIR__ . "/contentStore.php";
 
-	function agvs_load_ui()
-	{
-		global $agvsLang;
-		$path = dirname(__DIR__) . "/data/ui" . $agvsLang . ".json";
-		$empty = [];
-		if (!is_readable($path)) {
-			return $empty;
-		}
-		$raw = file_get_contents($path);
-		if ($raw === false) {
-			return $empty;
-		}
-		$decoded = json_decode($raw, true);
-		return is_array($decoded) ? $decoded : $empty;
-	}
+	// agvs_load_catalog() / agvs_load_ui() provided by include/contentStore.php (SQLite).
 
 	/**
 	 * Read a dotted UI key, e.g. agvs_t("footer.privacy").
@@ -113,6 +69,35 @@ if (!defined("AGVS_LANG_LOADED")) {
 			$cur = $cur[$part];
 		}
 		return is_string($cur) ? $cur : "";
+	}
+
+	/**
+	 * Normalize a media/asset path for public pages.
+	 * Catalog paths may be "img/..." or "./img/..."; static en/jp builds
+	 * rewrite "./…" to "../…". Absolute and data: URLs pass through.
+	 */
+	function agvs_asset_url($path)
+	{
+		if (!is_string($path) || $path === "") {
+			return "";
+		}
+		if (
+			preg_match("#^(https?:)?//#i", $path) ||
+			stripos($path, "data:") === 0
+		) {
+			return $path;
+		}
+		$path = str_replace("\\", "/", $path);
+		$path = preg_replace("#^\./+#", "", $path);
+		$path = ltrim($path, "/");
+		$path = preg_replace("#^(en|jp)/+#i", "", $path);
+		$path = preg_replace("#(^|/)\.\.(/|$)#", "/", $path);
+		$path = preg_replace("#/+#", "/", $path);
+		$path = ltrim($path, "/");
+		if ($path === "") {
+			return "";
+		}
+		return "./" . $path;
 	}
 
 	$agvsUi = agvs_load_ui();

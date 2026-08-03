@@ -130,22 +130,43 @@
 				"title": "説明文 01",
 				"body": "テスト文です。テスト文です。テスト文です。",
 				"image": "./img/products/box/01.jpg",
-				"detail": ["テスト文です。", "テスト文です。", "テスト文です。"]
+				"detail": [
+					"テスト文です。",
+					"テスト文です。",
+					"テスト文です。"
+				],
+				"attachments": [
+					{
+						"path": "storage/uploads/documents/a1b2c3d4e5f60718293a4b5c6d7e8f90.pdf",
+						"originalName": "AGVS-archive-sample.pdf",
+						"mime": "application/pdf",
+						"size": 580
+					}
+				]
 			},
 			{
 				"slug": "archive-02",
 				"title": "説明文 02",
 				"body": "テスト文です。テスト文です。テスト文です。",
 				"image": "./img/products/forklift1/01.jpg",
-				"detail": ["テスト文です。", "テスト文です。", "テスト文です。"]
+				"detail": [
+					"テスト文です。",
+					"テスト文です。",
+					"テスト文です。"
+				]
 			},
 			{
 				"slug": "archive-03",
 				"title": "説明文 03",
 				"body": "テスト文です。テスト文です。テスト文です。",
 				"image": "./img/sec02_01.png",
-				"detail": ["テスト文です。", "テスト文です。", "テスト文です。"]
+				"detail": [
+					"テスト文です。",
+					"テスト文です。",
+					"テスト文です。"
+				]
 			}
-		]
+		],
+		"download": "ダウンロード"
 	}
 }

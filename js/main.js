@@ -87,7 +87,8 @@
 		var backdrop = document.querySelector(".GnbBackdrop");
 		if (!gnb || !header) return;
 
-		var items = Array.prototype.filter.call(gnb.children, function (li) {
+		var topItems = Array.prototype.slice.call(gnb.children);
+		var items = topItems.filter(function (li) {
 			return !!li.querySelector(":scope > ul");
 		});
 		if (!items.length) return;
@@ -113,12 +114,17 @@
 			backdrop.classList.add("isOpen");
 		}
 
-		items.forEach(function (li) {
+		function onEnter(li) {
+			if (li.querySelector(":scope > ul")) open(li);
+			else closeAll();
+		}
+
+		topItems.forEach(function (li) {
 			li.addEventListener("mouseenter", function () {
-				open(li);
+				onEnter(li);
 			});
 			li.addEventListener("focusin", function () {
-				open(li);
+				onEnter(li);
 			});
 		});
 
@@ -138,6 +144,8 @@
 
 		function setOpen(open) {
 			header.classList.toggle("isMenuOpen", open);
+			document.documentElement.classList.toggle("isGnbMenuOpen", open);
+			document.body.classList.toggle("isGnbMenuOpen", open);
 			toggle.setAttribute("aria-expanded", open ? "true" : "false");
 		}
 
@@ -154,6 +162,15 @@
 
 		document.addEventListener("keydown", function (e) {
 			if (e.key === "Escape") setOpen(false);
+		});
+
+		window.addEventListener("resize", function () {
+			if (
+				header.classList.contains("isMenuOpen") &&
+				window.matchMedia("(min-width: 992px)").matches
+			) {
+				setOpen(false);
+			}
 		});
 	}
 

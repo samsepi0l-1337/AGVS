@@ -39,7 +39,7 @@
     />
     <link
       rel="stylesheet"
-      href="./stlye/layout.css"
+      href="./stlye/layout.css?ver=20260804a"
     />
     <link
       rel="stylesheet"
@@ -211,6 +211,6 @@
       <?php include __DIR__ . "/include/footer.html"; ?>
       <?php include __DIR__ . "/include/contactPop.html"; ?>
     </div>
-    <script src="./js/main.js"></script>
+    <script src="./js/main.js?ver=20260804a"></script>
   </body>
 </html>

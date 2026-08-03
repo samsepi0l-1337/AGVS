@@ -57,7 +57,7 @@ if (
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css"
+    href="./stlye/layout.css?ver=20260804a"
     >
     <link
     rel="stylesheet"
@@ -135,7 +135,9 @@ if (
                         <div class="ItemThumb"><!--320x230-->
                             <?php
                             $thumbSrc = "";
-                            if (
+                            if (!empty($catalogItem["thumbnail"])) {
+                            	$thumbSrc = $catalogItem["thumbnail"];
+                            } elseif (
                             	!empty(
                             		$catalogItem["models"][0]["images"][0]["src"]
                             	)
@@ -146,7 +148,7 @@ if (
                             ?>
                             <?php if ($thumbSrc !== ""): ?>
                             <img src="<?php echo htmlspecialchars(
-                            	$thumbSrc,
+                            	agvs_asset_url($thumbSrc),
                             	ENT_QUOTES,
                             	"UTF-8",
                             ); ?>" alt="<?php echo htmlspecialchars(
@@ -177,6 +179,6 @@ if (
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js"></script>
+    <script src="./js/main.js?ver=20260804a"></script>
 </body>
 </html>

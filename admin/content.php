@@ -15,36 +15,11 @@ $error = "";
 
 function admin_items(string $type, string $lang = "KR"): array
 {
-	$data = agvs_read_json(agvs_data_path($type, $lang));
-	return $type === "archives"
-		? $data["archive"]["items"] ?? []
-		: $data[$type === "products" ? "items" : "videos"] ?? [];
-}
-function admin_save_items(string $type, array $items, string $lang = "KR"): void
-{
-	$path = agvs_data_path($type, $lang);
-	$data = agvs_read_json($path);
-	if ($type === "archives") {
-		$data["archive"]["items"] = $items;
-	} else {
-		$data[$type === "products" ? "items" : "videos"] = $items;
-	}
-	agvs_write_json($path, $data);
+	return agvs_admin_load_items($type, $lang);
 }
 function admin_find(array $items, string $slug): ?array
 {
-	foreach ($items as $item) {
-		if (($item["slug"] ?? "") === $slug) {
-			return $item;
-		}
-	}
-	return null;
-}
-function admin_remove(array $items, string $slug): array
-{
-	return array_values(
-		array_filter($items, fn($item) => ($item["slug"] ?? "") !== $slug),
-	);
+	return agvs_find_by_slug($items, $slug);
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -53,13 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 		$action = (string) ($_POST["action"] ?? "");
 		$slug = agvs_slug((string) ($_POST["slug"] ?? ""));
 		if ($action === "delete") {
-			foreach (AGVS_LANGUAGES as $lang) {
-				admin_save_items(
-					$type,
-					admin_remove(admin_items($type, $lang), $slug),
-					$lang,
-				);
-			}
+			agvs_backup_sqlite();
+			agvs_admin_delete_slug($type, $slug);
 			header("Location: content.php?type=" . $type . "&notice=deleted");
 			exit();
 		}
@@ -72,56 +42,114 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			throw new RuntimeException("Slug cannot be changed after publishing.");
 		}
 		$published = isset($_POST["published"]);
+		// Preserve list position on edit. New items defaulting to 0 append at end.
 		$sortOrder = max(0, (int) ($_POST["sortOrder"] ?? 0));
+		if (!$existing && $sortOrder === 0) {
+			$table =
+				$type === "products"
+					? "items"
+					: ($type === "videos"
+						? "videos"
+						: "archives");
+			$sortOrder = agvs_next_sort_order(agvs_store_require(), $table);
+		}
 		$shared = [
 			"slug" => $slug,
 			"published" => $published,
 			"sortOrder" => $sortOrder,
 		];
+		agvs_backup_sqlite();
 		if ($type === "products") {
 			$category = agvs_slug((string) ($_POST["category"] ?? ""));
-			$model = [
-				"id" => agvs_slug((string) ($_POST["modelId"] ?? "default")),
+			$existingModels = $existing["models"] ?? [];
+			$primary = $existingModels[0] ?? [
+				"id" => "default",
 				"label" => "",
 				"specs" => [],
 				"images" => [],
 			];
+			$primary["id"] = agvs_slug(
+				(string) ($_POST["modelId"] ?? $primary["id"] ?? "default"),
+			);
+			$images = [];
+			foreach ($primary["images"] ?? [] as $img) {
+				$src = agvs_normalize_media_path((string) ($img["src"] ?? ""));
+				if ($src === "") {
+					continue;
+				}
+				$images[] = [
+					"src" => $src,
+					"text" => (string) ($img["text"] ?? ""),
+				];
+			}
 			if (!empty($_FILES["media"]["name"])) {
 				$uploaded = agvs_upload($_FILES["media"], "image");
-				$model["images"][] = ["src" => $uploaded["path"], "text" => ""];
+				$images[] = [
+					"src" => agvs_normalize_media_path($uploaded["path"]),
+					"text" => "",
+				];
 			}
+			$primary["images"] = $images;
+			$thumbnail = agvs_normalize_media_path(
+				(string) ($existing["thumbnail"] ?? ""),
+			);
+			if ($thumbnail === "" && !empty($images[0]["src"])) {
+				$thumbnail = $images[0]["src"];
+			}
+			$records = [];
 			foreach (AGVS_LANGUAGES as $lang) {
-				$items = admin_remove(admin_items($type, $lang), $slug);
-				$model["label"] = trim((string) ($_POST["modelLabel_" . $lang] ?? ""));
+				$localExisting =
+					admin_find(admin_items($type, $lang), $slug) ?? [];
+				$localModels = $localExisting["models"] ?? $existingModels;
+				$model = $primary;
+				$model["label"] = trim(
+					(string) ($_POST["modelLabel_" . $lang] ?? ""),
+				);
 				$model["specs"] = array_values(
 					array_filter(
 						array_map(
 							"trim",
-							preg_split("/\R/", (string) ($_POST["specs_" . $lang] ?? "")),
+							preg_split(
+								"/\R/",
+								(string) ($_POST["specs_" . $lang] ?? ""),
+							) ?:
+							[],
 						),
+						fn($line) => $line !== "",
 					),
 				);
+				$models = $localModels;
+				$models[0] = $model;
+				// Keep additional models' images from KR existing on non-primary slots.
+				if ($lang === "KR") {
+					for ($i = 1, $n = count($existingModels); $i < $n; $i++) {
+						$models[$i] = $existingModels[$i];
+					}
+				}
 				$record = array_merge($shared, [
 					"name" => trim((string) ($_POST["name_" . $lang] ?? "")),
 					"category" => $category,
-					"source" => "",
-					"models" => [$model],
+					"source" => (string) ($existing["source"] ?? ""),
+					"thumbnail" => $thumbnail,
+					"models" => array_values($models),
 				]);
 				if ($record["name"] === "" || $model["label"] === "") {
 					throw new RuntimeException(
 						"All language product and model names are required.",
 					);
 				}
-				$items[] = $record;
-				admin_save_items($type, $items, $lang);
+				$records[$lang] = $record;
 			}
+			agvs_admin_upsert_product($records);
 		} elseif ($type === "videos") {
-			$kind = (string) ($_POST["mediaType"] ?? "youtube");
+			$kind = (string) ($_POST["mediaType"] ?? ($existing["type"] ?? "youtube"));
 			$record = array_merge($shared, [
 				"title" => trim((string) $_POST["title"]),
 				"mediaLabel" => $kind === "youtube" ? "YouTube" : "MP4",
 				"type" => $kind,
-				"thumbnail" => "",
+				"thumbnail" => agvs_normalize_media_path(
+					(string) ($existing["thumbnail"] ?? ""),
+				),
 				"source" => trim((string) ($_POST["referenceUrl"] ?? "")),
 				"descriptions" => [],
 			]);
@@ -135,34 +163,78 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 				) {
 					throw new RuntimeException("Use a YouTube embed URL.");
 				}
+				$record["poster"] = "";
+				$record["video"] = "";
 			} else {
-				if (empty($_FILES["media"]["name"])) {
+				$record["embed"] = "";
+				$record["poster"] = agvs_normalize_media_path(
+					(string) ($existing["poster"] ?? ""),
+				);
+				$record["video"] = agvs_normalize_media_path(
+					(string) ($existing["video"] ?? ""),
+				);
+				if (!empty($_FILES["media"]["name"])) {
+					$file = agvs_upload($_FILES["media"], "video");
+					$record["video"] = agvs_normalize_media_path($file["path"]);
+				} elseif ($record["video"] === "") {
 					throw new RuntimeException("MP4 upload is required.");
 				}
-				$file = agvs_upload($_FILES["media"], "video");
-				$record["video"] = $file["path"];
-				$record["poster"] = "";
+				if ($record["thumbnail"] === "" && $record["poster"] !== "") {
+					$record["thumbnail"] = $record["poster"];
+				}
 			}
 			foreach (AGVS_LANGUAGES as $lang) {
 				$record["descriptions"][$lang] = trim(
 					(string) ($_POST["description_" . $lang] ?? ""),
 				);
 			}
-			$items = admin_remove(admin_items($type), $slug);
-			$items[] = $record;
-			admin_save_items($type, $items);
+			agvs_admin_upsert_video($record);
 		} else {
 			$attachments = $existing["attachments"] ?? [];
 			if (!empty($_FILES["media"]["name"])) {
 				$attachments[] = agvs_upload($_FILES["media"], "document");
 			}
+			$image = agvs_normalize_media_path(
+				(string) ($existing["image"] ?? ""),
+			);
+			$thumbnail = agvs_normalize_media_path(
+				(string) ($existing["thumbnail"] ?? ""),
+			);
+			if ($thumbnail === "") {
+				$thumbnail = $image;
+			}
+			$records = [];
 			foreach (AGVS_LANGUAGES as $lang) {
-				$items = admin_remove(admin_items($type, $lang), $slug);
+				$localExisting =
+					admin_find(admin_items($type, $lang), $slug) ?? [];
+				$detailLines = array_values(
+					array_filter(
+						array_map(
+							"trim",
+							preg_split(
+								"/\R/",
+								(string) ($_POST["detail_" . $lang] ?? ""),
+							) ?:
+							[],
+						),
+						fn($line) => $line !== "",
+					),
+				);
+				// Preserve nested detail when the form field is absent.
+				if (
+					$detailLines === [] &&
+					isset($localExisting["detail"]) &&
+					is_array($localExisting["detail"]) &&
+					!array_key_exists("detail_" . $lang, $_POST)
+				) {
+					$detailLines = $localExisting["detail"];
+				}
 				$record = array_merge($shared, [
 					"title" => trim((string) ($_POST["title_" . $lang] ?? "")),
 					"body" => trim((string) ($_POST["summary_" . $lang] ?? "")),
-					"image" => "",
-					"detail" => [],
+					"image" => $image,
+					"thumbnail" => $thumbnail,
+					"detail" => $detailLines,
 					"attachments" => $attachments,
 				]);
 				if ($record["title"] === "") {
@@ -170,9 +242,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 						"All language archive titles are required.",
 					);
 				}
-				$items[] = $record;
-				admin_save_items($type, $items, $lang);
+				$records[$lang] = $record;
 			}
+			agvs_admin_upsert_archive($records);
 		}
 		header("Location: content.php?type=" . $type . "&notice=saved");
 		exit();
@@ -182,7 +254,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 $editSlug = (string) ($_GET["edit"] ?? "");
-$edit = $editSlug ? admin_find(admin_items($type), $editSlug) : null;
+$edit = $editSlug && $editSlug !== "new" ? admin_find(admin_items($type), $editSlug) : null;
 agvs_admin_header($titleMap[$type] . " 관리");
 ?>
 <h1><?= $titleMap[$type] ?> 관리</h1><?php if (
@@ -222,7 +294,15 @@ $edit["published"]
 	$edit["category"] ?? "agv",
 ) ?>"></label><label>모델 ID<input name="modelId" required value="<?= htmlspecialchars(
 	$edit["models"][0]["id"] ?? "default",
-) ?>"></label><?php foreach (
+) ?>"></label><?php if (
+	!empty($edit["thumbnail"]) ||
+	!empty($edit["models"][0]["images"])
+): ?><p>현재 이미지: <?= htmlspecialchars(
+	$edit["thumbnail"] ?:
+	($edit["models"][0]["images"][0]["src"] ?? ""),
+) ?> (<?= count(
+	$edit["models"][0]["images"] ?? [],
+) ?>장) — 새 파일 업로드 시에만 추가됩니다.</p><?php endif; ?><?php foreach (
 	AGVS_LANGUAGES
 	as $lang
 ): ?><fieldset><legend><?= $lang ?></legend><label>제품명<input name="name_<?= $lang ?>" required value="<?= htmlspecialchars(
@@ -245,11 +325,26 @@ $edit["published"]
 	$type === "videos"
 ): ?><label>제목<input name="title" required value="<?= htmlspecialchars(
 	$edit["title"] ?? "",
-) ?>"></label><label>형식<select name="mediaType"><option value="youtube">YouTube</option><option value="local">MP4 업로드</option></select></label><label>YouTube Embed URL<input name="embed" value="<?= htmlspecialchars(
+) ?>"></label><label>형식<select name="mediaType"><option value="youtube" <?= ($edit["type"] ??
+	"youtube") ===
+"youtube"
+	? "selected"
+	: "" ?>>YouTube</option><option value="local" <?= ($edit["type"] ?? "") ===
+"local"
+	? "selected"
+	: "" ?>>MP4 업로드</option></select></label><label>YouTube Embed URL<input name="embed" value="<?= htmlspecialchars(
 	$edit["embed"] ?? "",
 ) ?>"></label><label>참조 URL<input type="url" name="referenceUrl" value="<?= htmlspecialchars(
 	$edit["source"] ?? "",
-) ?>"></label><label>MP4 파일<input type="file" name="media" accept="video/mp4"></label><?php foreach (
+) ?>"></label><?php if (
+	!empty($edit["thumbnail"]) ||
+	!empty($edit["video"])
+): ?><p>현재 미디어: <?= htmlspecialchars(
+	trim(
+		($edit["thumbnail"] ?? "") .
+			($edit["video"] ? " / " . $edit["video"] : ""),
+	),
+) ?></p><?php endif; ?><label>MP4 파일<input type="file" name="media" accept="video/mp4"></label><?php foreach (
 	AGVS_LANGUAGES
 	as $lang
 ): ?><label><?= $lang ?> 설명<textarea name="description_<?= $lang ?>"><?= htmlspecialchars(
@@ -262,8 +357,14 @@ $edit["published"]
 	$local["title"] ?? "",
 ) ?>"></label><label>요약/본문<textarea name="summary_<?= $lang ?>"><?= htmlspecialchars(
 	$local["body"] ?? "",
+) ?></textarea></label><label>상세 내용 (줄마다 하나)<textarea name="detail_<?= $lang ?>"><?= htmlspecialchars(
+	implode("\n", $local["detail"] ?? []),
 ) ?></textarea></label></fieldset><?php
-	endforeach; ?><label>PDF 또는 Excel 첨부<input type="file" name="media" accept="application/pdf,.xls,.xlsx"></label><?php if (
+	endforeach; ?><?php if (
+	!empty($edit["image"])
+): ?><p>현재 이미지: <?= htmlspecialchars(
+	$edit["image"],
+) ?></p><?php endif; ?><label>PDF 또는 Excel 첨부<input type="file" name="media" accept="application/pdf,.xls,.xlsx"></label><?php if (
 	!empty($edit["attachments"])
 ): ?><p>첨부: <?= htmlspecialchars(
 	implode(", ", array_column($edit["attachments"], "originalName")),
@@ -273,4 +374,3 @@ $edit["published"]
 	$edit["slug"],
 ) ?>"><button>삭제</button></form><?php endif;endif;
 agvs_admin_footer();
-

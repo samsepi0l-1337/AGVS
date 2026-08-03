@@ -49,7 +49,7 @@ $catalogItems =
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css"
+    href="./stlye/layout.css?ver=20260804a"
     >
     <link
     rel="stylesheet"
@@ -171,6 +171,6 @@ $catalogItems =
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js"></script>
+    <script src="./js/main.js?ver=20260804a"></script>
 </body>
 </html>

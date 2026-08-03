@@ -130,22 +130,43 @@
 				"title": "설명글 01",
 				"body": "테스트 글입니다. 테스트 글입니다. 테스트 글입니다.",
 				"image": "./img/products/box/01.jpg",
-				"detail": ["테스트 글입니다.", "테스트 글입니다.", "테스트 글입니다."]
+				"detail": [
+					"테스트 글입니다.",
+					"테스트 글입니다.",
+					"테스트 글입니다."
+				],
+				"attachments": [
+					{
+						"path": "storage/uploads/documents/a1b2c3d4e5f60718293a4b5c6d7e8f90.pdf",
+						"originalName": "AGVS-archive-sample.pdf",
+						"mime": "application/pdf",
+						"size": 580
+					}
+				]
 			},
 			{
 				"slug": "archive-02",
 				"title": "설명글 02",
 				"body": "테스트 글입니다. 테스트 글입니다. 테스트 글입니다.",
 				"image": "./img/products/forklift1/01.jpg",
-				"detail": ["테스트 글입니다.", "테스트 글입니다.", "테스트 글입니다."]
+				"detail": [
+					"테스트 글입니다.",
+					"테스트 글입니다.",
+					"테스트 글입니다."
+				]
 			},
 			{
 				"slug": "archive-03",
 				"title": "설명글 03",
 				"body": "테스트 글입니다. 테스트 글입니다. 테스트 글입니다.",
 				"image": "./img/sec02_01.png",
-				"detail": ["테스트 글입니다.", "테스트 글입니다.", "테스트 글입니다."]
+				"detail": [
+					"테스트 글입니다.",
+					"테스트 글입니다.",
+					"테스트 글입니다."
+				]
 			}
-		]
+		],
+		"download": "다운로드"
 	}
 }

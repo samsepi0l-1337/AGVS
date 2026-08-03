@@ -8,7 +8,14 @@
 			"type": "youtube",
 			"thumbnail": "img/videos/fork-lift-agv.jpg",
 			"embed": "https://www.youtube.com/embed/Z7T1UpUl4Yk",
-			"source": "https://www.agvsk.com/bbs/board.php?bo_table=simulations&wr_id=20"
+			"source": "https://www.agvsk.com/bbs/board.php?bo_table=simulations&wr_id=20",
+			"descriptions": {
+				"KR": "포크 리프트 AGV 시뮬레이션 영상입니다.\n레이저 유도 방식의 운행을 확인할 수 있습니다.",
+				"EN": "Fork Lift AGV simulation video.\nShows laser-guided travel behavior.",
+				"JP": "フォークリフトAGVのシミュレーション映像です。\nレーザー誘導による走行を確認できます。"
+			},
+			"published": true,
+			"sortOrder": 0
 		},
 		{
 			"slug": "dual-fork-1",
@@ -18,7 +25,14 @@
 			"thumbnail": "img/videos/dual-fork-1.jpg",
 			"poster": "img/videos/dual-fork-1.jpg",
 			"video": "video/dual-fork-1.mp4",
-			"source": "https://www.agvsk.com/bbs/board.php?bo_table=simulations&wr_id=8"
+			"source": "https://www.agvsk.com/bbs/board.php?bo_table=simulations&wr_id=8",
+			"descriptions": {
+				"KR": "듀얼 포크 AGV 로컬 영상입니다.\n이중 포크 적재 동작을 확인할 수 있습니다.",
+				"EN": "Dual Fork AGV local video.\nShows dual-fork loading motion.",
+				"JP": "デュアルフォークAGVのローカル映像です。\nダブルフォークの荷役動作を確認できます。"
+			},
+			"published": true,
+			"sortOrder": 1
 		}
 	]
 }

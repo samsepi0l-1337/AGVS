@@ -740,6 +740,11 @@ header.isMenuOpen .GnbToggleClose {
 	}
 }
 
+html.isGnbMenuOpen,
+html.isGnbMenuOpen body {
+	overflow: hidden;
+}
+
 html[lang="ja"] {
 	line-break: strict;
 }

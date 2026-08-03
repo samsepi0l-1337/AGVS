@@ -3,6 +3,9 @@ _site/
 storage/backups/
 storage/trash/
 storage/uploads/
+data/*.sqlite-journal
+data/*.sqlite-wal
+data/*.sqlite-shm
 
 # Track lockfile even if ignored by a global gitignore
 !pnpm-lock.yaml

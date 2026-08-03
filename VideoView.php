@@ -1,8 +1,6 @@
 <?php
 require_once __DIR__ . "/include/lang.php";
-$catalogPath = __DIR__ . "/data/videos.json";
-$catalogJson = file_get_contents($catalogPath);
-$catalog = json_decode($catalogJson, true);
+$catalog = agvs_load_videos_document();
 
 $sectionTitle = isset($catalog["title"]) ? $catalog["title"] : "";
 $videos =
@@ -84,7 +82,7 @@ $pageTitle = $video["title"] . " | AGVS";
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css"
+    href="./stlye/layout.css?ver=20260804a"
     >
     <link
     rel="stylesheet"
@@ -140,12 +138,12 @@ $pageTitle = $video["title"] . " | AGVS";
                 <?php elseif ($video["type"] === "local"): ?>
                 <div class="VideoPlayer VideoPlayerLocal">
                     <video controls preload="metadata" poster="<?php echo htmlspecialchars(
-                    	$video["poster"],
+                    	agvs_asset_url($video["poster"]),
                     	ENT_QUOTES,
                     	"UTF-8",
                     ); ?>">
                         <source src="<?php echo htmlspecialchars(
-                        	$video["video"],
+                        	agvs_asset_url($video["video"]),
                         	ENT_QUOTES,
                         	"UTF-8",
                         ); ?>" type="video/mp4">
@@ -153,11 +151,91 @@ $pageTitle = $video["title"] . " | AGVS";
                     </video>
                 </div>
                 <?php endif; ?>
+                <?php
+                $videoDescriptions = [];
+                if (
+                	isset($video["descriptions"]) &&
+                	is_array($video["descriptions"])
+                ) {
+                	if (isset($video["descriptions"][$agvsLang])) {
+                		$rawDescription = trim(
+                			(string) $video["descriptions"][$agvsLang],
+                		);
+                		if ($rawDescription !== "") {
+                			$videoDescriptions = array_values(
+                				array_filter(
+                					array_map(
+                						"trim",
+                						preg_split("/\R/u", $rawDescription) ?: [],
+                					),
+                					fn($line) => $line !== "",
+                				),
+                			);
+                		}
+                	} elseif (
+                		isset($video["descriptions"][$agvsLang]) &&
+                		is_array($video["descriptions"][$agvsLang])
+                	) {
+                		$videoDescriptions = array_values(
+                			array_filter(
+                				array_map(
+                					static fn($line) => trim((string) $line),
+                					$video["descriptions"][$agvsLang],
+                				),
+                				fn($line) => $line !== "",
+                			),
+                		);
+                	} elseif (
+                		array_is_list($video["descriptions"])
+                	) {
+                		$videoDescriptions = array_values(
+                			array_filter(
+                				array_map("strval", $video["descriptions"]),
+                				fn($line) => trim($line) !== "",
+                			),
+                		);
+                	}
+                }
+                $referenceUrl = "";
+                if (!empty($video["referenceUrl"])) {
+                	$referenceUrl = (string) $video["referenceUrl"];
+                } elseif (!empty($video["source"])) {
+                	$referenceUrl = (string) $video["source"];
+                }
+                ?>
+                <?php if (!empty($videoDescriptions)): ?>
                 <ul class="ViewSpecList">
-                    <li>테스트 글</li>
-                    <li>테스트 글</li>
-                    <li>테스트 글</li>
+                    <?php foreach ($videoDescriptions as $descriptionLine): ?>
+                    <li><?php echo htmlspecialchars(
+                    	$descriptionLine,
+                    	ENT_QUOTES,
+                    	"UTF-8",
+                    ); ?></li>
+                    <?php endforeach; ?>
                 </ul>
+                <?php endif; ?>
+                <?php if (
+                	$referenceUrl !== "" &&
+                	preg_match("#^https?://#i", $referenceUrl)
+                ): ?>
+                <p class="VideoReference">
+                    <a
+                    href="<?php echo htmlspecialchars(
+                    	$referenceUrl,
+                    	ENT_QUOTES,
+                    	"UTF-8",
+                    ); ?>"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >
+                        <?php echo htmlspecialchars(
+                        	$referenceUrl,
+                        	ENT_QUOTES,
+                        	"UTF-8",
+                        ); ?>
+                    </a>
+                </p>
+                <?php endif; ?>
             </div>
             <div class="ViewNav">
                 <div class="ViewNavSide ViewNavPrev">
@@ -204,6 +282,6 @@ $pageTitle = $video["title"] . " | AGVS";
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js"></script>
+    <script src="./js/main.js?ver=20260804a"></script>
 </body>
 </html>
