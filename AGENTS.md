@@ -32,6 +32,10 @@
   all languages.
 - Keep `Contact Us` / `CONTACT US` untranslated (header link, Section 3 CTA,
   contact popup title); translate other chrome and section copy per KR/EN/JP.
+- In PHP include templates, keep `<?php` at column 0 when re-entering from HTML
+  (leading whitespace is emitted as HTML); indent keywords inside PHP blocks
+  only; prefer between-tags `echo` for element text, keep attribute echoes
+  inline in attributes.
 
 ## Learned Workspace Facts
 
@@ -69,7 +73,9 @@
   contact also includes TEL (+82-70-7734-7890), FAX (+82-303-0951-0852), and
   Email (<info@agvsk.com>).
 - GNB top-level label spelling is Technology.
-- The local and CI build entrypoint is `pnpm run build` (static build, then
-  formatting); `scripts/build-static.sh` defaults to `itemsKR.json`, reads
-  images from `models[].images[].src`, and includes Archive. `include/**/*.html`
-  files that contain PHP need a Prettier `parser: "php"` override.
+- Package manager is pnpm; local and CI entrypoint is `pnpm run build` (static
+  build, then Prettier format). `scripts/build-static.sh` defaults to
+  `itemsKR.json`, reads images from `models[].images[].src`, and includes
+  Archive. Format scripts use `--ignore-path .prettierignore` so gitignored
+  `_site/` still formats; no Tailwind Prettier plugin; `include/**/*.html` needs
+  a Prettier `parser: "php"` override.

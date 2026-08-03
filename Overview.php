@@ -37,19 +37,19 @@
     >
     <link
     rel="stylesheet"
-    href="./stlye/reset.css?ver=20260802q"
+    href="./stlye/reset.css?ver=20260802r"
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802q"
+    href="./stlye/layout.css?ver=20260802r"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Overview.css?ver=20260802q"
+    href="./stlye/Overview.css?ver=20260802r"
     >
     <link
     rel="stylesheet"
-    href="./stlye/Pop.css?ver=20260802q"
+    href="./stlye/Pop.css?ver=20260802r"
     >
 </head>
 <body>
@@ -768,7 +768,7 @@
     <?php include __DIR__ . "/include/footer.html"; ?>
     <!-- contactPop.html renders the shared popup root with id="ContactUsPop". -->
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260802q"></script>
+    <script src="./js/main.js?ver=20260802r"></script>
     <script>
         const brandImg = document.querySelector(".brand img");
 

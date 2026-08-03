@@ -19,11 +19,13 @@ $catalogItems =
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars(
-    	agvs_t("sitemap.pageTitle"),
-    	ENT_QUOTES,
-    	"UTF-8",
-    ); ?></title>
+    <title>
+        <?php echo htmlspecialchars(
+        	agvs_t("sitemap.pageTitle"),
+        	ENT_QUOTES,
+        	"UTF-8",
+        ); ?>
+    </title>
     <link
     rel="preconnect"
     href="https://fonts.googleapis.com"
@@ -47,7 +49,7 @@ $catalogItems =
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802q"
+    href="./stlye/layout.css?ver=20260802r"
     >
     <link
     rel="stylesheet"
@@ -62,11 +64,13 @@ $catalogItems =
     <?php include __DIR__ . "/include/header.html"; ?>
     <main class="SitemapMain">
         <div class="SitemapTopBg">
-            <h1><?php echo htmlspecialchars(
-            	agvs_t("sitemap.heading"),
-            	ENT_QUOTES,
-            	"UTF-8",
-            ); ?></h1>
+            <h1>
+                <?php echo htmlspecialchars(
+                	agvs_t("sitemap.heading"),
+                	ENT_QUOTES,
+                	"UTF-8",
+                ); ?>
+            </h1>
         </div>
         <div class="SitemapInner">
             <nav class="SitemapGrid" aria-label="<?php echo htmlspecialchars(
@@ -76,11 +80,13 @@ $catalogItems =
             ); ?>">
                 <section class="SitemapColumn">
                     <h2 class="SitemapHeading">
-                        <span class="SitemapHeadingText"><?php echo htmlspecialchars(
-                        	agvs_t("sitemap.about"),
-                        	ENT_QUOTES,
-                        	"UTF-8",
-                        ); ?></span>
+                        <span class="SitemapHeadingText">
+                            <?php echo htmlspecialchars(
+                            	agvs_t("sitemap.about"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?>
+                        </span>
                     </h2>
                     <ul class="SitemapList">
                         <li class="SitemapItem">
@@ -91,67 +97,72 @@ $catalogItems =
                         </li>
                     </ul>
                 </section>
-                <?php foreach (
-                	$catalogCategories
-                	as $catalogCategoryIndex => $catalogCategory
-                ): ?>
-                <?php if ($catalogCategoryIndex !== 0): ?>
+							<?php foreach ($catalogCategories as $catalogCategoryIndex => $catalogCategory):
+       	if ($catalogCategoryIndex !== 0): ?>
                 <section class="SitemapColumn">
                     <h2 class="SitemapHeading">
                         <a class="SitemapHeadingLink" href="DetailList.php?category=<?php echo htmlspecialchars(
                         	rawurlencode($catalogCategory["id"]),
                         	ENT_QUOTES,
                         	"UTF-8",
-                        ); ?>"><?php echo htmlspecialchars(
-	$catalogCategory["label"],
-	ENT_QUOTES,
-	"UTF-8",
-); ?></a>
+                        ); ?>">
+                            <?php echo htmlspecialchars(
+                            	$catalogCategory["label"],
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?>
+                        </a>
                     </h2>
                     <ul class="SitemapList">
-                        <?php foreach ($catalogItems as $catalogItem): ?>
-                        <?php if (
-                        	$catalogItem["category"] === $catalogCategory["id"]
-                        ): ?>
+									<?php foreach ($catalogItems as $catalogItem):
+         	if ($catalogItem["category"] === $catalogCategory["id"]): ?>
                         <li class="SitemapItem">
                             <a class="SitemapItemLink" href="view.php?item=<?php echo htmlspecialchars(
                             	rawurlencode($catalogItem["slug"]),
                             	ENT_QUOTES,
                             	"UTF-8",
-                            ); ?>"><?php echo htmlspecialchars(
-	$catalogItem["name"],
-	ENT_QUOTES,
-	"UTF-8",
-); ?></a>
+                            ); ?>">
+                                <?php echo htmlspecialchars(
+                                	$catalogItem["name"],
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?>
+                            </a>
                         </li>
-                        <?php endif; ?>
-                        <?php endforeach; ?>
+	<?php endif;
+         endforeach; ?>
                     </ul>
                 </section>
-                <?php endif; ?>
-                <?php endforeach; ?>
+<?php endif;
+       endforeach; ?>
                 <section class="SitemapColumn">
                     <h2 class="SitemapHeading">
-                        <span class="SitemapHeadingText"><?php echo htmlspecialchars(
-                        	agvs_t("sitemap.support"),
-                        	ENT_QUOTES,
-                        	"UTF-8",
-                        ); ?></span>
+                        <span class="SitemapHeadingText">
+                            <?php echo htmlspecialchars(
+                            	agvs_t("sitemap.support"),
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?>
+                        </span>
                     </h2>
                     <ul class="SitemapList">
                         <li class="SitemapItem">
-                            <a class="SitemapItemLink Sec03ContactBtn" href="#"><?php echo htmlspecialchars(
-                            	agvs_t("sitemap.contactUs"),
-                            	ENT_QUOTES,
-                            	"UTF-8",
-                            ); ?></a>
+                            <a class="SitemapItemLink Sec03ContactBtn" href="#">
+                                <?php echo htmlspecialchars(
+                                	agvs_t("sitemap.contactUs"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?>
+                            </a>
                         </li>
                         <li class="SitemapItem">
-                            <a class="SitemapItemLink" href="Archive.php"><?php echo htmlspecialchars(
-                            	agvs_t("sitemap.archive"),
-                            	ENT_QUOTES,
-                            	"UTF-8",
-                            ); ?></a>
+                            <a class="SitemapItemLink" href="Archive.php">
+                                <?php echo htmlspecialchars(
+                                	agvs_t("sitemap.archive"),
+                                	ENT_QUOTES,
+                                	"UTF-8",
+                                ); ?>
+                            </a>
                         </li>
                     </ul>
                 </section>

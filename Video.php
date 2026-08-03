@@ -40,7 +40,7 @@ $videos =
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260802q"
+    href="./stlye/layout.css?ver=20260802r"
     >
     <link
     rel="stylesheet"

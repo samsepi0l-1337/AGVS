@@ -739,3 +739,7 @@ header.isMenuOpen .GnbToggleClose {
 		align-items: flex-start;
 	}
 }
+
+html[lang="ja"] {
+	line-break: strict;
+}

@@ -2358,6 +2358,8 @@ html[lang="ja"] .OverviewMain .HeroTitle {
 html[lang="ja"] .OverviewMain .HeroDescription {
 	font-size: 17px;
 	line-height: 1.95;
+	line-break: strict;
+	word-break: normal;
 	overflow-wrap: anywhere;
 }
 
@@ -2376,6 +2378,8 @@ html[lang="ja"] .OverviewMain .SectionTitle {
 html[lang="ja"] .OverviewMain .SectionLead {
 	font-size: 17px;
 	line-height: 1.9;
+	line-break: strict;
+	word-break: normal;
 	overflow-wrap: anywhere;
 }
 
@@ -2384,6 +2388,43 @@ html[lang="ja"] .OverviewMain .SectionLead {
 		grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
 		gap: 36px;
 	}
+}
+
+html[lang="ja"] .OverviewMain {
+	word-break: normal;
+	line-break: strict;
+	overflow-wrap: anywhere;
+}
+
+html[lang="ja"] .OverviewMain .HeroTitle,
+html[lang="ja"] .OverviewMain .SectionTitle,
+html[lang="ja"] .OverviewMain .HeroDescription,
+html[lang="ja"] .OverviewMain .SectionLead,
+html[lang="ja"] .OverviewMain .AboutCardTitle,
+html[lang="ja"] .OverviewMain .AboutCardCopy,
+html[lang="ja"] .OverviewMain .AboutParagraphs,
+html[lang="ja"] .OverviewMain .CapabilityTitle,
+html[lang="ja"] .OverviewMain .CapabilityCopy,
+html[lang="ja"] .OverviewMain .BusinessTitle,
+html[lang="ja"] .OverviewMain .BusinessDescription,
+html[lang="ja"] .OverviewMain .BusinessNote,
+html[lang="ja"] .OverviewMain .ValueCopy,
+html[lang="ja"] .OverviewMain .ValueEnglish,
+html[lang="ja"] .OverviewMain .ProfileSideCopy,
+html[lang="ja"] .OverviewMain .ProfileValue,
+html[lang="ja"] .OverviewMain .CtaTitle,
+html[lang="ja"] .OverviewMain .CtaDescription,
+html[lang="ja"] .OverviewMain .WheelName,
+html[lang="ja"] .OverviewMain .SinceCopy {
+	line-break: strict;
+	word-break: normal;
+	overflow-wrap: anywhere;
+}
+
+html[lang="ja"] .OverviewMain .HeroTitle .GradientText {
+	display: inline;
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
 }
 
 @media (prefers-reduced-motion: reduce) {
