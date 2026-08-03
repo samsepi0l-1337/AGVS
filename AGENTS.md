@@ -2,7 +2,7 @@
 
 - Prefer camelCase for new HTML/CSS/JS identifiers; when editing nearby code,
   rename non-camelCase to camelCase.
-- Use https://www.mrlxzin.com (especially `/html/00_main/`) as the primary
+- Use <https://www.mrlxzin.com> (especially `/html/00_main/`) as the primary
   layout/behavior reference; if copying its left-side progress bar, place it on
   the right of this site.
 - Keep motion subtle and non-excessive; no sequential fade-ups. Section 3 title
@@ -65,7 +65,7 @@
   `경기 시흥시 서울대학로 59-21, 로얄팰리스테크노1차 703` and EN
   `703 Royal Palace Techno 1st, 59-21, Seouldaehak-ro, Siheung-si, Gyeonggi-do, Republic of Korea`;
   contact also includes TEL (+82-70-7734-7890), FAX (+82-303-0951-0852), and
-  Email (info@agvsk.com).
+  Email (<info@agvsk.com>).
 - GNB top-level label spelling is Technology.
 - GitHub Pages static build is `scripts/build-static.sh` (default catalog
   `itemsKR.json`, images from `models[].images[].src`, pages include Archive).

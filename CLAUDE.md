@@ -24,7 +24,7 @@ standing acceptance criterion:** measured values at a 1920px viewport must not
 change.
 
 The GNB and section-scroll behavior deliberately imitate
-**https://www.mrlxzin.com/html/00_main/** (which uses jQuery + fullPage.js);
+**<https://www.mrlxzin.com/html/00_main/>** (which uses jQuery + fullPage.js);
 this project reimplements the same behavior in vanilla JS. That site is the
 design reference for layout questions — its TLS certificate is expired, so fetch
 it with `curl -k`.
@@ -89,7 +89,7 @@ HTML links — leave it.
 resolves independently of the server's working directory. `layout.css` holds
 every header and footer rule; `main.css` is now index-only (Section01–03,
 `.ScrollBtn`, `.BgVideo`) and `DetailList.css` is DetailList-only. When those
-rules were lifted out of `main.css` their `.OverView ` ancestor prefix was
+rules were lifted out of `main.css` their `.OverView` ancestor prefix was
 **removed on purpose**, because `DetailList.php` has no `.OverView` wrapper —
 re-adding that prefix silently unstyles the chrome on DetailList while leaving
 index looking fine.
