@@ -6,6 +6,9 @@ storage/uploads/
 data/*.sqlite-journal
 data/*.sqlite-wal
 data/*.sqlite-shm
+admin-api/dist/
+.env
+.env.local
 
 # Track lockfile even if ignored by a global gitignore
 !pnpm-lock.yaml
