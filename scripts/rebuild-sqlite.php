@@ -1,6 +1,5 @@
 #!/usr/bin/env php
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -64,9 +63,7 @@ try {
 	foreach ($krCatalog["categories"] ?? [] as $sort => $cat) {
 		$catInsert->execute(["id" => $cat["id"], "sort" => $sort]);
 		foreach ($langs as $lang) {
-			$local =
-				$catalogs[$lang]["categories"][$sort] ??
-				$cat;
+			$local = $catalogs[$lang]["categories"][$sort] ?? $cat;
 			$catI18n->execute([
 				"id" => $cat["id"],
 				"lang" => $lang,
@@ -109,9 +106,8 @@ try {
 			"cat" => $item["category"],
 			"source" => (string) ($item["source"] ?? ""),
 			"thumb" => $thumb,
-			"pub" => !array_key_exists("published", $item) || $item["published"]
-				? 1
-				: 0,
+			"pub" =>
+				!array_key_exists("published", $item) || $item["published"] ? 1 : 0,
 			"sort" => (int) ($item["sortOrder"] ?? $sort),
 		]);
 
@@ -163,9 +159,7 @@ try {
 					"mid" => $modelRowIds[$mSort],
 					"lang" => $lang,
 					"label" => $model["label"],
-					"specs" => agvs_json_encode(
-						array_values($model["specs"] ?? []),
-					),
+					"specs" => agvs_json_encode(array_values($model["specs"] ?? [])),
 				]);
 			}
 		}
@@ -216,9 +210,8 @@ try {
 			"image" => $image,
 			"thumb" => $thumb,
 			"att" => agvs_json_encode($item["attachments"] ?? []),
-			"pub" => !array_key_exists("published", $item) || $item["published"]
-				? 1
-				: 0,
+			"pub" =>
+				!array_key_exists("published", $item) || $item["published"] ? 1 : 0,
 			"sort" => (int) ($item["sortOrder"] ?? $sort),
 		]);
 		foreach ($langs as $lang) {
@@ -238,9 +231,7 @@ try {
 				"lang" => $lang,
 				"title" => $local["title"],
 				"body" => (string) ($local["body"] ?? ""),
-				"detail" => agvs_json_encode(
-					array_values($local["detail"] ?? []),
-				),
+				"detail" => agvs_json_encode(array_values($local["detail"] ?? [])),
 			]);
 		}
 	}
@@ -248,9 +239,7 @@ try {
 	// ── Videos ─────────────────────────────────────────────────────────────
 	$videosDoc = agvs_read_seed("$root/data/videos.json");
 	$pdo
-		->prepare(
-			"INSERT INTO video_meta (key, value) VALUES ('title', :v)",
-		)
+		->prepare("INSERT INTO video_meta (key, value) VALUES ('title', :v)")
 		->execute(["v" => (string) ($videosDoc["title"] ?? "AGV Video")]);
 
 	$videoInsert = $pdo->prepare(
@@ -271,17 +260,12 @@ try {
 			"thumb" => agvs_normalize_media_path(
 				(string) ($video["thumbnail"] ?? ""),
 			),
-			"poster" => agvs_normalize_media_path(
-				(string) ($video["poster"] ?? ""),
-			),
-			"video" => agvs_normalize_media_path(
-				(string) ($video["video"] ?? ""),
-			),
+			"poster" => agvs_normalize_media_path((string) ($video["poster"] ?? "")),
+			"video" => agvs_normalize_media_path((string) ($video["video"] ?? "")),
 			"embed" => (string) ($video["embed"] ?? ""),
 			"source" => (string) ($video["source"] ?? ""),
-			"pub" => !array_key_exists("published", $video) || $video["published"]
-				? 1
-				: 0,
+			"pub" =>
+				!array_key_exists("published", $video) || $video["published"] ? 1 : 0,
 			"sort" => (int) ($video["sortOrder"] ?? $sort),
 		]);
 		foreach ($langs as $lang) {
@@ -301,13 +285,18 @@ try {
 }
 
 $counts = [
-	"categories" => (int) $pdo->query("SELECT COUNT(*) FROM categories")->fetchColumn(),
+	"categories" => (int) $pdo
+		->query("SELECT COUNT(*) FROM categories")
+		->fetchColumn(),
 	"items" => (int) $pdo->query("SELECT COUNT(*) FROM items")->fetchColumn(),
 	"models" => (int) $pdo->query("SELECT COUNT(*) FROM models")->fetchColumn(),
-	"archives" => (int) $pdo->query("SELECT COUNT(*) FROM archives")->fetchColumn(),
+	"archives" => (int) $pdo
+		->query("SELECT COUNT(*) FROM archives")
+		->fetchColumn(),
 	"videos" => (int) $pdo->query("SELECT COUNT(*) FROM videos")->fetchColumn(),
 ];
 echo "Rebuilt " . AGVS_DB_PATH . "\n";
 foreach ($counts as $k => $v) {
 	echo "  $k: $v\n";
 }
+

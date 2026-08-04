@@ -150,8 +150,7 @@ function agvs_load_archive_items(
 	bool $publishedOnly = false,
 ): array {
 	$pdo = agvs_store_require();
-	$sql =
-		"SELECT a.slug, a.image, a.thumbnail, a.attachments_json, a.published, a.sort_order,
+	$sql = "SELECT a.slug, a.image, a.thumbnail, a.attachments_json, a.published, a.sort_order,
 		        t.title, t.body, t.detail_json
 		 FROM archives a
 		 JOIN archive_i18n t ON t.slug = a.slug AND t.lang = :lang";
@@ -186,9 +185,7 @@ function agvs_load_archive_items(
 function agvs_load_videos_document(): array
 {
 	$pdo = agvs_store_require();
-	$titleStmt = $pdo->query(
-		"SELECT value FROM video_meta WHERE key = 'title'",
-	);
+	$titleStmt = $pdo->query("SELECT value FROM video_meta WHERE key = 'title'");
 	$titleRow = $titleStmt->fetch();
 	$title = $titleRow ? (string) $titleRow["value"] : "AGV Video";
 
@@ -220,9 +217,7 @@ function agvs_load_videos_document(): array
 		if ($row["type"] === "youtube") {
 			$entry["embed"] = $row["embed"];
 		} else {
-			$entry["poster"] = agvs_normalize_media_path(
-				(string) $row["poster"],
-			);
+			$entry["poster"] = agvs_normalize_media_path((string) $row["poster"]);
 			$entry["video"] = agvs_normalize_media_path((string) $row["video"]);
 		}
 		$videos[] = $entry;
@@ -330,8 +325,9 @@ function agvs_admin_upsert_product(array $recordsByLang): void
 		$published =
 			!array_key_exists("published", $kr) || $kr["published"] ? 1 : 0;
 
-		$pdo->prepare(
-			"INSERT INTO items (slug, category_id, source, thumbnail, published, sort_order)
+		$pdo
+			->prepare(
+				"INSERT INTO items (slug, category_id, source, thumbnail, published, sort_order)
 			 VALUES (:slug, :cat, :source, :thumb, :pub, :sort)
 			 ON CONFLICT(slug) DO UPDATE SET
 			   category_id = excluded.category_id,
@@ -339,14 +335,15 @@ function agvs_admin_upsert_product(array $recordsByLang): void
 			   thumbnail = excluded.thumbnail,
 			   published = excluded.published,
 			   sort_order = excluded.sort_order",
-		)->execute([
-			"slug" => $slug,
-			"cat" => $kr["category"],
-			"source" => (string) ($kr["source"] ?? ""),
-			"thumb" => $thumb,
-			"pub" => $published,
-			"sort" => $sortOrder,
-		]);
+			)
+			->execute([
+				"slug" => $slug,
+				"cat" => $kr["category"],
+				"source" => (string) ($kr["source"] ?? ""),
+				"thumb" => $thumb,
+				"pub" => $published,
+				"sort" => $sortOrder,
+			]);
 
 		// Replace models/images for this item only (shared across langs).
 		$idStmt = $pdo->prepare("SELECT id FROM models WHERE item_slug = :s");
@@ -418,9 +415,7 @@ function agvs_admin_upsert_product(array $recordsByLang): void
 					"mid" => $modelRowIds[$mSort],
 					"lang" => $lang,
 					"label" => $model["label"],
-					"specs" => agvs_json_encode(
-						array_values($model["specs"] ?? []),
-					),
+					"specs" => agvs_json_encode(array_values($model["specs"] ?? [])),
 				]);
 			}
 		}
@@ -447,8 +442,9 @@ function agvs_admin_upsert_video(array $record): void
 				? (int) $existingRow["sort_order"]
 				: agvs_next_sort_order($pdo, "videos"));
 
-		$pdo->prepare(
-			"INSERT INTO videos
+		$pdo
+			->prepare(
+				"INSERT INTO videos
 			 (slug, title, media_label, type, thumbnail, poster, video, embed, source, published, sort_order)
 			 VALUES
 			 (:slug, :title, :media, :type, :thumb, :poster, :video, :embed, :source, :pub, :sort)
@@ -463,28 +459,27 @@ function agvs_admin_upsert_video(array $record): void
 			   source = excluded.source,
 			   published = excluded.published,
 			   sort_order = excluded.sort_order",
-		)->execute([
-			"slug" => $slug,
-			"title" => $record["title"],
-			"media" => (string) ($record["mediaLabel"] ?? ""),
-			"type" => (string) ($record["type"] ?? "youtube"),
-			"thumb" => agvs_normalize_media_path(
-				(string) ($record["thumbnail"] ?? ""),
-			),
-			"poster" => agvs_normalize_media_path(
-				(string) ($record["poster"] ?? ""),
-			),
-			"video" => agvs_normalize_media_path(
-				(string) ($record["video"] ?? ""),
-			),
-			"embed" => (string) ($record["embed"] ?? ""),
-			"source" => (string) ($record["source"] ?? ""),
-			"pub" => !array_key_exists("published", $record) ||
-			$record["published"]
-				? 1
-				: 0,
-			"sort" => $sortOrder,
-		]);
+			)
+			->execute([
+				"slug" => $slug,
+				"title" => $record["title"],
+				"media" => (string) ($record["mediaLabel"] ?? ""),
+				"type" => (string) ($record["type"] ?? "youtube"),
+				"thumb" => agvs_normalize_media_path(
+					(string) ($record["thumbnail"] ?? ""),
+				),
+				"poster" => agvs_normalize_media_path(
+					(string) ($record["poster"] ?? ""),
+				),
+				"video" => agvs_normalize_media_path((string) ($record["video"] ?? "")),
+				"embed" => (string) ($record["embed"] ?? ""),
+				"source" => (string) ($record["source"] ?? ""),
+				"pub" =>
+					!array_key_exists("published", $record) || $record["published"]
+						? 1
+						: 0,
+				"sort" => $sortOrder,
+			]);
 
 		$pdo->prepare("DELETE FROM video_i18n WHERE slug = :s")->execute([
 			"s" => $slug,
@@ -525,9 +520,7 @@ function agvs_admin_upsert_archive(array $recordsByLang): void
 	$slug = (string) $kr["slug"];
 	$pdo->beginTransaction();
 	try {
-		$check = $pdo->prepare(
-			"SELECT sort_order FROM archives WHERE slug = :s",
-		);
+		$check = $pdo->prepare("SELECT sort_order FROM archives WHERE slug = :s");
 		$check->execute(["s" => $slug]);
 		$existingRow = $check->fetch();
 		$sortOrder = array_key_exists("sortOrder", $kr)
@@ -542,8 +535,9 @@ function agvs_admin_upsert_archive(array $recordsByLang): void
 			$thumb = $image;
 		}
 
-		$pdo->prepare(
-			"INSERT INTO archives
+		$pdo
+			->prepare(
+				"INSERT INTO archives
 			 (slug, image, thumbnail, attachments_json, published, sort_order)
 			 VALUES (:slug, :image, :thumb, :att, :pub, :sort)
 			 ON CONFLICT(slug) DO UPDATE SET
@@ -552,16 +546,16 @@ function agvs_admin_upsert_archive(array $recordsByLang): void
 			   attachments_json = excluded.attachments_json,
 			   published = excluded.published,
 			   sort_order = excluded.sort_order",
-		)->execute([
-			"slug" => $slug,
-			"image" => $image,
-			"thumb" => $thumb,
-			"att" => agvs_json_encode($kr["attachments"] ?? []),
-			"pub" => !array_key_exists("published", $kr) || $kr["published"]
-				? 1
-				: 0,
-			"sort" => $sortOrder,
-		]);
+			)
+			->execute([
+				"slug" => $slug,
+				"image" => $image,
+				"thumb" => $thumb,
+				"att" => agvs_json_encode($kr["attachments"] ?? []),
+				"pub" =>
+					!array_key_exists("published", $kr) || $kr["published"] ? 1 : 0,
+				"sort" => $sortOrder,
+			]);
 
 		$i18n = $pdo->prepare(
 			"INSERT INTO archive_i18n (slug, lang, title, body, detail_json)
@@ -576,9 +570,7 @@ function agvs_admin_upsert_archive(array $recordsByLang): void
 				"lang" => $lang,
 				"title" => $rec["title"],
 				"body" => (string) ($rec["body"] ?? ""),
-				"detail" => agvs_json_encode(
-					array_values($rec["detail"] ?? []),
-				),
+				"detail" => agvs_json_encode(array_values($rec["detail"] ?? [])),
 			]);
 		}
 		$pdo->commit();

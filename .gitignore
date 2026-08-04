@@ -12,3 +12,5 @@ admin-api/dist/
 
 # Track lockfile even if ignored by a global gitignore
 !pnpm-lock.yaml
+
+docs/superpowers/*

@@ -14,7 +14,7 @@ header:has(+ .ViewMain) .ContactUsWrap {
 
 .ViewTopBg {
 	width: 100%;
-	height: 250px;
+	height: 450px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -368,6 +368,10 @@ header:has(+ .ViewMain) .ContactUsWrap {
 }
 
 @media (max-width: 767.98px) {
+	.ViewTopBg {
+		height: 250px;
+	}
+
 	.ViewInner {
 		width: 100%;
 		padding: 64px 20px 80px;

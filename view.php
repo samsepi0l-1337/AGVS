@@ -32,8 +32,7 @@ if ($isArchiveView) {
 			"EN" => "Download",
 			"JP" => "ダウンロード",
 		];
-		$archiveDownloadLabel =
-			$archiveDownloadLabelMap[$agvsLang] ?? "Download";
+		$archiveDownloadLabel = $archiveDownloadLabelMap[$agvsLang] ?? "Download";
 	}
 	$archiveItem = null;
 	$archiveIndex = -1;
@@ -188,7 +187,7 @@ if ($isArchiveView) {
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260804a"
+    href="./stlye/layout.css?ver=20260804b"
     >
     <link
     rel="stylesheet"
@@ -366,8 +365,8 @@ if ($isArchiveView) {
                 <?php if (!empty($attachment["path"])): ?>
                 <?php
                 $attPath = (string) $attachment["path"];
-                $attName = (string) ($attachment["originalName"] ??
-                	basename($attPath));
+                $attName =
+                	(string) ($attachment["originalName"] ?? basename($attPath));
                 $attLabel =
                 	$attName !== ""
                 		? $archiveDownloadLabel . " · " . $attName
@@ -507,7 +506,7 @@ if ($isArchiveView) {
     })();
     </script>
     <?php endif; ?>
-    <script src="./js/main.js?ver=20260804a"></script>
+    <script src="./js/main.js?ver=20260804b"></script>
 </body>
 </html>
 

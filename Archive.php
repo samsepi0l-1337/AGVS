@@ -65,7 +65,7 @@ if ($archiveDownloadLabel === "") {
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260804a"
+    href="./stlye/layout.css?ver=20260804b"
     >
     <link
     rel="stylesheet"
@@ -156,8 +156,9 @@ if ($archiveDownloadLabel === "") {
                         <?php foreach ($itemAttachments as $attachment): ?>
                         <?php
                         $attPath = (string) $attachment["path"];
-                        $attName = (string) ($attachment["originalName"] ??
-                        	basename($attPath));
+                        $attName =
+                        	(string) ($attachment["originalName"] ??
+                        		basename($attPath));
                         $attLabel =
                         	$attName !== ""
                         		? $archiveDownloadLabel . " · " . $attName
@@ -185,6 +186,6 @@ if ($archiveDownloadLabel === "") {
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260804a"></script>
+    <script src="./js/main.js?ver=20260804b"></script>
 </body>
 </html>

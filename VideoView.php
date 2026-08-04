@@ -82,7 +82,7 @@ $pageTitle = $video["title"] . " | AGVS";
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260804a"
+    href="./stlye/layout.css?ver=20260804b"
     >
     <link
     rel="stylesheet"
@@ -185,9 +185,7 @@ $pageTitle = $video["title"] . " | AGVS";
                 				fn($line) => $line !== "",
                 			),
                 		);
-                	} elseif (
-                		array_is_list($video["descriptions"])
-                	) {
+                	} elseif (array_is_list($video["descriptions"])) {
                 		$videoDescriptions = array_values(
                 			array_filter(
                 				array_map("strval", $video["descriptions"]),
@@ -282,6 +280,6 @@ $pageTitle = $video["title"] . " | AGVS";
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260804a"></script>
+    <script src="./js/main.js?ver=20260804b"></script>
 </body>
 </html>

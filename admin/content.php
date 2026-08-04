@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 				"images" => [],
 			];
 			$primary["id"] = agvs_slug(
-				(string) ($_POST["modelId"] ?? $primary["id"] ?? "default"),
+				(string) ($_POST["modelId"] ?? ($primary["id"] ?? "default")),
 			);
 			$images = [];
 			foreach ($primary["images"] ?? [] as $img) {
@@ -98,21 +98,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			}
 			$records = [];
 			foreach (AGVS_LANGUAGES as $lang) {
-				$localExisting =
-					admin_find(admin_items($type, $lang), $slug) ?? [];
+				$localExisting = admin_find(admin_items($type, $lang), $slug) ?? [];
 				$localModels = $localExisting["models"] ?? $existingModels;
 				$model = $primary;
-				$model["label"] = trim(
-					(string) ($_POST["modelLabel_" . $lang] ?? ""),
-				);
+				$model["label"] = trim((string) ($_POST["modelLabel_" . $lang] ?? ""));
 				$model["specs"] = array_values(
 					array_filter(
 						array_map(
 							"trim",
-							preg_split(
-								"/\R/",
-								(string) ($_POST["specs_" . $lang] ?? ""),
-							) ?:
+							preg_split("/\R/", (string) ($_POST["specs_" . $lang] ?? "")) ?:
 							[],
 						),
 						fn($line) => $line !== "",
@@ -142,7 +136,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			}
 			agvs_admin_upsert_product($records);
 		} elseif ($type === "videos") {
-			$kind = (string) ($_POST["mediaType"] ?? ($existing["type"] ?? "youtube"));
+			$kind =
+				(string) ($_POST["mediaType"] ?? ($existing["type"] ?? "youtube"));
 			$record = array_merge($shared, [
 				"title" => trim((string) $_POST["title"]),
 				"mediaLabel" => $kind === "youtube" ? "YouTube" : "MP4",
@@ -194,9 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			if (!empty($_FILES["media"]["name"])) {
 				$attachments[] = agvs_upload($_FILES["media"], "document");
 			}
-			$image = agvs_normalize_media_path(
-				(string) ($existing["image"] ?? ""),
-			);
+			$image = agvs_normalize_media_path((string) ($existing["image"] ?? ""));
 			$thumbnail = agvs_normalize_media_path(
 				(string) ($existing["thumbnail"] ?? ""),
 			);
@@ -205,16 +198,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			}
 			$records = [];
 			foreach (AGVS_LANGUAGES as $lang) {
-				$localExisting =
-					admin_find(admin_items($type, $lang), $slug) ?? [];
+				$localExisting = admin_find(admin_items($type, $lang), $slug) ?? [];
 				$detailLines = array_values(
 					array_filter(
 						array_map(
 							"trim",
-							preg_split(
-								"/\R/",
-								(string) ($_POST["detail_" . $lang] ?? ""),
-							) ?:
+							preg_split("/\R/", (string) ($_POST["detail_" . $lang] ?? "")) ?:
 							[],
 						),
 						fn($line) => $line !== "",
@@ -254,7 +243,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 $editSlug = (string) ($_GET["edit"] ?? "");
-$edit = $editSlug && $editSlug !== "new" ? admin_find(admin_items($type), $editSlug) : null;
+$edit =
+	$editSlug && $editSlug !== "new"
+		? admin_find(admin_items($type), $editSlug)
+		: null;
 agvs_admin_header($titleMap[$type] . " 관리");
 ?>
 <h1><?= $titleMap[$type] ?> 관리</h1><?php if (
@@ -294,15 +286,16 @@ $edit["published"]
 	$edit["category"] ?? "agv",
 ) ?>"></label><label>모델 ID<input name="modelId" required value="<?= htmlspecialchars(
 	$edit["models"][0]["id"] ?? "default",
-) ?>"></label><?php if (
+) ?>"></label><?php
+if (
 	!empty($edit["thumbnail"]) ||
 	!empty($edit["models"][0]["images"])
 ): ?><p>현재 이미지: <?= htmlspecialchars(
-	$edit["thumbnail"] ?:
-	($edit["models"][0]["images"][0]["src"] ?? ""),
+	$edit["thumbnail"] ?: $edit["models"][0]["images"][0]["src"] ?? "",
 ) ?> (<?= count(
-	$edit["models"][0]["images"] ?? [],
-) ?>장) — 새 파일 업로드 시에만 추가됩니다.</p><?php endif; ?><?php foreach (
+ 	$edit["models"][0]["images"] ?? [],
+ ) ?>장) — 새 파일 업로드 시에만 추가됩니다.</p><?php endif;
+foreach (
 	AGVS_LANGUAGES
 	as $lang
 ): ?><fieldset><legend><?= $lang ?></legend><label>제품명<input name="name_<?= $lang ?>" required value="<?= htmlspecialchars(
@@ -320,12 +313,15 @@ $edit["published"]
 				[],
 		)
 		: "",
-) ?></textarea></label></fieldset><?php endforeach; ?><label>제품 이미지<input type="file" name="media" accept="image/jpeg,image/png,image/webp"></label>
+) ?></textarea></label></fieldset><?php endforeach;
+?><label>제품 이미지<input type="file" name="media" accept="image/jpeg,image/png,image/webp"></label>
 <?php elseif (
 	$type === "videos"
 ): ?><label>제목<input name="title" required value="<?= htmlspecialchars(
 	$edit["title"] ?? "",
-) ?>"></label><label>형식<select name="mediaType"><option value="youtube" <?= ($edit["type"] ??
+) ?>"></label><label>형식<select name="mediaType"><option value="youtube" <?= ($edit[
+	"type"
+] ??
 	"youtube") ===
 "youtube"
 	? "selected"
@@ -341,8 +337,7 @@ $edit["published"]
 	!empty($edit["video"])
 ): ?><p>현재 미디어: <?= htmlspecialchars(
 	trim(
-		($edit["thumbnail"] ?? "") .
-			($edit["video"] ? " / " . $edit["video"] : ""),
+		($edit["thumbnail"] ?? "") . ($edit["video"] ? " / " . $edit["video"] : ""),
 	),
 ) ?></p><?php endif; ?><label>MP4 파일<input type="file" name="media" accept="video/mp4"></label><?php foreach (
 	AGVS_LANGUAGES
@@ -350,7 +345,8 @@ $edit["published"]
 ): ?><label><?= $lang ?> 설명<textarea name="description_<?= $lang ?>"><?= htmlspecialchars(
 	$edit["descriptions"][$lang] ?? "",
 ) ?></textarea></label><?php endforeach; ?>
-<?php else:foreach (AGVS_LANGUAGES as $lang):
+<?php else:
+	foreach (AGVS_LANGUAGES as $lang):
 		$local = $edit
 			? admin_find(admin_items($type, $lang), $editSlug)
 			: []; ?><fieldset><legend><?= $lang ?></legend><label>제목<input name="title_<?= $lang ?>" required value="<?= htmlspecialchars(
@@ -360,11 +356,11 @@ $edit["published"]
 ) ?></textarea></label><label>상세 내용 (줄마다 하나)<textarea name="detail_<?= $lang ?>"><?= htmlspecialchars(
 	implode("\n", $local["detail"] ?? []),
 ) ?></textarea></label></fieldset><?php
-	endforeach; ?><?php if (
-	!empty($edit["image"])
-): ?><p>현재 이미지: <?= htmlspecialchars(
+	endforeach;
+	if (!empty($edit["image"])): ?><p>현재 이미지: <?= htmlspecialchars(
 	$edit["image"],
-) ?></p><?php endif; ?><label>PDF 또는 Excel 첨부<input type="file" name="media" accept="application/pdf,.xls,.xlsx"></label><?php if (
+) ?></p><?php endif;
+	?><label>PDF 또는 Excel 첨부<input type="file" name="media" accept="application/pdf,.xls,.xlsx"></label><?php if (
 	!empty($edit["attachments"])
 ): ?><p>첨부: <?= htmlspecialchars(
 	implode(", ", array_column($edit["attachments"], "originalName")),
@@ -374,3 +370,4 @@ $edit["published"]
 	$edit["slug"],
 ) ?>"><button>삭제</button></form><?php endif;endif;
 agvs_admin_footer();
+

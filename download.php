@@ -32,8 +32,7 @@ $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 $mimeMap = [
 	"pdf" => "application/pdf",
 	"xls" => "application/vnd.ms-excel",
-	"xlsx" =>
-		"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+	"xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 ];
 $mime = $mimeMap[$ext] ?? "application/octet-stream";
 

@@ -713,6 +713,13 @@ header.isMenuOpen .GnbToggleClose {
 }
 
 @media (max-width: 767.98px) {
+	/* Reserve fixed header (80px) so hero titles center in the visible band */
+	header + main .TopBg,
+	header + main .ViewTopBg,
+	header + main .SitemapTopBg {
+		padding-top: 80px;
+	}
+
 	footer .FooterInner {
 		width: 100%;
 		padding: 56px 24px 32px;

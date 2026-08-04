@@ -100,10 +100,7 @@ function agvs_backup_sqlite(): void
 	if (!is_dir($backupDir)) {
 		mkdir($backupDir, 0775, true);
 	}
-	copy(
-		AGVS_DB_PATH,
-		$backupDir . "/" . date("Ymd-His") . "-agvs.sqlite",
-	);
+	copy(AGVS_DB_PATH, $backupDir . "/" . date("Ymd-His") . "-agvs.sqlite");
 }
 
 function agvs_slug(string $value): string

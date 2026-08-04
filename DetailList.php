@@ -57,7 +57,7 @@ if (
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260804a"
+    href="./stlye/layout.css?ver=20260804b"
     >
     <link
     rel="stylesheet"
@@ -179,6 +179,6 @@ if (
     </main>
     <?php include __DIR__ . "/include/footer.html"; ?>
     <?php include __DIR__ . "/include/contactPop.html"; ?>
-    <script src="./js/main.js?ver=20260804a"></script>
+    <script src="./js/main.js?ver=20260804b"></script>
 </body>
 </html>

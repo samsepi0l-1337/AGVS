@@ -1,7 +1,7 @@
 # AGVS Admin API (TypeScript)
 
-Small Node/Express backend for admin auth and SQLite-backed content CRUD.
-Public marketing pages stay on PHP and continue reading `data/agvs.sqlite`.
+Small Node/Express backend for admin auth and SQLite-backed content CRUD. Public
+marketing pages stay on PHP and continue reading `data/agvs.sqlite`.
 
 ## Setup
 
@@ -38,7 +38,8 @@ Default listen: `http://127.0.0.1:8850`
 
 ## Auth
 
-- `POST /api/auth/login` `{ "password": "…" }` → httpOnly signed cookie + `csrfToken`
+- `POST /api/auth/login` `{ "password": "…" }` → httpOnly signed cookie +
+  `csrfToken`
 - `GET /api/auth/me` → session status + CSRF
 - `POST /api/auth/logout`
 - Mutating requests need `X-CSRF-Token` (or `csrfToken` in JSON body)
@@ -49,19 +50,21 @@ Default listen: `http://127.0.0.1:8850`
 
 All content routes require auth.
 
-| Method | Path | Notes |
-|--------|------|--------|
-| GET | `/api/content/products?lang=KR` | list products |
-| GET | `/api/content/videos` | list videos |
-| GET | `/api/content/archives?lang=KR` | list archives |
-| GET | `/api/content/:type/:slug` | one record |
-| PUT | `/api/content/products/:slug` | body = `{ KR, EN, JP }` product records |
-| PUT | `/api/content/videos/:slug` | single video record |
-| PUT | `/api/content/archives/:slug` | body = `{ KR, EN, JP }` archive records |
-| DELETE | `/api/content/:type/:slug` | delete by slug |
-| POST | `/api/content/upload` | multipart `file` + `kind=image\|video\|document` |
-| GET | `/api/content/ui/:lang` | UI document (+ archive items overlay) |
+| Method | Path                            | Notes                                            |
+| ------ | ------------------------------- | ------------------------------------------------ |
+| GET    | `/api/content/products?lang=KR` | list products                                    |
+| GET    | `/api/content/videos`           | list videos                                      |
+| GET    | `/api/content/archives?lang=KR` | list archives                                    |
+| GET    | `/api/content/:type/:slug`      | one record                                       |
+| PUT    | `/api/content/products/:slug`   | body = `{ KR, EN, JP }` product records          |
+| PUT    | `/api/content/videos/:slug`     | single video record                              |
+| PUT    | `/api/content/archives/:slug`   | body = `{ KR, EN, JP }` archive records          |
+| DELETE | `/api/content/:type/:slug`      | delete by slug                                   |
+| POST   | `/api/content/upload`           | multipart `file` + `kind=image\|video\|document` |
+| GET    | `/api/content/ui/:lang`         | UI document (+ archive items overlay)            |
 
-`sort_order` is preserved on edit; media paths are normalized like PHP `agvs_normalize_media_path`.
+`sort_order` is preserved on edit; media paths are normalized like PHP
+`agvs_normalize_media_path`.
 
-The existing PHP `admin/` HTML UI still works against the same SQLite file. This API is the TypeScript admin backend for JSON clients / future UI wiring.
+The existing PHP `admin/` HTML UI still works against the same SQLite file. This
+API is the TypeScript admin backend for JSON clients / future UI wiring.
