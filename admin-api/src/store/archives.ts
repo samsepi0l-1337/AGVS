@@ -7,7 +7,7 @@ import type {
 	ArchiveRecord,
 	ArchiveRow,
 } from "../types.js";
-import type { ArchiveUpsertInput } from "../validation.js";
+import type { ArchiveI18nInput, ArchiveUpsertInput } from "../validation.js";
 
 function isArchiveRow(value: unknown): value is ArchiveRow {
 	if (typeof value !== "object" || value === null) {
@@ -179,4 +179,26 @@ export function upsertArchive(recordsByLang: ArchiveUpsertInput): void {
 
 export function deleteArchive(slug: string): void {
 	getDb().prepare(`DELETE FROM archives WHERE slug = ?`).run(slug);
+}
+
+/**
+ * Upsert archive_i18n for one lang. Does not touch archives shared columns
+ * (image, thumbnail, attachments, published, sort_order).
+ */
+export function upsertArchiveI18n(
+	slug: string,
+	lang: Lang,
+	payload: ArchiveI18nInput,
+): void {
+	const db = getDb();
+	const row = db.prepare(`SELECT slug FROM archives WHERE slug = ?`).get(slug);
+	if (!row) {
+		throw new Error(`Archive not found: ${slug}`);
+	}
+	db.prepare(
+		`INSERT INTO archive_i18n (slug, lang, title, body, detail_json)
+		 VALUES (?, ?, ?, ?, ?)
+		 ON CONFLICT(slug, lang) DO UPDATE SET
+		   title = excluded.title, body = excluded.body, detail_json = excluded.detail_json`,
+	).run(slug, lang, payload.title, payload.body, jsonEncode(payload.detail));
 }

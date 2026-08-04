@@ -93,6 +93,46 @@ export const deleteSchema = z.object({
 	slug: slugSchema,
 });
 
+/** Product translation fields only — no slug/media/sort/published. */
+export const productI18nSchema = z.object({
+	name: z.string().min(1),
+	models: z
+		.array(
+			z.object({
+				id: slugSchema,
+				label: z.string().min(1),
+				specs: z.array(z.string()),
+			}),
+		)
+		.min(1),
+});
+
+/** Archive translation fields only — no image/attachments/sort/published. */
+export const archiveI18nSchema = z.object({
+	title: z.string().min(1),
+	body: z.string().default(""),
+	detail: z.array(z.string()).default([]),
+});
+
+/** Video translation field only — title/media stay on the shared row. */
+export const videoI18nSchema = z.object({
+	description: z.string(),
+});
+
+/**
+ * Full UI chrome document for one lang. Archive list items are not stored here
+ * (they live in archive_i18n); any archive.items in the payload are stripped.
+ */
+export const uiDocumentSchema = z
+	.record(z.string(), z.unknown())
+	.refine((value) => !Array.isArray(value), {
+		message: "UI payload must be a JSON object.",
+	});
+
 export type ProductUpsertInput = z.infer<typeof productUpsertSchema>;
 export type VideoRecordInput = z.infer<typeof videoRecordSchema>;
 export type ArchiveUpsertInput = z.infer<typeof archiveUpsertSchema>;
+export type ProductI18nInput = z.infer<typeof productI18nSchema>;
+export type ArchiveI18nInput = z.infer<typeof archiveI18nSchema>;
+export type VideoI18nInput = z.infer<typeof videoI18nSchema>;
+export type UiDocumentInput = z.infer<typeof uiDocumentSchema>;

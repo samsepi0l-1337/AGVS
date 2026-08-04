@@ -14,3 +14,4 @@ admin-api/dist/
 !pnpm-lock.yaml
 
 docs/superpowers/*
+admin-api/dist/*.map

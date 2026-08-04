@@ -95,12 +95,14 @@ render_locale() {
   # 페이지 간 링크를 .php -> .html 로 치환 (?category= 같은 쿼리는 보존)
   # 1) 상세 쿼리 링크를 먼저 치환 — VideoView.php?item= 을 view.php?item= 보다 먼저
   # 2) 일반 페이지 링크 — \b...\b 로 VideoView.php 의 Video 부분 매칭을 피한다
+  # 3) download.php?id=<urlencoded path>&name=… → 정적 파일 경로 (PHP 엔드포인트 없음)
   local f
   for f in "$DEST"/*.html; do
     perl -pi -e 's/VideoView\.php\?item=([A-Za-z0-9_-]+)/video-$1.html/g' "$f"
     perl -pi -e 's/view\.php\?archive=([A-Za-z0-9_-]+)/archive-$1.html/g' "$f"
     perl -pi -e 's/view\.php\?item=([A-Za-z0-9_-]+)/view-$1.html/g' "$f"
     perl -pi -e 's/\b(index|DetailList|Overview|Sitemap|Video|Archive)\.php\b/$1.html/g' "$f"
+    perl -pi -e 's{download\.php\?id=([^"&]+)(?:&amp;|&)name=[^"]*}{my $id=$1; $id=~s/\+/ /g; $id=~s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg; $id}ge' "$f"
   done
 
   # en/jp 하위 디렉터리: ./stlye ./js ./img ./video → ../… (DetailList.html 등 페이지 링크는 유지)
@@ -123,6 +125,12 @@ for dir in "${ASSETS[@]}"; do
   [ -d "$ROOT/$dir" ] && cp -R "$ROOT/$dir" "$OUT/$dir"
 done
 
+# 자료실 첨부(storage/uploads) — backups/trash 는 제외. en/jp 는 ../storage/ 로 참조.
+if [ -d "$ROOT/storage/uploads" ]; then
+  mkdir -p "$OUT/storage"
+  cp -R "$ROOT/storage/uploads" "$OUT/storage/uploads"
+fi
+
 # Pages 의 기본 Jekyll 처리를 끈다.
 touch "$OUT/.nojekyll"
 
@@ -141,7 +149,11 @@ for f in "$OUT"/*.html "$OUT"/en/*.html "$OUT"/jp/*.html; do
   if ! grep -q 'id="Footer"' "$f"; then
     echo "FAIL: $page 에 푸터가 없습니다."; fail=1
   fi
-  if grep -q '\.php"' "$f" || grep -q '\.php?' "$f"; then
+  # Absolute https?://…/*.php 참조(영상 source 등)는 허용 — 사이트 내부 상대 .php 만 실패.
+  if grep -oE '(href|src|action)="[^"]*"' "$f" \
+    | grep -E '\.php("|\?)' \
+    | grep -qvE '="https?://'
+  then
     echo "FAIL: $page 에 .php 링크가 남아 있습니다."; fail=1
   fi
 done

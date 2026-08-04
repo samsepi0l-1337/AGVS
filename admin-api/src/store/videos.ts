@@ -2,7 +2,7 @@ import { LANGUAGES, type Lang } from "../config.js";
 import { getDb, nextSortOrder } from "../db.js";
 import { normalizeMediaPath } from "../media.js";
 import type { VideoI18nRow, VideoRecord, VideoRow } from "../types.js";
-import type { VideoRecordInput } from "../validation.js";
+import type { VideoI18nInput, VideoRecordInput } from "../validation.js";
 
 function isVideoRow(value: unknown): value is VideoRow {
 	if (typeof value !== "object" || value === null) {
@@ -150,4 +150,24 @@ export function upsertVideo(record: VideoRecordInput): void {
 
 export function deleteVideo(slug: string): void {
 	getDb().prepare(`DELETE FROM videos WHERE slug = ?`).run(slug);
+}
+
+/**
+ * Upsert video_i18n.description for one lang. Does not touch videos shared
+ * columns (title, media paths, embed, published, sort_order).
+ */
+export function upsertVideoI18n(
+	slug: string,
+	lang: Lang,
+	payload: VideoI18nInput,
+): void {
+	const db = getDb();
+	const row = db.prepare(`SELECT slug FROM videos WHERE slug = ?`).get(slug);
+	if (!row) {
+		throw new Error(`Video not found: ${slug}`);
+	}
+	db.prepare(
+		`INSERT INTO video_i18n (slug, lang, description) VALUES (?, ?, ?)
+		 ON CONFLICT(slug, lang) DO UPDATE SET description = excluded.description`,
+	).run(slug, lang, payload.description);
 }

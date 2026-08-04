@@ -10,7 +10,7 @@ import type {
 	ProductModel,
 	ProductRecord,
 } from "../types.js";
-import type { ProductUpsertInput } from "../validation.js";
+import type { ProductI18nInput, ProductUpsertInput } from "../validation.js";
 
 function isItemRow(value: unknown): value is ItemRow {
 	if (typeof value !== "object" || value === null) {
@@ -289,4 +289,63 @@ export function upsertProduct(recordsByLang: ProductUpsertInput): void {
 
 export function deleteProduct(slug: string): void {
 	getDb().prepare(`DELETE FROM items WHERE slug = ?`).run(slug);
+}
+
+/**
+ * Upsert item_i18n + model_i18n for one lang. Does not touch items, models,
+ * or model_images (shared structure/media).
+ */
+export function upsertProductI18n(
+	slug: string,
+	lang: Lang,
+	payload: ProductI18nInput,
+): void {
+	const db = getDb();
+	const item = db.prepare(`SELECT slug FROM items WHERE slug = ?`).get(slug);
+	if (!item) {
+		throw new Error(`Product not found: ${slug}`);
+	}
+
+	const models = db
+		.prepare(
+			`SELECT id, model_key FROM models WHERE item_slug = ? ORDER BY sort_order ASC, id ASC`,
+		)
+		.all(slug);
+	const byKey = new Map<string, number>();
+	for (const raw of models) {
+		if (
+			typeof raw !== "object" ||
+			raw === null ||
+			typeof Reflect.get(raw, "id") !== "number" ||
+			typeof Reflect.get(raw, "model_key") !== "string"
+		) {
+			continue;
+		}
+		byKey.set(String(Reflect.get(raw, "model_key")), Number(Reflect.get(raw, "id")));
+	}
+
+	const upsert = db.transaction(() => {
+		db.prepare(
+			`INSERT INTO item_i18n (slug, lang, name) VALUES (?, ?, ?)
+			 ON CONFLICT(slug, lang) DO UPDATE SET name = excluded.name`,
+		).run(slug, lang, payload.name);
+
+		const modelI18n = db.prepare(
+			`INSERT INTO model_i18n (model_row_id, lang, label, specs_json)
+			 VALUES (?, ?, ?, ?)
+			 ON CONFLICT(model_row_id, lang) DO UPDATE SET
+			   label = excluded.label, specs_json = excluded.specs_json`,
+		);
+
+		for (const model of payload.models) {
+			const mid = byKey.get(model.id);
+			if (mid === undefined) {
+				throw new Error(
+					`Unknown model id "${model.id}" for product ${slug}. Structure edits use full CRUD.`,
+				);
+			}
+			modelI18n.run(mid, lang, model.label, jsonEncode(model.specs));
+		}
+	});
+	upsert();
 }
