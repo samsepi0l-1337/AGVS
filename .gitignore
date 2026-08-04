@@ -10,6 +10,10 @@ admin-api/dist/
 .env
 .env.local
 
+# macOS Finder duplicate / conflict copies ("foo 2.php", empty "bar 2" dirs)
+* 2.*
+* 2
+
 # Track lockfile even if ignored by a global gitignore
 !pnpm-lock.yaml
 
