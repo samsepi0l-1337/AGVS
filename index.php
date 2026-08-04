@@ -39,7 +39,7 @@
     />
     <link
       rel="stylesheet"
-      href="./stlye/layout.css?ver=20260804b"
+      href="./stlye/layout.css?ver=20260804c"
     />
     <link
       rel="stylesheet"
@@ -61,7 +61,11 @@
           >
             <video
               class="BgVideo"
-              src="./video/Freevideo.mp4"
+              src="<?php echo htmlspecialchars(
+              	agvs_asset_url("./video/Freevideo.mp4"),
+              	ENT_QUOTES,
+              	"UTF-8",
+              ); ?>"
               autoplay
               muted
               loop
@@ -75,11 +79,19 @@
                 aria-label="다음 섹션으로 이동"
               >
                 <img
-                  src="./img/Click.png"
+                  src="<?php echo htmlspecialchars(
+                  	agvs_asset_url("./img/Click.png"),
+                  	ENT_QUOTES,
+                  	"UTF-8",
+                  ); ?>"
                   alt=""
                 />
                 <img
-                  src="./img/ClickHover.png"
+                  src="<?php echo htmlspecialchars(
+                  	agvs_asset_url("./img/ClickHover.png"),
+                  	ENT_QUOTES,
+                  	"UTF-8",
+                  ); ?>"
                   alt=""
                 />
               </button>
@@ -134,11 +146,19 @@
                 aria-label="다음 섹션으로 이동"
               >
                 <img
-                  src="./img/Click.png"
+                  src="<?php echo htmlspecialchars(
+                  	agvs_asset_url("./img/Click.png"),
+                  	ENT_QUOTES,
+                  	"UTF-8",
+                  ); ?>"
                   alt=""
                 />
                 <img
-                  src="./img/ClickHover.png"
+                  src="<?php echo htmlspecialchars(
+                  	agvs_asset_url("./img/ClickHover.png"),
+                  	ENT_QUOTES,
+                  	"UTF-8",
+                  ); ?>"
                   alt=""
                 />
               </button>
@@ -154,7 +174,11 @@
             >
               <div class="ContactBannerVisual">
                 <img
-                  src="./img/sec03.png"
+                  src="<?php echo htmlspecialchars(
+                  	agvs_asset_url("./img/sec03.png"),
+                  	ENT_QUOTES,
+                  	"UTF-8",
+                  ); ?>"
                   alt="<?php echo htmlspecialchars(
                   	agvs_t("sec03.imgAlt"),
                   	ENT_QUOTES,

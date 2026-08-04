@@ -1,6 +1,7 @@
 import Database from "better-sqlite3";
 import fs from "node:fs";
 import path from "node:path";
+
 import { REPO_ROOT, SQLITE_PATH } from "./config.js";
 
 let db: Database.Database | null = null;
@@ -14,7 +15,7 @@ CREATE TABLE IF NOT EXISTS meta (
 CREATE TABLE IF NOT EXISTS categories (
 	id TEXT PRIMARY KEY,
 	sort_order INTEGER NOT NULL DEFAULT 0
-);
+	);
 
 CREATE TABLE IF NOT EXISTS category_i18n (
 	category_id TEXT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
@@ -142,7 +143,22 @@ export function getDb(): Database.Database {
 	db.pragma("foreign_keys = ON");
 	db.pragma("busy_timeout = 5000");
 	db.exec(SCHEMA_SQL);
+	ensureThumbnailColumns(db);
 	return db;
+}
+
+/** ALTER older DBs that predate thumbnail on list entities. */
+function ensureThumbnailColumns(database: Database.Database): void {
+	for (const table of ["items", "archives", "videos"] as const) {
+		const cols = database.pragma(`table_info(${table})`) as Array<{
+			name: string;
+		}>;
+		if (!cols.some((col) => col.name === "thumbnail")) {
+			database.exec(
+				`ALTER TABLE ${table} ADD COLUMN thumbnail TEXT NOT NULL DEFAULT ''`,
+			);
+		}
+	}
 }
 
 export function jsonEncode(value: unknown): string {

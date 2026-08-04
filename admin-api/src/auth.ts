@@ -1,13 +1,16 @@
+import type { NextFunction, Request, Response } from "express";
+
+import type { SessionPayload } from "./types.js";
+
 import bcrypt from "bcryptjs";
 import crypto from "node:crypto";
-import type { Request, Response, NextFunction } from "express";
+
 import {
 	ADMIN_PASSWORD_HASH,
 	SESSION_COOKIE,
 	SESSION_IDLE_SECONDS,
 	SESSION_SECRET,
 } from "./config.js";
-import type { SessionPayload } from "./types.js";
 
 function normalizeBcryptHash(hash: string): string {
 	// Node bcrypt expects $2a$ / $2b$; PHP password_hash emits $2y$.

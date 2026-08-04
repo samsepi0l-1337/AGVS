@@ -165,6 +165,8 @@ header .GnbWrap #Gnb > li > ul > li > a:focus-visible {
 	color: #007dcc;
 }
 
+header .GnbWrap #Gnb > li:hover > a,
+header .GnbWrap #Gnb > li:focus-within > a,
 header .GnbWrap #Gnb > li.isOpen > a {
 	color: #007dcc;
 }

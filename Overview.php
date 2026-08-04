@@ -41,7 +41,7 @@
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260804b"
+    href="./stlye/layout.css?ver=20260804c"
     >
     <link
     rel="stylesheet"
@@ -60,7 +60,11 @@
             	ENT_QUOTES,
             	"UTF-8",
             ); ?>">
-                <img src="./img/WordmarkWhite.png" alt="">
+                <img src="<?php echo htmlspecialchars(
+                	agvs_asset_url("./img/WordmarkWhite.png"),
+                	ENT_QUOTES,
+                	"UTF-8",
+                ); ?>" alt="">
             </a>
             <nav class="nav" id="main-nav" aria-label="<?php echo htmlspecialchars(
             	agvs_t("overview.navAria"),

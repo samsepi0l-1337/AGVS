@@ -17,9 +17,7 @@ export function normalizeMediaPath(pathValue: string): string {
 export function assertSlug(value: string): string {
 	const slug = value.trim().toLowerCase();
 	if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
-		throw new Error(
-			"Slug must use lowercase letters, numbers, and hyphens.",
-		);
+		throw new Error("Slug must use lowercase letters, numbers, and hyphens.");
 	}
 	return slug;
 }

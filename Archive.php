@@ -65,7 +65,7 @@ if ($archiveDownloadLabel === "") {
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260804b"
+    href="./stlye/layout.css?ver=20260804c"
     >
     <link
     rel="stylesheet"
@@ -105,9 +105,12 @@ if ($archiveDownloadLabel === "") {
                 $itemBody = isset($archiveItem["body"])
                 	? $archiveItem["body"]
                 	: "";
-                $itemImage = isset($archiveItem["image"])
-                	? $archiveItem["image"]
-                	: "";
+                $itemImage = "";
+                if (!empty($archiveItem["thumbnail"])) {
+                	$itemImage = $archiveItem["thumbnail"];
+                } elseif (!empty($archiveItem["image"])) {
+                	$itemImage = $archiveItem["image"];
+                }
                 $itemSlug = isset($archiveItem["slug"])
                 	? $archiveItem["slug"]
                 	: "";

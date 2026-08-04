@@ -1,10 +1,12 @@
+import type { ArchiveAttachment } from "./types.js";
+
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+
 import { REPO_ROOT } from "./config.js";
 import { fileTypeFromBuffer } from "./fileType.js";
 import { normalizeMediaPath } from "./media.js";
-import type { ArchiveAttachment } from "./types.js";
 
 export type UploadKind = "image" | "video" | "document";
 
@@ -57,9 +59,7 @@ export function saveUpload(
 		throw new Error("Invalid upload.");
 	}
 	const name = `${crypto.randomBytes(16).toString("hex")}.${ext}`;
-	const relative = normalizeMediaPath(
-		`storage/uploads/${rule.subdir}/${name}`,
-	);
+	const relative = normalizeMediaPath(`storage/uploads/${rule.subdir}/${name}`);
 	if (relative === "") {
 		throw new Error("Upload failed.");
 	}

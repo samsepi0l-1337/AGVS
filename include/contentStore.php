@@ -606,3 +606,214 @@ function agvs_admin_delete_slug(string $type, string $slug): void
 		throw $e;
 	}
 }
+
+function agvs_admin_require_lang(string $lang): string
+{
+	$lang = strtoupper(trim($lang));
+	if (!in_array($lang, ["KR", "EN", "JP"], true)) {
+		throw new RuntimeException("lang must be KR, EN, or JP.");
+	}
+	return $lang;
+}
+
+/**
+ * Upsert item_i18n + model_i18n for one lang. Shared structure/media untouched.
+ *
+ * @param array{name:string,models:list<array{id:string,label:string,specs:list<string>}>} $payload
+ */
+function agvs_admin_upsert_product_i18n(
+	string $slug,
+	string $lang,
+	array $payload,
+): void {
+	$lang = agvs_admin_require_lang($lang);
+	$name = trim((string) ($payload["name"] ?? ""));
+	if ($name === "") {
+		throw new RuntimeException("Product name is required.");
+	}
+	$models = $payload["models"] ?? [];
+	if (!is_array($models) || $models === []) {
+		throw new RuntimeException("At least one model translation is required.");
+	}
+
+	$pdo = agvs_store_require();
+	$check = $pdo->prepare("SELECT slug FROM items WHERE slug = :s");
+	$check->execute(["s" => $slug]);
+	if (!$check->fetch()) {
+		throw new RuntimeException("Product not found: $slug");
+	}
+
+	$modelStmt = $pdo->prepare(
+		"SELECT id, model_key FROM models WHERE item_slug = :s ORDER BY sort_order ASC, id ASC",
+	);
+	$modelStmt->execute(["s" => $slug]);
+	$byKey = [];
+	foreach ($modelStmt as $row) {
+		$byKey[(string) $row["model_key"]] = (int) $row["id"];
+	}
+
+	$pdo->beginTransaction();
+	try {
+		$pdo
+			->prepare(
+				"INSERT INTO item_i18n (slug, lang, name) VALUES (:slug, :lang, :name)
+			 ON CONFLICT(slug, lang) DO UPDATE SET name = excluded.name",
+			)
+			->execute(["slug" => $slug, "lang" => $lang, "name" => $name]);
+
+		$modelI18n = $pdo->prepare(
+			"INSERT INTO model_i18n (model_row_id, lang, label, specs_json)
+			 VALUES (:mid, :lang, :label, :specs)
+			 ON CONFLICT(model_row_id, lang) DO UPDATE SET
+			   label = excluded.label, specs_json = excluded.specs_json",
+		);
+		foreach ($models as $model) {
+			$id = (string) ($model["id"] ?? "");
+			$label = trim((string) ($model["label"] ?? ""));
+			if ($id === "" || $label === "") {
+				throw new RuntimeException("Model id and label are required.");
+			}
+			if (!isset($byKey[$id])) {
+				throw new RuntimeException(
+					"Unknown model id \"$id\" for product $slug. Structure edits use full CRUD.",
+				);
+			}
+			$specs = array_values(
+				array_filter(
+					array_map("strval", $model["specs"] ?? []),
+					fn($line) => $line !== "",
+				),
+			);
+			$modelI18n->execute([
+				"mid" => $byKey[$id],
+				"lang" => $lang,
+				"label" => $label,
+				"specs" => agvs_json_encode($specs),
+			]);
+		}
+		$pdo->commit();
+	} catch (Throwable $e) {
+		$pdo->rollBack();
+		throw $e;
+	}
+}
+
+/**
+ * Upsert archive_i18n for one lang. Shared media/attachments untouched.
+ *
+ * @param array{title:string,body?:string,detail?:list<string>} $payload
+ */
+function agvs_admin_upsert_archive_i18n(
+	string $slug,
+	string $lang,
+	array $payload,
+): void {
+	$lang = agvs_admin_require_lang($lang);
+	$title = trim((string) ($payload["title"] ?? ""));
+	if ($title === "") {
+		throw new RuntimeException("Archive title is required.");
+	}
+	$body = (string) ($payload["body"] ?? "");
+	$detail = array_values(
+		array_filter(
+			array_map("strval", $payload["detail"] ?? []),
+			fn($line) => $line !== "",
+		),
+	);
+
+	$pdo = agvs_store_require();
+	$check = $pdo->prepare("SELECT slug FROM archives WHERE slug = :s");
+	$check->execute(["s" => $slug]);
+	if (!$check->fetch()) {
+		throw new RuntimeException("Archive not found: $slug");
+	}
+
+	$pdo
+		->prepare(
+			"INSERT INTO archive_i18n (slug, lang, title, body, detail_json)
+		 VALUES (:slug, :lang, :title, :body, :detail)
+		 ON CONFLICT(slug, lang) DO UPDATE SET
+		   title = excluded.title, body = excluded.body, detail_json = excluded.detail_json",
+		)
+		->execute([
+			"slug" => $slug,
+			"lang" => $lang,
+			"title" => $title,
+			"body" => $body,
+			"detail" => agvs_json_encode($detail),
+		]);
+}
+
+/**
+ * Upsert video_i18n.description for one lang. Shared video row untouched.
+ *
+ * @param array{description:string} $payload
+ */
+function agvs_admin_upsert_video_i18n(
+	string $slug,
+	string $lang,
+	array $payload,
+): void {
+	$lang = agvs_admin_require_lang($lang);
+	$pdo = agvs_store_require();
+	$check = $pdo->prepare("SELECT slug FROM videos WHERE slug = :s");
+	$check->execute(["s" => $slug]);
+	if (!$check->fetch()) {
+		throw new RuntimeException("Video not found: $slug");
+	}
+
+	$pdo
+		->prepare(
+			"INSERT INTO video_i18n (slug, lang, description) VALUES (:slug, :lang, :d)
+		 ON CONFLICT(slug, lang) DO UPDATE SET description = excluded.description",
+		)
+		->execute([
+			"slug" => $slug,
+			"lang" => $lang,
+			"d" => (string) ($payload["description"] ?? ""),
+		]);
+}
+
+/**
+ * Replace ui_documents.payload_json for one lang.
+ * Forces archive.items = [] so list content stays in archive tables.
+ *
+ * @param array<string,mixed> $payload
+ */
+function agvs_admin_upsert_ui_document(string $lang, array $payload): void
+{
+	$lang = agvs_admin_require_lang($lang);
+	if (!isset($payload["archive"]) || !is_array($payload["archive"])) {
+		$payload["archive"] = [];
+	}
+	$payload["archive"]["items"] = [];
+
+	$pdo = agvs_store_require();
+	$pdo
+		->prepare(
+			"INSERT INTO ui_documents (lang, payload_json) VALUES (:lang, :json)
+		 ON CONFLICT(lang) DO UPDATE SET payload_json = excluded.payload_json",
+		)
+		->execute([
+			"lang" => $lang,
+			"json" => agvs_json_encode($payload),
+		]);
+}
+
+/** UI chrome only (archive.items empty). */
+function agvs_admin_load_ui_document(string $lang): array
+{
+	$lang = agvs_admin_require_lang($lang);
+	$pdo = agvs_store_require();
+	$stmt = $pdo->prepare(
+		"SELECT payload_json FROM ui_documents WHERE lang = :lang",
+	);
+	$stmt->execute(["lang" => $lang]);
+	$row = $stmt->fetch();
+	$ui = $row ? agvs_json_decode_array($row["payload_json"], []) : [];
+	if (!isset($ui["archive"]) || !is_array($ui["archive"])) {
+		$ui["archive"] = [];
+	}
+	$ui["archive"]["items"] = [];
+	return $ui;
+}

@@ -1,7 +1,7 @@
 {
 	"editor.wordWrap": "on",
 	"editor.tabSize": 2,
-	"editor.insertSpaces": false,
+	"editor.insertSpaces": true,
 	"editor.detectIndentation": false,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.formatOnSave": true,
@@ -27,24 +27,24 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.wordWrap": "on",
 		"editor.tabSize": 2,
-		"editor.insertSpaces": false,
+		"editor.insertSpaces": true,
 		"editor.formatOnSave": true
 	},
 	"[html]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.wordWrap": "on",
 		"editor.tabSize": 2,
-		"editor.insertSpaces": false
+		"editor.insertSpaces": true
 	},
 	"[css]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.tabSize": 2,
-		"editor.insertSpaces": false
+		"editor.insertSpaces": true
 	},
 	"[javascript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.tabSize": 2,
-		"editor.insertSpaces": false
+		"editor.insertSpaces": true
 	},
 	"[markdown]": {
 		"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"

@@ -2,11 +2,13 @@
  * Lightweight MIME sniffing for admin uploads (no extra dependency).
  * Prefer buffer magic bytes; fall back to declared mimetype only for known types.
  */
-export function fileTypeFromBuffer(
-	buffer: Buffer,
-	declared: string,
-): string {
-	if (buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) {
+export function fileTypeFromBuffer(buffer: Buffer, declared: string): string {
+	if (
+		buffer.length >= 3 &&
+		buffer[0] === 0xff &&
+		buffer[1] === 0xd8 &&
+		buffer[2] === 0xff
+	) {
 		return "image/jpeg";
 	}
 	if (

@@ -1,37 +1,50 @@
+import type { Response } from "express";
+
 import { Router } from "express";
 import multer from "multer";
-import type { Response } from "express";
 import { ZodError } from "zod";
+
 import { requireAuth, requireCsrf } from "../auth.js";
 import { backupSqlite } from "../db.js";
-import {
-	archiveUpsertSchema,
-	contentTypeSchema,
-	deleteSchema,
-	langSchema,
-	productUpsertSchema,
-	videoRecordSchema,
-} from "../validation.js";
 import {
 	deleteArchive,
 	findArchive,
 	listArchives,
 	upsertArchive,
+	upsertArchiveI18n,
 } from "../store/archives.js";
 import {
 	deleteProduct,
 	findProduct,
 	listProducts,
 	upsertProduct,
+	upsertProductI18n,
 } from "../store/products.js";
-import { getUiDocument } from "../store/ui.js";
+import {
+	getUiDocument,
+	getUiDocumentRaw,
+	upsertUiDocument,
+} from "../store/ui.js";
 import {
 	deleteVideo,
 	findVideo,
 	listVideos,
 	upsertVideo,
+	upsertVideoI18n,
 } from "../store/videos.js";
-import { saveUpload, type UploadKind } from "../upload.js";
+import { type UploadKind, saveUpload } from "../upload.js";
+import {
+	archiveI18nSchema,
+	archiveUpsertSchema,
+	contentTypeSchema,
+	deleteSchema,
+	langSchema,
+	productI18nSchema,
+	productUpsertSchema,
+	uiDocumentSchema,
+	videoI18nSchema,
+	videoRecordSchema,
+} from "../validation.js";
 
 const upload = multer({
 	storage: multer.memoryStorage(),
@@ -57,7 +70,33 @@ contentRouter.get("/ui/:lang", (req, res) => {
 		res.status(400).json({ error: "Invalid lang" });
 		return;
 	}
-	res.json({ ui: getUiDocument(langParsed.data) });
+	const raw = typeof req.query.raw === "string" && req.query.raw === "1";
+	res.json({
+		ui:
+			raw ? getUiDocumentRaw(langParsed.data) : getUiDocument(langParsed.data),
+	});
+});
+
+contentRouter.put("/ui/:lang", requireCsrf, (req, res) => {
+	const langParsed = langSchema.safeParse(req.params.lang);
+	if (!langParsed.success) {
+		res.status(400).json({ error: "Invalid lang" });
+		return;
+	}
+	const parsed = uiDocumentSchema.safeParse(req.body);
+	if (!parsed.success) {
+		zodError(res, parsed.error);
+		return;
+	}
+	try {
+		backupSqlite();
+		upsertUiDocument(langParsed.data, parsed.data);
+		res.json({ ok: true, ui: getUiDocumentRaw(langParsed.data) });
+	} catch (error) {
+		res.status(400).json({
+			error: error instanceof Error ? error.message : "Save failed",
+		});
+	}
 });
 
 contentRouter.post(
@@ -67,9 +106,9 @@ contentRouter.post(
 	(req, res) => {
 		const kindRaw = typeof req.body?.kind === "string" ? req.body.kind : "";
 		const kind: UploadKind | null =
-			kindRaw === "image" || kindRaw === "video" || kindRaw === "document"
-				? kindRaw
-				: null;
+			kindRaw === "image" || kindRaw === "video" || kindRaw === "document" ?
+				kindRaw
+			:	null;
 		if (!kind) {
 			res.status(400).json({ error: "kind must be image|video|document" });
 			return;
@@ -97,6 +136,78 @@ contentRouter.post(
 		}
 	},
 );
+
+contentRouter.put("/products/:slug/i18n/:lang", requireCsrf, (req, res) => {
+	const slug =
+		typeof req.params.slug === "string" ? req.params.slug : "";
+	const langParsed = langSchema.safeParse(req.params.lang);
+	if (!slug || !langParsed.success) {
+		res.status(400).json({ error: "Slug and valid lang required" });
+		return;
+	}
+	const parsed = productI18nSchema.safeParse(req.body);
+	if (!parsed.success) {
+		zodError(res, parsed.error);
+		return;
+	}
+	try {
+		backupSqlite();
+		upsertProductI18n(slug, langParsed.data, parsed.data);
+		res.json({ ok: true, item: findProduct(slug, langParsed.data) });
+	} catch (error) {
+		res.status(400).json({
+			error: error instanceof Error ? error.message : "Save failed",
+		});
+	}
+});
+
+contentRouter.put("/archives/:slug/i18n/:lang", requireCsrf, (req, res) => {
+	const slug =
+		typeof req.params.slug === "string" ? req.params.slug : "";
+	const langParsed = langSchema.safeParse(req.params.lang);
+	if (!slug || !langParsed.success) {
+		res.status(400).json({ error: "Slug and valid lang required" });
+		return;
+	}
+	const parsed = archiveI18nSchema.safeParse(req.body);
+	if (!parsed.success) {
+		zodError(res, parsed.error);
+		return;
+	}
+	try {
+		backupSqlite();
+		upsertArchiveI18n(slug, langParsed.data, parsed.data);
+		res.json({ ok: true, item: findArchive(slug, langParsed.data) });
+	} catch (error) {
+		res.status(400).json({
+			error: error instanceof Error ? error.message : "Save failed",
+		});
+	}
+});
+
+contentRouter.put("/videos/:slug/i18n/:lang", requireCsrf, (req, res) => {
+	const slug =
+		typeof req.params.slug === "string" ? req.params.slug : "";
+	const langParsed = langSchema.safeParse(req.params.lang);
+	if (!slug || !langParsed.success) {
+		res.status(400).json({ error: "Slug and valid lang required" });
+		return;
+	}
+	const parsed = videoI18nSchema.safeParse(req.body);
+	if (!parsed.success) {
+		zodError(res, parsed.error);
+		return;
+	}
+	try {
+		backupSqlite();
+		upsertVideoI18n(slug, langParsed.data, parsed.data);
+		res.json({ ok: true, item: findVideo(slug) });
+	} catch (error) {
+		res.status(400).json({
+			error: error instanceof Error ? error.message : "Save failed",
+		});
+	}
+});
 
 contentRouter.put("/products/:slug", requireCsrf, (req, res) => {
 	const slug = req.params.slug;
@@ -230,11 +341,9 @@ contentRouter.get("/:type/:slug", (req, res) => {
 	const lang = langParsed.success ? langParsed.data : "KR";
 	const type = typeParsed.data;
 	const item =
-		type === "products"
-			? findProduct(slug, lang)
-			: type === "videos"
-				? findVideo(slug)
-				: findArchive(slug, lang);
+		type === "products" ? findProduct(slug, lang)
+		: type === "videos" ? findVideo(slug)
+		: findArchive(slug, lang);
 	if (!item) {
 		res.status(404).json({ error: "Not found" });
 		return;

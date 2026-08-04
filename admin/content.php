@@ -22,6 +22,30 @@ function admin_find(array $items, string $slug): ?array
 	return agvs_find_by_slug($items, $slug);
 }
 
+/**
+ * Resolve list thumbnail: keep existing unless a new file or path is supplied.
+ */
+function admin_resolve_thumbnail(
+	?array $existing,
+	string $fallback = "",
+): string {
+	$thumbnail = agvs_normalize_media_path(
+		(string) ($existing["thumbnail"] ?? ""),
+	);
+	$pathField = trim((string) ($_POST["thumbnailPath"] ?? ""));
+	if ($pathField !== "") {
+		$thumbnail = agvs_normalize_media_path($pathField);
+	}
+	if (!empty($_FILES["thumbnail"]["name"])) {
+		$uploaded = agvs_upload($_FILES["thumbnail"], "image");
+		$thumbnail = agvs_normalize_media_path($uploaded["path"]);
+	}
+	if ($thumbnail === "" && $fallback !== "") {
+		$thumbnail = agvs_normalize_media_path($fallback);
+	}
+	return $thumbnail;
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 	agvs_admin_require_csrf();
 	try {
@@ -90,12 +114,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 				];
 			}
 			$primary["images"] = $images;
-			$thumbnail = agvs_normalize_media_path(
-				(string) ($existing["thumbnail"] ?? ""),
+			$thumbnail = admin_resolve_thumbnail(
+				$existing,
+				(string) ($images[0]["src"] ?? ""),
 			);
-			if ($thumbnail === "" && !empty($images[0]["src"])) {
-				$thumbnail = $images[0]["src"];
-			}
 			$records = [];
 			foreach (AGVS_LANGUAGES as $lang) {
 				$localExisting = admin_find(admin_items($type, $lang), $slug) ?? [];
@@ -142,9 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 				"title" => trim((string) $_POST["title"]),
 				"mediaLabel" => $kind === "youtube" ? "YouTube" : "MP4",
 				"type" => $kind,
-				"thumbnail" => agvs_normalize_media_path(
-					(string) ($existing["thumbnail"] ?? ""),
-				),
+				"thumbnail" => "",
 				"source" => trim((string) ($_POST["referenceUrl"] ?? "")),
 				"descriptions" => [],
 			]);
@@ -160,6 +180,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 				}
 				$record["poster"] = "";
 				$record["video"] = "";
+				$record["thumbnail"] = admin_resolve_thumbnail($existing);
 			} else {
 				$record["embed"] = "";
 				$record["poster"] = agvs_normalize_media_path(
@@ -174,9 +195,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 				} elseif ($record["video"] === "") {
 					throw new RuntimeException("MP4 upload is required.");
 				}
-				if ($record["thumbnail"] === "" && $record["poster"] !== "") {
-					$record["thumbnail"] = $record["poster"];
-				}
+				$record["thumbnail"] = admin_resolve_thumbnail(
+					$existing,
+					$record["poster"],
+				);
 			}
 			foreach (AGVS_LANGUAGES as $lang) {
 				$record["descriptions"][$lang] = trim(
@@ -190,11 +212,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 				$attachments[] = agvs_upload($_FILES["media"], "document");
 			}
 			$image = agvs_normalize_media_path((string) ($existing["image"] ?? ""));
-			$thumbnail = agvs_normalize_media_path(
-				(string) ($existing["thumbnail"] ?? ""),
-			);
-			if ($thumbnail === "") {
-				$thumbnail = $image;
+			$thumbnail = admin_resolve_thumbnail($existing, $image);
+			if ($image === "" && $thumbnail !== "") {
+				$image = $thumbnail;
 			}
 			$records = [];
 			foreach (AGVS_LANGUAGES as $lang) {
@@ -286,16 +306,17 @@ $edit["published"]
 	$edit["category"] ?? "agv",
 ) ?>"></label><label>모델 ID<input name="modelId" required value="<?= htmlspecialchars(
 	$edit["models"][0]["id"] ?? "default",
-) ?>"></label><?php
-if (
+) ?>"></label><?php if (
 	!empty($edit["thumbnail"]) ||
 	!empty($edit["models"][0]["images"])
-): ?><p>현재 이미지: <?= htmlspecialchars(
+): ?><p>현재 썸네일: <?= htmlspecialchars(
 	$edit["thumbnail"] ?: $edit["models"][0]["images"][0]["src"] ?? "",
-) ?> (<?= count(
+) ?> · 갤러리 <?= count(
  	$edit["models"][0]["images"] ?? [],
- ) ?>장) — 새 파일 업로드 시에만 추가됩니다.</p><?php endif;
-foreach (
+ ) ?>장 — 새 파일 업로드 시에만 추가됩니다.</p><?php endif; ?><label>썸네일 경로<input name="thumbnailPath" value="<?= htmlspecialchars(
+	$edit["thumbnail"] ?? "",
+) ?>" placeholder="img/... 또는 storage/uploads/images/..."></label><label>썸네일 이미지<input type="file" name="thumbnail" accept="image/jpeg,image/png,image/webp"></label>
+<?php foreach (
 	AGVS_LANGUAGES
 	as $lang
 ): ?><fieldset><legend><?= $lang ?></legend><label>제품명<input name="name_<?= $lang ?>" required value="<?= htmlspecialchars(
@@ -313,8 +334,7 @@ foreach (
 				[],
 		)
 		: "",
-) ?></textarea></label></fieldset><?php endforeach;
-?><label>제품 이미지<input type="file" name="media" accept="image/jpeg,image/png,image/webp"></label>
+) ?></textarea></label></fieldset><?php endforeach; ?><label>제품 이미지 (갤러리 추가)<input type="file" name="media" accept="image/jpeg,image/png,image/webp"></label>
 <?php elseif (
 	$type === "videos"
 ): ?><label>제목<input name="title" required value="<?= htmlspecialchars(
@@ -339,7 +359,9 @@ foreach (
 	trim(
 		($edit["thumbnail"] ?? "") . ($edit["video"] ? " / " . $edit["video"] : ""),
 	),
-) ?></p><?php endif; ?><label>MP4 파일<input type="file" name="media" accept="video/mp4"></label><?php foreach (
+) ?></p><?php endif; ?><label>썸네일 경로<input name="thumbnailPath" value="<?= htmlspecialchars(
+	$edit["thumbnail"] ?? "",
+) ?>" placeholder="img/... 또는 storage/uploads/images/..."></label><label>썸네일 이미지<input type="file" name="thumbnail" accept="image/jpeg,image/png,image/webp"></label><label>MP4 파일<input type="file" name="media" accept="video/mp4"></label><?php foreach (
 	AGVS_LANGUAGES
 	as $lang
 ): ?><label><?= $lang ?> 설명<textarea name="description_<?= $lang ?>"><?= htmlspecialchars(
@@ -357,10 +379,15 @@ foreach (
 	implode("\n", $local["detail"] ?? []),
 ) ?></textarea></label></fieldset><?php
 	endforeach;
-	if (!empty($edit["image"])): ?><p>현재 이미지: <?= htmlspecialchars(
-	$edit["image"],
+	if (
+		!empty($edit["image"]) ||
+		!empty($edit["thumbnail"])
+	): ?><p>현재 이미지: <?= htmlspecialchars(
+	($edit["thumbnail"] ?? "") !== "" ? $edit["thumbnail"] : $edit["image"] ?? "",
 ) ?></p><?php endif;
-	?><label>PDF 또는 Excel 첨부<input type="file" name="media" accept="application/pdf,.xls,.xlsx"></label><?php if (
+	?><label>썸네일 경로<input name="thumbnailPath" value="<?= htmlspecialchars(
+	$edit["thumbnail"] ?? "",
+) ?>" placeholder="img/... 또는 storage/uploads/images/..."></label><label>썸네일 이미지<input type="file" name="thumbnail" accept="image/jpeg,image/png,image/webp"></label><label>PDF 또는 Excel 첨부<input type="file" name="media" accept="application/pdf,.xls,.xlsx"></label><?php if (
 	!empty($edit["attachments"])
 ): ?><p>첨부: <?= htmlspecialchars(
 	implode(", ", array_column($edit["attachments"], "originalName")),

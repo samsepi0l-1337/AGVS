@@ -50,6 +50,8 @@ Default listen: `http://127.0.0.1:8850`
 
 All content routes require auth.
 
+### Full CRUD (structure + media + all langs)
+
 | Method | Path                            | Notes                                            |
 | ------ | ------------------------------- | ------------------------------------------------ |
 | GET    | `/api/content/products?lang=KR` | list products                                    |
@@ -61,10 +63,45 @@ All content routes require auth.
 | PUT    | `/api/content/archives/:slug`   | body = `{ KR, EN, JP }` archive records          |
 | DELETE | `/api/content/:type/:slug`      | delete by slug                                   |
 | POST   | `/api/content/upload`           | multipart `file` + `kind=image\|video\|document` |
-| GET    | `/api/content/ui/:lang`         | UI document (+ archive items overlay)            |
 
-`sort_order` is preserved on edit; media paths are normalized like PHP
+Writable via full CRUD: shared tables (`items`, `models`, `model_images`,
+`archives`, `videos`) plus their `*_i18n` rows.
+
+### i18n-only (translation workflow)
+
+Use these when translating KR → EN/JP. They **never** write slug, sort_order,
+thumbnail, media paths, attachments, or published flags.
+
+| Method | Path                                     | Body / notes                                    |
+| ------ | ---------------------------------------- | ----------------------------------------------- |
+| GET    | `/api/content/ui/:lang`                  | UI + archive items overlay                      |
+| GET    | `/api/content/ui/:lang?raw=1`            | stored chrome only (`archive.items` empty)      |
+| PUT    | `/api/content/ui/:lang`                  | UI JSON object; strips `archive.items` on write |
+| PUT    | `/api/content/products/:slug/i18n/:lang` | `{ name, models: [{ id, label, specs }] }`      |
+| PUT    | `/api/content/archives/:slug/i18n/:lang` | `{ title, body, detail }`                       |
+| PUT    | `/api/content/videos/:slug/i18n/:lang`   | `{ description }` (title/media stay shared)     |
+
+| Tables writable (i18n-only) | Tables not writable                     |
+| --------------------------- | --------------------------------------- |
+| `ui_documents`              | `items`, `models`, `model_images`       |
+| `item_i18n`, `model_i18n`   | `archives` (shared cols), attachments   |
+| `archive_i18n`              | `videos` (shared cols: title, media, …) |
+| `video_i18n`                | —                                       |
+
+`lang` must be `KR` \| `EN` \| `JP`. Unknown product model `id`s are rejected
+(structure changes belong on full CRUD). Do **not** use `rebuild-sqlite.php` as
+the day-to-day translation path.
+
+## Translator UI (PHP admin)
+
+1. Log into `admin/` (same SQLite).
+2. Open **번역** (`admin/translate.php`).
+3. Pick type (`UI 문구` / 제품 / 자료실 / 영상) and lang (`EN` or `JP`).
+4. Edit only the shown translation fields; KR reference is shown when useful.
+5. Archive list titles/bodies: use **자료실** translation, not the UI JSON.
+6. Structure/media: use the existing 제품·영상·자료실 screens.
+
+`sort_order` is preserved on full-CRUD edit; media paths are normalized like PHP
 `agvs_normalize_media_path`.
 
-The existing PHP `admin/` HTML UI still works against the same SQLite file. This
-API is the TypeScript admin backend for JSON clients / future UI wiring.
+The PHP `admin/` HTML UI and this TypeScript API share `data/agvs.sqlite`.

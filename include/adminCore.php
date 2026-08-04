@@ -148,6 +148,10 @@ function agvs_upload(array $file, string $kind): array
 	$name = bin2hex(random_bytes(16)) . "." . $ext;
 	$relative = "storage/uploads/" . $rules[$kind][2] . "/" . $name;
 	$target = AGVS_ADMIN_ROOT . "/" . $relative;
+	$dir = dirname($target);
+	if (!is_dir($dir) && !mkdir($dir, 0775, true) && !is_dir($dir)) {
+		throw new RuntimeException("Upload failed.");
+	}
 	if (!move_uploaded_file($file["tmp_name"], $target)) {
 		throw new RuntimeException("Upload failed.");
 	}
@@ -163,7 +167,7 @@ function agvs_admin_header(string $title): void
 {
 	?><!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="assets/admin.css"><title><?= htmlspecialchars(
 	$title,
-) ?></title></head><body><header><a href="index.php">AGVS 관리자</a><nav><a href="content.php?type=products">제품</a><a href="content.php?type=videos">영상</a><a href="content.php?type=archives">자료실</a><a href="logout.php">로그아웃</a></nav></header><main><?php
+) ?></title></head><body><header><a href="index.php">AGVS 관리자</a><nav><a href="content.php?type=products">제품</a><a href="content.php?type=videos">영상</a><a href="content.php?type=archives">자료실</a><a href="translate.php">번역</a><a href="logout.php">로그아웃</a></nav></header><main><?php
 }
 function agvs_admin_footer(): void
 {

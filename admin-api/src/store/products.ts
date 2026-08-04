@@ -1,16 +1,17 @@
-import { LANGUAGES, type Lang } from "../config.js";
-import { getDb, jsonDecodeArray, jsonEncode, nextSortOrder } from "../db.js";
-import { normalizeMediaPath } from "../media.js";
 import type {
 	ItemRow,
+	ModelI18nRow,
 	ModelImage,
 	ModelImageRow,
-	ModelI18nRow,
 	ModelRow,
 	ProductModel,
 	ProductRecord,
 } from "../types.js";
 import type { ProductI18nInput, ProductUpsertInput } from "../validation.js";
+
+import { LANGUAGES, type Lang } from "../config.js";
+import { getDb, jsonDecodeArray, jsonEncode, nextSortOrder } from "../db.js";
+import { normalizeMediaPath } from "../media.js";
 
 function isItemRow(value: unknown): value is ItemRow {
 	if (typeof value !== "object" || value === null) {
@@ -120,12 +121,11 @@ export function listProducts(lang: Lang = "KR"): ProductRecord[] {
 				continue;
 			}
 			const i18nRaw = modelI18nStmt.get(modelRaw.id, lang);
-			const label =
-				i18nRaw && isModelI18nRow(i18nRaw) ? i18nRaw.label : "";
+			const label = i18nRaw && isModelI18nRow(i18nRaw) ? i18nRaw.label : "";
 			const specs =
-				i18nRaw && isModelI18nRow(i18nRaw)
-					? parseSpecs(i18nRaw.specs_json)
-					: [];
+				i18nRaw && isModelI18nRow(i18nRaw) ?
+					parseSpecs(i18nRaw.specs_json)
+				:	[];
 			const images: ModelImage[] = [];
 			for (const imgRaw of imageStmt.all(modelRaw.id)) {
 				if (!isModelImageRow(imgRaw)) {
@@ -178,15 +178,17 @@ export function upsertProduct(recordsByLang: ProductUpsertInput): void {
 			.prepare(`SELECT sort_order FROM items WHERE slug = ?`)
 			.get(kr.slug);
 		const existingSort =
-			typeof existing === "object" &&
-			existing !== null &&
-			typeof Reflect.get(existing, "sort_order") === "number"
-				? Number(Reflect.get(existing, "sort_order"))
-				: null;
+			(
+				typeof existing === "object" &&
+				existing !== null &&
+				typeof Reflect.get(existing, "sort_order") === "number"
+			) ?
+				Number(Reflect.get(existing, "sort_order"))
+			:	null;
 		const sortOrder =
-			typeof kr.sortOrder === "number"
-				? kr.sortOrder
-				: (existingSort ?? nextSortOrder(db, "items"));
+			typeof kr.sortOrder === "number" ?
+				kr.sortOrder
+			:	(existingSort ?? nextSortOrder(db, "items"));
 
 		let thumb = normalizeMediaPath(kr.thumbnail);
 		const firstSrc = kr.models[0]?.images[0]?.src;
@@ -216,11 +218,13 @@ export function upsertProduct(recordsByLang: ProductUpsertInput): void {
 			.prepare(`SELECT id FROM models WHERE item_slug = ?`)
 			.all(kr.slug)
 			.map((row) =>
-				typeof row === "object" &&
-				row !== null &&
-				typeof Reflect.get(row, "id") === "number"
-					? Number(Reflect.get(row, "id"))
-					: null,
+				(
+					typeof row === "object" &&
+					row !== null &&
+					typeof Reflect.get(row, "id") === "number"
+				) ?
+					Number(Reflect.get(row, "id"))
+				:	null,
 			)
 			.filter((id): id is number => id !== null);
 
@@ -275,12 +279,7 @@ export function upsertProduct(recordsByLang: ProductUpsertInput): void {
 				if (mid === undefined) {
 					return;
 				}
-				modelI18n.run(
-					mid,
-					lang,
-					model.label,
-					jsonEncode(model.specs),
-				);
+				modelI18n.run(mid, lang, model.label, jsonEncode(model.specs));
 			});
 		}
 	});
@@ -321,7 +320,10 @@ export function upsertProductI18n(
 		) {
 			continue;
 		}
-		byKey.set(String(Reflect.get(raw, "model_key")), Number(Reflect.get(raw, "id")));
+		byKey.set(
+			String(Reflect.get(raw, "model_key")),
+			Number(Reflect.get(raw, "id")),
+		);
 	}
 
 	const upsert = db.transaction(() => {

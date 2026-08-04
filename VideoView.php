@@ -82,7 +82,7 @@ $pageTitle = $video["title"] . " | AGVS";
     >
     <link
     rel="stylesheet"
-    href="./stlye/layout.css?ver=20260804b"
+    href="./stlye/layout.css?ver=20260804c"
     >
     <link
     rel="stylesheet"

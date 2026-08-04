@@ -1,8 +1,9 @@
+import type { VideoI18nRow, VideoRecord, VideoRow } from "../types.js";
+import type { VideoI18nInput, VideoRecordInput } from "../validation.js";
+
 import { LANGUAGES, type Lang } from "../config.js";
 import { getDb, nextSortOrder } from "../db.js";
 import { normalizeMediaPath } from "../media.js";
-import type { VideoI18nRow, VideoRecord, VideoRow } from "../types.js";
-import type { VideoI18nInput, VideoRecordInput } from "../validation.js";
 
 function isVideoRow(value: unknown): value is VideoRow {
 	if (typeof value !== "object" || value === null) {
@@ -98,15 +99,17 @@ export function upsertVideo(record: VideoRecordInput): void {
 			.prepare(`SELECT sort_order FROM videos WHERE slug = ?`)
 			.get(record.slug);
 		const existingSort =
-			typeof existing === "object" &&
-			existing !== null &&
-			typeof Reflect.get(existing, "sort_order") === "number"
-				? Number(Reflect.get(existing, "sort_order"))
-				: null;
+			(
+				typeof existing === "object" &&
+				existing !== null &&
+				typeof Reflect.get(existing, "sort_order") === "number"
+			) ?
+				Number(Reflect.get(existing, "sort_order"))
+			:	null;
 		const sortOrder =
-			typeof record.sortOrder === "number"
-				? record.sortOrder
-				: (existingSort ?? nextSortOrder(db, "videos"));
+			typeof record.sortOrder === "number" ?
+				record.sortOrder
+			:	(existingSort ?? nextSortOrder(db, "videos"));
 
 		db.prepare(
 			`INSERT INTO videos

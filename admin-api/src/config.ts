@@ -1,6 +1,6 @@
+import dotenv from "dotenv";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import dotenv from "dotenv";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 export const REPO_ROOT = path.resolve(here, "../..");
@@ -13,9 +13,8 @@ function readEnv(name: string, fallback = ""): string {
 }
 
 const sqliteEnv = readEnv("AGVS_SQLITE_PATH", "data/agvs.sqlite");
-export const SQLITE_PATH = path.isAbsolute(sqliteEnv)
-	? sqliteEnv
-	: path.join(REPO_ROOT, sqliteEnv);
+export const SQLITE_PATH =
+	path.isAbsolute(sqliteEnv) ? sqliteEnv : path.join(REPO_ROOT, sqliteEnv);
 
 export const ADMIN_PASSWORD_HASH = readEnv("AGVS_ADMIN_PASSWORD_HASH");
 export const SESSION_SECRET = readEnv("AGVS_ADMIN_SESSION_SECRET");

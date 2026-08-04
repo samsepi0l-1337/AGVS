@@ -136,10 +136,31 @@ function agvs_db_schema_sql(): string
 	SQL;
 }
 
+/**
+ * Add thumbnail columns on older DBs created before the field existed.
+ * CREATE TABLE IF NOT EXISTS does not alter existing tables.
+ */
+function agvs_db_ensure_thumbnail_columns(?PDO $pdo = null): void
+{
+	$pdo = $pdo ?? agvs_db();
+	foreach (["items", "archives", "videos"] as $table) {
+		$cols = $pdo->query("PRAGMA table_info(" . $table . ")")->fetchAll();
+		$names = array_column($cols, "name");
+		if (!in_array("thumbnail", $names, true)) {
+			$pdo->exec(
+				"ALTER TABLE " .
+					$table .
+					" ADD COLUMN thumbnail TEXT NOT NULL DEFAULT ''",
+			);
+		}
+	}
+}
+
 function agvs_db_install_schema(?PDO $pdo = null): void
 {
 	$pdo = $pdo ?? agvs_db();
 	$pdo->exec(agvs_db_schema_sql());
+	agvs_db_ensure_thumbnail_columns($pdo);
 }
 
 /**

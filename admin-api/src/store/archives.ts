@@ -1,6 +1,3 @@
-import { LANGUAGES, type Lang } from "../config.js";
-import { getDb, jsonDecodeArray, jsonEncode, nextSortOrder } from "../db.js";
-import { normalizeMediaPath } from "../media.js";
 import type {
 	ArchiveAttachment,
 	ArchiveI18nRow,
@@ -8,6 +5,10 @@ import type {
 	ArchiveRow,
 } from "../types.js";
 import type { ArchiveI18nInput, ArchiveUpsertInput } from "../validation.js";
+
+import { LANGUAGES, type Lang } from "../config.js";
+import { getDb, jsonDecodeArray, jsonEncode, nextSortOrder } from "../db.js";
+import { normalizeMediaPath } from "../media.js";
 
 function isArchiveRow(value: unknown): value is ArchiveRow {
 	if (typeof value !== "object" || value === null) {
@@ -122,15 +123,17 @@ export function upsertArchive(recordsByLang: ArchiveUpsertInput): void {
 			.prepare(`SELECT sort_order FROM archives WHERE slug = ?`)
 			.get(kr.slug);
 		const existingSort =
-			typeof existing === "object" &&
-			existing !== null &&
-			typeof Reflect.get(existing, "sort_order") === "number"
-				? Number(Reflect.get(existing, "sort_order"))
-				: null;
+			(
+				typeof existing === "object" &&
+				existing !== null &&
+				typeof Reflect.get(existing, "sort_order") === "number"
+			) ?
+				Number(Reflect.get(existing, "sort_order"))
+			:	null;
 		const sortOrder =
-			typeof kr.sortOrder === "number"
-				? kr.sortOrder
-				: (existingSort ?? nextSortOrder(db, "archives"));
+			typeof kr.sortOrder === "number" ?
+				kr.sortOrder
+			:	(existingSort ?? nextSortOrder(db, "archives"));
 
 		let image = normalizeMediaPath(kr.image);
 		let thumb = normalizeMediaPath(kr.thumbnail);
@@ -165,13 +168,7 @@ export function upsertArchive(recordsByLang: ArchiveUpsertInput): void {
 		);
 		for (const lang of LANGUAGES) {
 			const rec = recordsByLang[lang];
-			i18n.run(
-				kr.slug,
-				lang,
-				rec.title,
-				rec.body,
-				jsonEncode(rec.detail),
-			);
+			i18n.run(kr.slug, lang, rec.title, rec.body, jsonEncode(rec.detail));
 		}
 	});
 	upsert();

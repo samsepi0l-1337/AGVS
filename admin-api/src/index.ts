@@ -1,7 +1,8 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import { assertConfig, ADMIN_API_PORT } from "./config.js";
+
+import { ADMIN_API_PORT, assertConfig } from "./config.js";
 import { getDb } from "./db.js";
 import { authRouter } from "./routes/auth.js";
 import { contentRouter } from "./routes/content.js";
