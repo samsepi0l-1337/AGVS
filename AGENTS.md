@@ -24,9 +24,9 @@
   (Superseded 2026-07-30: JS-fetched `data-include` / `partials/` /
   `js/layout.js` are gone. Superseded 2026-08-05: the single `js/main.js` IIFE
   is now TypeScript ES modules under `src/scripts/`.) Shared chrome must not
-  depend on `.OverView`;
-  DetailList matches home header hover; Top uses snap `go(0)` when available
-  else native scroll; logo links to `index.php`; Contact Us stays `#`.
+  depend on `.OverView`; DetailList matches home header hover; Top uses snap
+  `go(0)` when available else native scroll; logo links to `index.php`; Contact
+  Us stays `#`.
 - GNB About top label is language-aware (KR `회사소개` / EN `About` / JP
   `会社紹介`); About submenu labels `Overview` and `AGV Video` stay English in
   all languages.
@@ -50,27 +50,24 @@
 - Static AGVS marketing site (multi-page): plain HTML/CSS/vanilla JS with
   KR/EN/JP i18n via `src/includes/core/lang.php` and cookie `agvs_lang`; assets
   under `src/assets/{css,js,img,video}/`. The old `stlye/` misspelling is
-  retired (2026-08-05). Wrappers keep an
-  intentional `max-width: 1920px` even when inner widths are %-based; 1920px
-  parity remains the acceptance criterion. GNB top-level label spelling is
-  Technology.
+  retired (2026-08-05). Wrappers keep an intentional `max-width: 1920px` even
+  when inner widths are %-based; 1920px parity remains the acceptance criterion.
+  GNB top-level label spelling is Technology.
 - Runtime catalog, UI chrome, videos, and archive copy live in
   `data/agvs.sqlite`, read through `src/includes/core/contentStore.php` and
-  `agvs_t()`.
-  `data/items{KR|EN|JP}.json`, `ui*.json`, and `videos.json` are rebuild seeds
-  only (`scripts/rebuild-sqlite.php`).
+  `agvs_t()`. `data/items{KR|EN|JP}.json`, `ui*.json`, and `videos.json` are
+  rebuild seeds only (`scripts/rebuild-sqlite.php`).
 - Pages include `index.php`, `DetailList.php`, `view.php` (model
   `<select class="ViewModelSelect">` styled like `HeaderLangBtn` but wider;
   drives specs/images; also `?archive=slug` for Archive detail), `Overview.php`,
   `Video.php`, `VideoView.php`, `Archive.php`, `Sitemap.php`, plus PHP `admin/`
   and `admin/translate.php` (i18n-only editing).
 - `Overview.php` uses its own page-local header (not
-  `src/includes/layout/header.html`);
-  copy is keyed under `overview.*` in SQLite UI payloads via `agvs_t()`.
-  Scrolled header goes white with `#333333` text and keeps blue hover; avoid
-  last-child-only color overrides. Japanese needs `html[lang="ja"]` tweaks
-  (`line-break: strict` and related) because fixed `minmax()` floors overflow
-  longer JP text.
+  `src/includes/layout/header.html`); copy is keyed under `overview.*` in SQLite
+  UI payloads via `agvs_t()`. Scrolled header goes white with `#333333` text and
+  keeps blue hover; avoid last-child-only color overrides. Japanese needs
+  `html[lang="ja"]` tweaks (`line-break: strict` and related) because fixed
+  `minmax()` floors overflow longer JP text.
 - `Archive.php` (자료실): GNB top-level **plain link only** (no submenu); hover
   matches other GNB labels (`#Gnb > li:hover`). Sitemap lists under 고객지원.
   Archive items live in SQLite (`archive_i18n` and related tables) and open via
@@ -97,14 +94,13 @@
   `max-width: 767.98px` height 250px with centered title text and
   `padding-top: 80px` so copy centers in the visible area below the fixed
   header. Use `agvs_asset_url()` for language-stable image and media paths.
-- `src/api/` (was `admin-api/`) is a strict TypeScript Express JSON API
-  (session auth, SQLite
-  CRUD, i18n-only PUT routes, uploads) sharing `data/agvs.sqlite` with PHP;
-  `pnpm run admin:dev` with repo-root `.env` (`AGVS_ADMIN_PASSWORD_HASH`,
-  `AGVS_ADMIN_SESSION_SECRET`). PHP `src/admin/` is not fully wired to the API.
-  Root `package.json` carries `"type": "module"` — the API's compiled output
-  (`dist/api/`) needs it, and the old `admin-api/package.json` that used to
-  supply it is gone.
+- `src/api/` (was `admin-api/`) is a strict TypeScript Express JSON API (session
+  auth, SQLite CRUD, i18n-only PUT routes, uploads) sharing `data/agvs.sqlite`
+  with PHP; `pnpm run admin:dev` with repo-root `.env`
+  (`AGVS_ADMIN_PASSWORD_HASH`, `AGVS_ADMIN_SESSION_SECRET`). PHP `src/admin/` is
+  not fully wired to the API. Root `package.json` carries `"type": "module"` —
+  the API's compiled output (`dist/api/`) needs it, and the old
+  `admin-api/package.json` that used to supply it is gone.
 - Package manager is pnpm; local and CI entrypoint is `pnpm run build`
   (`build:js` → `build:static` → Prettier format). Browser TypeScript compiles
   via `tsconfig.scripts.json` (`src/scripts` → `src/assets/js`, generated and
@@ -121,6 +117,6 @@
   `parser: "php"` override; the format glob covers no `.ts`. **GitHub Pages**
   (`.github/workflows/pages.yml`): push to `main` deploys `_site/` as static
   marketing only—`src/admin/` and `src/api/` do not run on Pages (use local PHP
-  + `pnpm run admin:dev`).
+  - `pnpm run admin:dev`).
 - macOS Finder duplicate copies (`* 2.*` files and empty `* 2` dirs) are junk;
   delete them and keep them gitignored (do not treat as source files).

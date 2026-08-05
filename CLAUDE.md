@@ -117,8 +117,7 @@ it. Note that `pnpm run format` does **not** cover `.ts` — its glob is
 `{js,css,html,json,md,php,yml,yaml}`, so TypeScript is formatted by the editor
 only.
 
-The old `stlye/` misspelling is gone; stylesheets live under
-`src/assets/css/`.
+The old `stlye/` misspelling is gone; stylesheets live under `src/assets/css/`.
 
 ## Architecture
 
@@ -127,12 +126,12 @@ The old `stlye/` misspelling is gone; stylesheets live under
 into every page with
 `<?php include __DIR__ . "/includes/layout/header.html"; ?>` — `__DIR__`, so the
 include resolves independently of the server's working directory. `layout.css`
-holds every header and footer rule; `pages/home.css` is index-only (Section01–03,
-`.ScrollBtn`, `.BgVideo`) and `pages/detailList.css` is DetailList-only. When
-those rules were lifted out of `home.css` their `.OverView` ancestor prefix was
-**removed on purpose**, because `DetailList.php` has no `.OverView` wrapper —
-re-adding that prefix silently unstyles the chrome on DetailList while leaving
-index looking fine.
+holds every header and footer rule; `pages/home.css` is index-only
+(Section01–03, `.ScrollBtn`, `.BgVideo`) and `pages/detailList.css` is
+DetailList-only. When those rules were lifted out of `home.css` their
+`.OverView` ancestor prefix was **removed on purpose**, because `DetailList.php`
+has no `.OverView` wrapper — re-adding that prefix silently unstyles the chrome
+on DetailList while leaving index looking fine.
 
 Consequences for the pages' `<head>`s: `DetailList.php` does not load
 `home.css`, so it also must not load the Material Symbols font (that icon font
@@ -148,9 +147,10 @@ extensionless import ships a 404. `tsconfig.scripts.json` uses
 `moduleResolution: "bundler"` precisely so `.js` specifiers resolve to `.ts`
 sources.
 
-- `core/` — `motion` (easing, `windowScrollDuration`), `windowScroll` (the single
-  rAF scroll; the active animation is private to this module and reachable only
-  through `finishActiveWindowScroll()`), `overlayState`, `dom` helpers.
+- `core/` — `motion` (easing, `windowScrollDuration`), `windowScroll` (the
+  single rAF scroll; the active animation is private to this module and
+  reachable only through `finishActiveWindowScroll()`), `overlayState`, `dom`
+  helpers.
 - `layout/` — `gnb`, `contactPop`, `footerLang`, `footerSns`, `topButton`.
 - `home/` — `sectionSnap`, `sectionButtons`, `anchorNav`, `dragScroll`, `sec02`.
 - `detail/` — `detailList`.
@@ -184,12 +184,11 @@ the footer is auto-height, so `topOf()` clamps every target to
 `scrollHeight - innerHeight`; that clamp is what makes the short footer
 reachable as the final snap point. `wheel` and `touchmove` are registered
 `{passive: false}` and call `preventDefault()`, so **native scrolling is
-entirely replaced** — a `locked` timer is what enforces
-one-gesture-one-section. It is `LOCK_MS = windowScrollDuration + 100`, i.e.
-1350ms, derived in `home/sectionSnap.ts` from the 1250ms scroll in
-`core/motion.ts`. (An earlier version of this file said 900ms; that was stale.)
-The `lockVersion` counter is load-bearing — it stops a stale timer from
-releasing a newer lock.
+entirely replaced** — a `locked` timer is what enforces one-gesture-one-section.
+It is `LOCK_MS = windowScrollDuration + 100`, i.e. 1350ms, derived in
+`home/sectionSnap.ts` from the 1250ms scroll in `core/motion.ts`. (An earlier
+version of this file said 900ms; that was stale.) The `lockVersion` counter is
+load-bearing — it stops a stale timer from releasing a newer lock.
 
 **GNB dropdown (`initGnb`).** Submenus are `<ul>`s nested inside each
 `#Gnb > li`, but they are positioned against **`#Gnb`, not the `li`**. This is
