@@ -5,6 +5,10 @@ import { detailListPage } from "./templates/detailList.js";
 import { indexPage } from "./templates/index.js";
 import { sitemapPage } from "./templates/sitemap.js";
 import { videoPage } from "./templates/video.js";
+import { archivePage } from "./templates/archive.js";
+import { overviewPage } from "./templates/overview.js";
+import { videoViewPage } from "./templates/videoView.js";
+import { viewPage } from "./templates/view.js";
 
 export interface PageData {
 	catalog: Catalog;
@@ -25,4 +29,8 @@ export const pages: PageModule[] = [
 	detailListPage,
 	sitemapPage,
 	videoPage,
+	archivePage,
+	overviewPage,
+	videoViewPage,
+	viewPage,
 ];
