@@ -92,16 +92,16 @@ thumbnail, media paths, attachments, or published flags.
 (structure changes belong on full CRUD). Do **not** use `rebuild-sqlite.php` as
 the day-to-day translation path.
 
-## Translator UI (PHP admin)
+## Translator UI (admin)
 
-1. Log into `admin/` (same SQLite).
-2. Open **번역** (`admin/translate.php`).
+1. Log into `/admin` (served by this API, same SQLite).
+2. Open **번역**.
 3. Pick type (`UI 문구` / 제품 / 자료실 / 영상) and lang (`EN` or `JP`).
 4. Edit only the shown translation fields; KR reference is shown when useful.
 5. Archive list titles/bodies: use **자료실** translation, not the UI JSON.
 6. Structure/media: use the existing 제품·영상·자료실 screens.
 
-`sort_order` is preserved on full-CRUD edit; media paths are normalized like PHP
-`agvs_normalize_media_path`.
+`sort_order` is preserved on full-CRUD edit; media paths are normalized the same
+way as the retired PHP `agvs_normalize_media_path`.
 
-The PHP `admin/` HTML UI and this TypeScript API share `data/agvs.sqlite`.
+The `/admin` UI and this TypeScript API share `data/agvs.sqlite`.

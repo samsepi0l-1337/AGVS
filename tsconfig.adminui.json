@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		"rootDir": "src/admin/ts",
+		"outDir": "src/admin/js",
+		"target": "es2022",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"lib": ["es2022", "dom", "dom.iterable"],
+		"types": [],
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"verbatimModuleSyntax": true,
+		"isolatedModules": true,
+		"noUncheckedIndexedAccess": false,
+		"sourceMap": true,
+		"declaration": false
+	},
+	"files": [
+		"src/admin/ts/api.ts",
+		"src/admin/ts/auth.ts",
+		"src/admin/ts/content.ts",
+		"src/admin/ts/dom.ts",
+		"src/admin/ts/main.ts",
+		"src/admin/ts/model.ts",
+		"src/admin/ts/translate.ts",
+		"src/admin/ts/types.ts",
+		"src/admin/ts/ui.ts"
+	]
+}

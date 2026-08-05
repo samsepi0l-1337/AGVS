@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1"
+		/>
+		<meta
+			name="color-scheme"
+			content="light"
+		/>
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="default-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'self'"
+		/>
+		<title>AGVS 관리자</title>
+		<link
+			rel="stylesheet"
+			href="assets/admin.css"
+		/>
+	</head>
+	<body>
+		<div
+			id="bootView"
+			class="bootView"
+			role="status"
+		>
+			<strong>AGVS 관리자</strong>
+			<span>세션을 확인하고 있습니다…</span>
+		</div>
+
+		<section
+			id="loginView"
+			class="login"
+			hidden
+		>
+			<form
+				id="loginForm"
+				class="loginPanel"
+			>
+				<p class="eyebrow">CONTENT CONTROL</p>
+				<h1>AGVS 관리자</h1>
+				<p>
+					환경변수
+					<code>AGVS_ADMIN_PASSWORD_HASH</code>
+					를 설정한 계정으로 로그인합니다.
+				</p>
+				<p
+					id="loginError"
+					class="error"
+					role="alert"
+					hidden
+				></p>
+				<label
+					class="field"
+					for="adminPassword"
+				>
+					<span class="fieldLabel">비밀번호</span>
+					<input
+						id="adminPassword"
+						name="password"
+						type="password"
+						autocomplete="current-password"
+						required
+					/>
+				</label>
+				<button
+					id="loginButton"
+					type="submit"
+				>
+					로그인
+				</button>
+			</form>
+		</section>
+
+		<div
+			id="appView"
+			hidden
+		>
+			<header class="adminHeader">
+				<a
+					class="brand"
+					href="#dashboard"
+					data-nav="dashboard"
+				>
+					AGVS 관리자
+				</a>
+				<nav aria-label="관리 메뉴">
+					<a
+						href="#content/products"
+						data-nav="products"
+					>
+						제품
+					</a>
+					<a
+						href="#content/videos"
+						data-nav="videos"
+					>
+						영상
+					</a>
+					<a
+						href="#content/archives"
+						data-nav="archives"
+					>
+						자료실
+					</a>
+					<a
+						href="#translate"
+						data-nav="translate"
+					>
+						번역
+					</a>
+					<button
+						id="logoutButton"
+						class="headerButton"
+						type="button"
+					>
+						로그아웃
+					</button>
+				</nav>
+			</header>
+			<main
+				id="adminMain"
+				tabindex="-1"
+			></main>
+		</div>
+
+		<script
+			type="module"
+			src="js/main.js"
+		></script>
+	</body>
+</html>
