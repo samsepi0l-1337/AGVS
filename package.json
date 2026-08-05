@@ -1,5 +1,6 @@
 {
 	"private": true,
+	"type": "module",
 	"devDependencies": {
 		"@prettier/plugin-php": "^0.22.4",
 		"@trivago/prettier-plugin-sort-imports": "^6.0.2",
@@ -16,13 +17,16 @@
 		"typescript": "^7.0.2"
 	},
 	"scripts": {
-		"build": "pnpm run build:static && pnpm run format",
+		"build": "pnpm run build:js && pnpm run build:static && pnpm run format",
+		"build:js": "tsc -p tsconfig.scripts.json",
 		"build:static": "bash scripts/build-static.sh",
 		"rebuild:db": "php scripts/rebuild-sqlite.php",
-		"admin:dev": "tsx watch admin-api/src/index.ts",
-		"admin:build": "tsc -p admin-api/tsconfig.json",
-		"admin:start": "node admin-api/dist/index.js",
-		"admin:typecheck": "tsc -p admin-api/tsconfig.json --noEmit",
+		"admin:dev": "tsx watch src/api/index.ts",
+		"admin:build": "tsc -p tsconfig.api.json",
+		"admin:start": "node dist/api/index.js",
+		"admin:typecheck": "tsc -p tsconfig.api.json --noEmit",
+		"scripts:typecheck": "tsc -p tsconfig.scripts.json --noEmit",
+		"scripts:watch": "tsc -p tsconfig.scripts.json --watch",
 		"format": "prettier --ignore-path .prettierignore --write \"**/*.{js,css,html,json,md,php,yml,yaml}\" \"_site/**/*.{js,css,html,json}\"",
 		"format:check": "prettier --ignore-path .prettierignore --check \"**/*.{js,css,html,json,md,php,yml,yaml}\" \"_site/**/*.{js,css,html,json}\""
 	},

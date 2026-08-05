@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-# PHP include 를 실제로 실행해 정적 HTML 로 렌더한 뒤 _site/ 에 배포본을 만든다.
+# src/ PHP 페이지를 실행해 정적 HTML 로 렌더한 뒤 _site/ 에 배포본을 만든다.
 # GitHub Pages 는 PHP 를 실행하지 않으므로, 빌드 시점에 헤더/푸터를 미리 합쳐 둔다.
 # 언어별 HTML: KR → _site/*.html, EN → _site/en/*.html, JP → _site/jp/*.html
-# 에셋(stlye/js/img/video)은 _site/ 루트에 한 번만 복사하고, en/jp 페이지는 ../ 로 참조한다.
+# src/assets 는 _site/assets 로 한 번만 복사하고, en/jp 페이지는 ../assets 로 참조한다.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SRC="$ROOT/src"
 OUT="$ROOT/_site"
 PAGES=(index DetailList Overview Sitemap Video Archive)
-ASSETS=(stlye js img video)
+ASSETS=(assets)
 
 command -v php >/dev/null 2>&1 || { echo "php 가 필요합니다."; exit 1; }
 
@@ -22,15 +23,15 @@ if [ ! -f "$ROOT/data/agvs.sqlite" ]; then
     || { echo "FAIL: SQLite 콘텐츠 DB를 생성하지 못했습니다."; exit 1; }
 fi
 
-SLUGS="$(php -r 'require "'"$ROOT"'/include/contentStore.php"; foreach(agvs_load_catalog("KR")["items"] as $i) echo $i["slug"],"\n";')" \
+SLUGS="$(php -r 'require "'"$SRC"'/includes/core/contentStore.php"; foreach(agvs_load_catalog("KR")["items"] as $i) echo $i["slug"],"\n";')" \
   || { echo "FAIL: 카탈로그에서 슬러그 목록을 읽지 못했습니다."; exit 1; }
 [ -n "$SLUGS" ] || { echo "FAIL: 카탈로그에 항목이 없습니다."; exit 1; }
 
-VIDEO_SLUGS="$(php -r 'require "'"$ROOT"'/include/contentStore.php"; foreach(agvs_load_videos_document()["videos"] as $v) echo $v["slug"],"\n";')" \
+VIDEO_SLUGS="$(php -r 'require "'"$SRC"'/includes/core/contentStore.php"; foreach(agvs_load_videos_document()["videos"] as $v) echo $v["slug"],"\n";')" \
   || { echo "FAIL: 영상 카탈로그에서 슬러그 목록을 읽지 못했습니다."; exit 1; }
 [ -n "$VIDEO_SLUGS" ] || { echo "FAIL: 영상 카탈로그에 항목이 없습니다."; exit 1; }
 
-ARCHIVE_SLUGS="$(php -r 'require "'"$ROOT"'/include/contentStore.php"; foreach(agvs_load_archive_items("KR") as $i) echo $i["slug"],"\n";')" \
+ARCHIVE_SLUGS="$(php -r 'require "'"$SRC"'/includes/core/contentStore.php"; foreach(agvs_load_archive_items("KR") as $i) echo $i["slug"],"\n";')" \
   || { echo "FAIL: 자료실 슬러그 목록을 읽지 못했습니다."; exit 1; }
 [ -n "$ARCHIVE_SLUGS" ] || { echo "FAIL: 자료실에 항목이 없습니다."; exit 1; }
 
@@ -51,15 +52,15 @@ render_locale() {
 
   local page
   for page in "${PAGES[@]}"; do
-    render_php "$LANG_CODE" "$ROOT/$page.php" "$DEST/$page.html"
+    render_php "$LANG_CODE" "$SRC/$page.php" "$DEST/$page.html"
   done
 
   # 아이템 상세: view/ 하위 없이 flat 하게 쓴다 — 헤더/푸터의 href 와
-  # ./img/... 상대 경로가 <base> 나 depth prefix 없이도 맞는다(루트 로케일).
+  # ./assets/img/... 상대 경로가 <base> 나 depth prefix 없이도 맞는다(루트 로케일).
   local slug slugCount=0
   while IFS= read -r slug; do
     [ -n "$slug" ] || continue
-    BUILD_ITEM="$slug" render_php "$LANG_CODE" "$ROOT/view.php" "$DEST/view-$slug.html"
+    BUILD_ITEM="$slug" render_php "$LANG_CODE" "$SRC/view.php" "$DEST/view-$slug.html"
     slugCount=$((slugCount + 1))
   done <<< "$SLUGS"
 
@@ -71,7 +72,7 @@ render_locale() {
   local videoSlugCount=0
   while IFS= read -r slug; do
     [ -n "$slug" ] || continue
-    BUILD_ITEM="$slug" render_php "$LANG_CODE" "$ROOT/VideoView.php" "$DEST/video-$slug.html"
+    BUILD_ITEM="$slug" render_php "$LANG_CODE" "$SRC/VideoView.php" "$DEST/video-$slug.html"
     videoSlugCount=$((videoSlugCount + 1))
   done <<< "$VIDEO_SLUGS"
 
@@ -83,7 +84,7 @@ render_locale() {
   local archiveSlugCount=0
   while IFS= read -r slug; do
     [ -n "$slug" ] || continue
-    BUILD_ARCHIVE="$slug" render_php "$LANG_CODE" "$ROOT/view.php" "$DEST/archive-$slug.html"
+    BUILD_ARCHIVE="$slug" render_php "$LANG_CODE" "$SRC/view.php" "$DEST/archive-$slug.html"
     archiveSlugCount=$((archiveSlugCount + 1))
   done <<< "$ARCHIVE_SLUGS"
 
@@ -105,11 +106,11 @@ render_locale() {
     perl -pi -e 's{download\.php\?id=([^"&]+)(?:&amp;|&)name=[^"]*}{my $id=$1; $id=~s/\+/ /g; $id=~s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg; $id}ge' "$f"
   done
 
-  # en/jp 하위 디렉터리: ./stlye ./js ./img ./video → ../… (DetailList.html 등 페이지 링크는 유지)
+  # en/jp 하위 디렉터리: ./assets ./storage → ../… (DetailList.html 등 페이지 링크는 유지)
   case "$DEST" in
     */en|*/jp)
       perl -pi -e 's/\b(href|src|poster)="\.\//$1="..\//g' "$DEST"/*.html
-      perl -pi -e 's/\b(href|src|poster)="((?:img|stlye|js|video|storage)\/)/$1="..\/$2/g' "$DEST"/*.html
+      perl -pi -e 's/\b(href|src|poster)="((?:assets|storage)\/)/$1="..\/$2/g' "$DEST"/*.html
       ;;
   esac
 }
@@ -122,7 +123,7 @@ render_locale EN "$OUT/en"
 render_locale JP "$OUT/jp"
 
 for dir in "${ASSETS[@]}"; do
-  [ -d "$ROOT/$dir" ] && cp -R "$ROOT/$dir" "$OUT/$dir"
+  [ -d "$SRC/$dir" ] && cp -R "$SRC/$dir" "$OUT/$dir"
 done
 
 # 자료실 첨부(storage/uploads) — backups/trash 는 제외. en/jp 는 ../storage/ 로 참조.
@@ -161,7 +162,7 @@ shopt -u nullglob
 
 # 카탈로그가 참조하는 이미지가 빌드 결과물(_site/)에 실제로 존재하는지 검증한다.
 # 소스 트리에만 있고 복사가 안 됐거나, 애초에 존재하지 않는 경로 오타를 잡아낸다.
-IMG_SRCS="$(php -r 'require "'"$ROOT"'/include/contentStore.php"; foreach(agvs_load_catalog("KR")["items"] as $i) foreach($i["models"] as $m) if(!empty($m["images"])) foreach($m["images"] as $img) echo $img["src"],"\n";')" \
+IMG_SRCS="$(php -r 'require "'"$SRC"'/includes/core/contentStore.php"; foreach(agvs_load_catalog("KR")["items"] as $i) foreach($i["models"] as $m) if(!empty($m["images"])) foreach($m["images"] as $img) echo $img["src"],"\n";')" \
   || { echo "FAIL: 카탈로그에서 이미지 경로를 읽지 못했습니다."; exit 1; }
 [ -n "$IMG_SRCS" ] || { echo "FAIL: 카탈로그에 이미지가 없습니다."; exit 1; }
 
@@ -169,10 +170,10 @@ IMG_SRCS="$(php -r 'require "'"$ROOT"'/include/contentStore.php"; foreach(agvs_l
 # [ -f ... ] 만으로는 Heavy/01.JPG 같은 대소문자 불일치도 통과해 버리지만,
 # GitHub Pages 는 대소문자를 구분하므로 실제 배포에서는 404 가 된다.
 # 또한 크기가 0 이거나 실제로는 HTML 오류 페이지를 .jpg 로 저장한 경우도 걸러낸다.
-# 에셋은 루트에만 있으므로 검사는 $OUT/$imgSrc 기준이다.
+# 에셋은 assets 하위에만 있으므로 검사는 $OUT/assets/$imgSrc 기준이다.
 while IFS= read -r imgSrc; do
   [ -n "$imgSrc" ] || continue
-  imgPath="$OUT/$imgSrc"
+  imgPath="$OUT/assets/$imgSrc"
   imgDir="$(dirname "$imgPath")"
   imgBase="$(basename "$imgSrc")"
 

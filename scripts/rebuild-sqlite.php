@@ -10,7 +10,7 @@ declare(strict_types=1);
  */
 
 $root = dirname(__DIR__);
-require_once $root . "/include/db.php";
+require_once $root . "/src/includes/core/db.php";
 
 $langs = ["KR", "EN", "JP"];
 

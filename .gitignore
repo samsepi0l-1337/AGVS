@@ -6,7 +6,9 @@ storage/uploads/
 data/*.sqlite-journal
 data/*.sqlite-wal
 data/*.sqlite-shm
-admin-api/dist/
+dist/
+# Compiled browser output (built by CI)
+src/assets/js/
 .env
 .env.local
 

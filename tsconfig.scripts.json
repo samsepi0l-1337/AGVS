@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"rootDir": "src/scripts",
+		"outDir": "src/assets/js",
+		"target": "es2022",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"lib": ["es2022", "dom", "dom.iterable"],
+		"types": [],
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"verbatimModuleSyntax": true,
+		"isolatedModules": true,
+		"noUncheckedIndexedAccess": false,
+		"sourceMap": true,
+		"declaration": false
+	},
+	"include": ["src/scripts/**/*.ts"]
+}

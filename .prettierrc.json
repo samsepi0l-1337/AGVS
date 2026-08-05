@@ -19,7 +19,7 @@
 	"phpVersion": "8.2",
 	"overrides": [
 		{
-			"files": [ "include/**/*.html" ],
+			"files": [ "src/includes/**/*.html" ],
 			"options": { "parser": "php" }
 		}
 	]
