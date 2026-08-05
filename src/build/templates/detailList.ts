@@ -1,7 +1,7 @@
 import type { PageModule } from "../pages.js";
 import type { CatalogItem } from "../types.js";
 
-import { esc } from "../html.js";
+import { esc, phpJsonEncode } from "../html.js";
 import { renderContactPop } from "./contactPop.js";
 import { renderFooter } from "./footer.js";
 import { renderHeader } from "./header.js";
@@ -61,6 +61,55 @@ export const detailListPage: PageModule = {
 		const items = data.catalog.items
 			.map((item) => renderItem(ctx, item))
 			.join("");
+		// Deliberately not esc(): this mirrors PHP json_encode() in JavaScript source.
+		const encodedCategories = phpJsonEncode(
+			data.catalog.categories.map((category) => ({
+				id: category.id,
+				title: category.title,
+			})),
+		);
+		const initialCategoryScript = `<script>
+	(function () {
+		var root = document.querySelector(".DetailListMain");
+		if (!root) return;
+		var categories = ${encodedCategories};
+		var requested = new URLSearchParams(window.location.search).get("category");
+		var category = categories.filter(function (candidate) {
+			return candidate.id === requested;
+		})[0] || categories.filter(function (candidate) {
+			return candidate.id === "all";
+		})[0];
+		if (!category) return;
+
+		var banner = root.querySelector(".TopBg");
+		if (banner) {
+			banner.classList.forEach(function (className) {
+				if (className !== "TopBg" && className.indexOf("TopBg") === 0) {
+					banner.classList.remove(className);
+				}
+			});
+			banner.classList.add(
+				"TopBg" + category.id.charAt(0).toUpperCase() + category.id.slice(1),
+			);
+		}
+
+		var title = root.querySelector(".TopBg p");
+		if (title) title.textContent = category.title;
+
+		root.querySelectorAll(".ListTitle button[data-category]").forEach(function (button) {
+			var on = button.getAttribute("data-category") === category.id;
+			button.classList.toggle("isOn", on);
+			button.setAttribute("aria-pressed", on ? "true" : "false");
+		});
+
+		root.querySelectorAll(".ListItemWrap .ItemWrap").forEach(function (item) {
+			var hidden =
+				category.id !== "all" &&
+				item.getAttribute("data-category") !== category.id;
+			item.classList.toggle("isHidden", hidden);
+		});
+	})();
+</script>`;
 
 		return `<!doctype html>
 <html lang="${esc(ctx.htmlLang)}">
@@ -146,6 +195,7 @@ export const detailListPage: PageModule = {
 				<div class="ListItemWrap">
 					${items}
 				</div>
+				${initialCategoryScript}
 				<p
 					class="ListEmpty"
 					hidden

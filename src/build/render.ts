@@ -70,9 +70,49 @@ function fixLocalePaths(html: string): string {
 		.replace(/\b(href|src|poster)="((?:assets|storage)\/)/g, '$1="../$2');
 }
 
-function rewrittenHtml(html: string, nestedLocale: boolean): string {
+function findCompiledModules(
+	directory: string,
+	relativeDirectory = "",
+): string[] {
+	if (!fs.existsSync(directory) || !fs.statSync(directory).isDirectory()) {
+		return [];
+	}
+
+	const modules: string[] = [];
+	const currentDirectory = path.join(directory, relativeDirectory);
+	for (const entry of fs.readdirSync(currentDirectory, { withFileTypes: true })) {
+		const relativePath = path.join(relativeDirectory, entry.name);
+		if (entry.isDirectory()) {
+			modules.push(...findCompiledModules(directory, relativePath));
+		} else if (entry.isFile() && path.extname(entry.name) === ".js") {
+			modules.push(relativePath.split(path.sep).join("/"));
+		}
+	}
+	return modules.sort();
+}
+
+function injectModulePreloads(html: string, modulePaths: string[]): string {
+	if (modulePaths.length === 0) {
+		return html;
+	}
+
+	const links = modulePaths
+		.map(
+			(modulePath) =>
+				`\t\t<link rel="modulepreload" href="./assets/js/${modulePath}">`,
+		)
+		.join("\n");
+	return html.replace("<head>", `<head>\n${links}`);
+}
+
+function rewrittenHtml(
+	html: string,
+	nestedLocale: boolean,
+	modulePaths: string[],
+): string {
 	const linksRewritten = rewritePhpLinks(html);
-	return nestedLocale ? fixLocalePaths(linksRewritten) : linksRewritten;
+	const withModulePreloads = injectModulePreloads(linksRewritten, modulePaths);
+	return nestedLocale ? fixLocalePaths(withModulePreloads) : withModulePreloads;
 }
 
 function assertUniquePageNames(): void {
@@ -117,12 +157,17 @@ function writeRenderedPage(
 	destinationDirectory: string,
 	outputBasename: string,
 	nestedLocale: boolean,
+	modulePaths: string[],
 	slug?: string,
 ): string {
 	const destination = path.join(destinationDirectory, `${outputBasename}.html`);
 	try {
 		const html = page.render(ctx, data, slug);
-		fs.writeFileSync(destination, rewrittenHtml(html, nestedLocale), "utf8");
+		fs.writeFileSync(
+			destination,
+			rewrittenHtml(html, nestedLocale, modulePaths),
+			"utf8",
+		);
 	} catch (error) {
 		const detail = error instanceof Error ? error.message : String(error);
 		throw new Error(`[${ctx.lang}] ${outputBasename}.html 렌더 실패: ${detail}`);
@@ -154,6 +199,7 @@ function assertDetailCount(
 function renderLocale(
 	target: LocaleTarget,
 	outputRoot: string,
+	modulePaths: string[],
 ): { catalog: Catalog; files: string[] } {
 	const destinationDirectory = path.join(outputRoot, target.directory);
 	const nestedLocale = target.directory !== "";
@@ -179,6 +225,7 @@ function renderLocale(
 				destinationDirectory,
 				page.name,
 				nestedLocale,
+				modulePaths,
 			),
 		);
 	}
@@ -194,6 +241,7 @@ function renderLocale(
 					destinationDirectory,
 					`view-${item.slug}`,
 					nestedLocale,
+					modulePaths,
 					item.slug,
 				),
 			);
@@ -210,6 +258,7 @@ function renderLocale(
 					destinationDirectory,
 					`archive-${slug}`,
 					nestedLocale,
+					modulePaths,
 					slug,
 				),
 			);
@@ -235,6 +284,7 @@ function renderLocale(
 					destinationDirectory,
 					`video-${slug}`,
 					nestedLocale,
+					modulePaths,
 					slug,
 				),
 			);
@@ -251,8 +301,11 @@ function renderLocale(
 	return { catalog, files };
 }
 
-function copyStaticAssets(repoRoot: string, outputRoot: string): void {
-	const sourceBrowser = path.join(repoRoot, "dist", "browser");
+function copyStaticAssets(
+	repoRoot: string,
+	outputRoot: string,
+	sourceBrowser: string,
+): void {
 	if (!fs.existsSync(sourceBrowser) || !fs.statSync(sourceBrowser).isDirectory()) {
 		throw new Error(
 			"dist/browser 빌드 결과가 없습니다. 먼저 pnpm run build:js를 실행하세요.",
@@ -349,6 +402,8 @@ function validateCatalogImages(catalog: Catalog, outputRoot: string): string[] {
 function main(): void {
 	const repoRoot = findRepoRoot(here);
 	const outputRoot = path.join(repoRoot, "dist", "site");
+	const sourceBrowser = path.join(repoRoot, "dist", "browser");
+	const modulePaths = findCompiledModules(sourceBrowser);
 	fs.rmSync(outputRoot, { recursive: true, force: true });
 	fs.mkdirSync(outputRoot, { recursive: true });
 	assertUniquePageNames();
@@ -362,7 +417,7 @@ function main(): void {
 			{ lang: "JP", directory: "jp" },
 		];
 		for (const locale of locales) {
-			const result = renderLocale(locale, outputRoot);
+			const result = renderLocale(locale, outputRoot, modulePaths);
 			renderedFiles.push(...result.files);
 			if (locale.lang === "KR") {
 				krCatalog = result.catalog;
@@ -370,7 +425,7 @@ function main(): void {
 		}
 	}
 
-	copyStaticAssets(repoRoot, outputRoot);
+	copyStaticAssets(repoRoot, outputRoot, sourceBrowser);
 	const failures = renderedFiles.flatMap((file) => validateRenderedPage(file, outputRoot));
 	if (krCatalog) {
 		failures.push(...validateCatalogImages(krCatalog, outputRoot));

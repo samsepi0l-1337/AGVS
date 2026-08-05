@@ -56,33 +56,6 @@ function renderArchiveDownloads(
 	attachments: Record<string, unknown>[],
 	downloadLabel: string,
 ): string {
-	const inlineDownloads =
-		attachments.length < 3 ?
-			`<div class="ViewArchiveDownloadsInline">
-		${attachments
-			.map((attachment) => {
-				const attachmentPath = stringField(attachment, "path");
-				const originalName = attachment.originalName;
-				const attachmentName =
-					typeof originalName === "string" ? originalName : (
-						basename(attachmentPath)
-					);
-				const attachmentLabel =
-					attachmentName !== "" ?
-						`${downloadLabel} · ${attachmentName}`
-					:	downloadLabel;
-				// Deliberately not esc(): the PHP echo applies rawurlencode() only.
-				const encodedPath = rawUrlEncode(attachmentPath);
-				// Deliberately not esc(): the PHP echo applies rawurlencode() only.
-				const encodedName = rawUrlEncode(attachmentName);
-
-				return `<a class="ArchiveDownloadBtn" href="download.php?id=${encodedPath}&amp;name=${encodedName}">
-			${esc(attachmentLabel)}
-		</a>`;
-			})
-			.join("")}
-	</div>`
-		:	"";
 	const menuItems = attachments
 		.map((attachment) => {
 			const attachmentPath = stringField(attachment, "path");
@@ -92,7 +65,9 @@ function renderArchiveDownloads(
 					basename(attachmentPath)
 				);
 			const attachmentLabel =
-				attachmentName !== "" ? attachmentName : downloadLabel;
+				attachmentName !== "" ?
+					`${downloadLabel} · ${attachmentName}`
+				:	downloadLabel;
 			// Deliberately not esc(): the PHP echo applies rawurlencode() only.
 			const encodedPath = rawUrlEncode(attachmentPath);
 			// Deliberately not esc(): the PHP echo applies rawurlencode() only.
@@ -107,7 +82,6 @@ function renderArchiveDownloads(
 		.join("");
 
 	return `<div class="ViewArchiveDownloads">
-	${inlineDownloads}
 	<details class="ViewDownloadMenu">
 		<summary class="ViewDownloadMenuBtn">
 			<span class="ViewDownloadMenuIcon" aria-hidden="true">
