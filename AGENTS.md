@@ -16,12 +16,15 @@
   sites) over inventing alternate structures.
 - Footer language switcher labels are KR, EN, and JP; copyright uses the form
   `Copyrights(C) YYYY AGVS. All Rights Reserved.`
-- Share header/footer via PHP includes (`include/header.html`,
-  `include/footer.html`; `Overview.php` keeps its page-local header). Put chrome
-  CSS in `stlye/layout.css`; keep chrome JS (GNB, footer lang, Top) and
-  FullPage/section snap together in `js/main.js`, which both pages load.
+- Share header/footer via PHP includes (`src/includes/layout/header.html`,
+  `footer.html`; `Overview.php` keeps its page-local header). Put chrome CSS in
+  `src/assets/css/layout/layout.css`; keep chrome JS (GNB, footer lang, Top) in
+  `src/scripts/layout/` and FullPage/section snap in `src/scripts/home/`, all
+  reached from the single `src/scripts/main.ts` entry every page loads.
   (Superseded 2026-07-30: JS-fetched `data-include` / `partials/` /
-  `js/layout.js` are gone.) Shared chrome must not depend on `.OverView`;
+  `js/layout.js` are gone. Superseded 2026-08-05: the single `js/main.js` IIFE
+  is now TypeScript ES modules under `src/scripts/`.) Shared chrome must not
+  depend on `.OverView`;
   DetailList matches home header hover; Top uses snap `go(0)` when available
   else native scroll; logo links to `index.php`; Contact Us stays `#`.
 - GNB About top label is language-aware (KR `회사소개` / EN `About` / JP
@@ -45,13 +48,15 @@
 ## Learned Workspace Facts
 
 - Static AGVS marketing site (multi-page): plain HTML/CSS/vanilla JS with
-  KR/EN/JP i18n via `include/lang.php` and cookie `agvs_lang`; assets under
-  `stlye/` (intentional misspelling), `js/`, and `img/`. Wrappers keep an
+  KR/EN/JP i18n via `src/includes/core/lang.php` and cookie `agvs_lang`; assets
+  under `src/assets/{css,js,img,video}/`. The old `stlye/` misspelling is
+  retired (2026-08-05). Wrappers keep an
   intentional `max-width: 1920px` even when inner widths are %-based; 1920px
   parity remains the acceptance criterion. GNB top-level label spelling is
   Technology.
 - Runtime catalog, UI chrome, videos, and archive copy live in
-  `data/agvs.sqlite`, read through `include/contentStore.php` and `agvs_t()`.
+  `data/agvs.sqlite`, read through `src/includes/core/contentStore.php` and
+  `agvs_t()`.
   `data/items{KR|EN|JP}.json`, `ui*.json`, and `videos.json` are rebuild seeds
   only (`scripts/rebuild-sqlite.php`).
 - Pages include `index.php`, `DetailList.php`, `view.php` (model
@@ -59,7 +64,8 @@
   drives specs/images; also `?archive=slug` for Archive detail), `Overview.php`,
   `Video.php`, `VideoView.php`, `Archive.php`, `Sitemap.php`, plus PHP `admin/`
   and `admin/translate.php` (i18n-only editing).
-- `Overview.php` uses its own page-local header (not `include/header.html`);
+- `Overview.php` uses its own page-local header (not
+  `src/includes/layout/header.html`);
   copy is keyed under `overview.*` in SQLite UI payloads via `agvs_t()`.
   Scrolled header goes white with `#333333` text and keeps blue hover; avoid
   last-child-only color overrides. Japanese needs `html[lang="ja"]` tweaks
@@ -74,7 +80,8 @@
   paths).
 - `DetailList.php` is the item list page (filters: 전체, AGV, ForkLift,
   Technology) with a horizontal `ul`/`button[data-category]` filter list (not a
-  HeaderLang-style dropdown) and page styles in `stlye/DetailList.css`.
+  HeaderLang-style dropdown) and page styles in
+  `src/assets/css/pages/detailList.css`.
 - Section 2 is three equal hover-expand panels using `img/sec02_01.png`,
   `img/sec02_02.png`, and `img/sec02_03.png`. Section 3 is ~70% left
   `img/sec03.png` and ~30% right vision copy on a soft teal panel (`#E8F6F5`),
@@ -90,21 +97,30 @@
   `max-width: 767.98px` height 250px with centered title text and
   `padding-top: 80px` so copy centers in the visible area below the fixed
   header. Use `agvs_asset_url()` for language-stable image and media paths.
-- `admin-api/` is a strict TypeScript Express JSON API (session auth, SQLite
+- `src/api/` (was `admin-api/`) is a strict TypeScript Express JSON API
+  (session auth, SQLite
   CRUD, i18n-only PUT routes, uploads) sharing `data/agvs.sqlite` with PHP;
   `pnpm run admin:dev` with repo-root `.env` (`AGVS_ADMIN_PASSWORD_HASH`,
-  `AGVS_ADMIN_SESSION_SECRET`). PHP `admin/` is not fully wired to the API.
-- Package manager is pnpm; local and CI entrypoint is `pnpm run build` (static
-  build, then Prettier format). `scripts/build-static.sh` renders KR to
-  `_site/*.html`, EN to `_site/en/`, JP to `_site/jp/` (shared assets at
-  `_site/` root); static lang switch navigates those paths, while PHP uses
-  `?lang=` + cookie. Build reads SQLite via PHP renderers; rewrites
-  `download.php` to static file paths; FAIL check allows external `https://`
-  `.php` links. CSS/JS links omit `?ver=` cache-bust query strings. Format
-  scripts use `--ignore-path .prettierignore` so gitignored `_site/` still
-  formats; no Tailwind Prettier plugin; `include/**/*.html` needs a Prettier
-  `parser: "php"` override. **GitHub Pages** (`.github/workflows/pages.yml`):
-  push to `main` deploys `_site/` as static marketing only—`admin/` and
-  `admin-api` do not run on Pages (use local PHP + `pnpm run admin:dev`).
+  `AGVS_ADMIN_SESSION_SECRET`). PHP `src/admin/` is not fully wired to the API.
+  Root `package.json` carries `"type": "module"` — the API's compiled output
+  (`dist/api/`) needs it, and the old `admin-api/package.json` that used to
+  supply it is gone.
+- Package manager is pnpm; local and CI entrypoint is `pnpm run build`
+  (`build:js` → `build:static` → Prettier format). Browser TypeScript compiles
+  via `tsconfig.scripts.json` (`src/scripts` → `src/assets/js`, generated and
+  gitignored); the API via `tsconfig.api.json` (`src/api` → `dist/api`).
+  `scripts/build-static.sh` renders KR to `_site/*.html`, EN to `_site/en/`, JP
+  to `_site/jp/` and copies `src/assets` to `_site/assets`; static lang switch
+  navigates those paths, while PHP uses `?lang=` + cookie. Build reads SQLite
+  via PHP renderers; rewrites `download.php` to static file paths; FAIL check
+  allows external `https://` `.php` links. CSS/JS links **do** keep their
+  `?ver=` cache-bust query strings in the built output (an earlier note here
+  claimed otherwise — it was wrong). Format scripts use
+  `--ignore-path .prettierignore` so gitignored `_site/` still formats; no
+  Tailwind Prettier plugin; `src/includes/**/*.html` needs a Prettier
+  `parser: "php"` override; the format glob covers no `.ts`. **GitHub Pages**
+  (`.github/workflows/pages.yml`): push to `main` deploys `_site/` as static
+  marketing only—`src/admin/` and `src/api/` do not run on Pages (use local PHP
+  + `pnpm run admin:dev`).
 - macOS Finder duplicate copies (`* 2.*` files and empty `* 2` dirs) are junk;
   delete them and keep them gitignored (do not treat as source files).
