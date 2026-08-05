@@ -1,5 +1,6 @@
 {
 	"private": true,
+	"type": "module",
 	"devDependencies": {
 		"@prettier/plugin-php": "^0.22.4",
 		"@trivago/prettier-plugin-sort-imports": "^6.0.2",
@@ -16,15 +17,21 @@
 		"typescript": "^7.0.2"
 	},
 	"scripts": {
-		"build": "pnpm run build:static && pnpm run format",
-		"build:static": "bash scripts/build-static.sh",
-		"rebuild:db": "php scripts/rebuild-sqlite.php",
-		"admin:dev": "tsx watch admin-api/src/index.ts",
-		"admin:build": "tsc -p admin-api/tsconfig.json",
-		"admin:start": "node admin-api/dist/index.js",
-		"admin:typecheck": "tsc -p admin-api/tsconfig.json --noEmit",
-		"format": "prettier --ignore-path .prettierignore --write \"**/*.{js,css,html,json,md,php,yml,yaml}\" \"_site/**/*.{js,css,html,json}\"",
-		"format:check": "prettier --ignore-path .prettierignore --check \"**/*.{js,css,html,json,md,php,yml,yaml}\" \"_site/**/*.{js,css,html,json}\""
+		"build": "pnpm run build:js && pnpm run build:static && pnpm run format",
+		"build:js": "tsc -p tsconfig.scripts.json",
+		"build:static": "tsx src/build/render.ts",
+		"build:typecheck": "tsc -p tsconfig.build.json",
+		"rebuild:db": "tsx src/build/seed.ts",
+		"admin:ui": "tsc -p tsconfig.adminui.json",
+		"admin:dev": "pnpm run admin:ui && tsx watch src/api/index.ts",
+		"admin:build": "tsc -p tsconfig.api.json",
+		"admin:start": "node dist/api/index.js",
+		"admin:typecheck": "tsc -p tsconfig.api.json --noEmit",
+		"adminui:typecheck": "tsc -p tsconfig.adminui.json --noEmit",
+		"scripts:typecheck": "tsc -p tsconfig.scripts.json --noEmit",
+		"scripts:watch": "tsc -p tsconfig.scripts.json --watch",
+		"format": "prettier --ignore-path .prettierignore --write \"**/*.{js,css,html,json,md,yml,yaml}\" \"dist/site/**/*.{js,css,html,json}\"",
+		"format:check": "prettier --ignore-path .prettierignore --check \"**/*.{js,css,html,json,md,yml,yaml}\" \"dist/site/**/*.{js,css,html,json}\""
 	},
 	"packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac",
 	"dependencies": {

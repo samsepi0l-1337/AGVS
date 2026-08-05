@@ -6,11 +6,46 @@ code in this repository.
 ## What this is
 
 Static Korean corporate marketing site for "AGVS" (Automated Guided Vehicle
-System). No build step, no package manager, no framework, no jQuery — plain
-HTML/CSS/vanilla JS. Two pages: `index.php` (the one-page main) and
-`DetailList.php` (product list). PHP is used for exactly one thing —
-`include`-ing `include/header.html` and `include/footer.html` — so the pages
-need a PHP-capable server, not a static one.
+System). No framework, no jQuery, no bundler — plain HTML/CSS and **TypeScript
+throughout; there is no PHP anywhere in this repository.** `src/build/` reads
+SQLite at build time and writes `dist/site/`, which is what GitHub Pages serves.
+
+**Source lives under `src/`; every build output lands under `dist/`:**
+
+```
+src/
+  build/                   the static renderer (TypeScript, run by tsx)
+    content.ts             SQLite readers
+    i18n.ts  html.ts       t() / assetUrl(); PHP-compatible escaping
+    pages.ts  render.ts    page registry; CLI entry
+    seed.ts                rebuilds data/agvs.sqlite from the JSON seeds
+    templates/*.ts         header, footer, contactPop + one per page
+  scripts/**/*.ts          browser sources: core, layout, home, detail, main.ts
+  assets/css/{base,layout,pages}/*.css
+  assets/img/  assets/video/
+  api/                     Express admin API + the download route
+  admin/                   admin UI: index.html, assets/, ts/
+
+dist/                      ALL generated output, gitignored as one directory
+  site/                    the deployable static site  <- Pages uploads this
+  browser/                 compiled src/scripts
+  admin/                   compiled src/admin/ts
+  api/                     compiled src/api
+```
+
+`data/` (SQLite + JSON seeds), `storage/` (uploads) and `.github/` stay at the
+repo root because they are not source. Nothing is generated inside `src/` any
+more — if you find a `js/` directory there, it is stale, and deleting it is
+correct.
+
+**How the PHP went away**, in case a regression ever needs archaeology: the
+renderer was migrated by building the TypeScript one alongside the PHP one and
+diffing their outputs page by page until all 69 pages (23 × KR/EN/JP) rendered
+identically, and only then deleting the PHP path. To re-run that parity check,
+recover `scripts/build-static.sh`, `scripts/compare-render.sh` and the eight
+page `.php` files from `d5b8b36` and run `compare:render` there. The admin UI
+and the seed script were migrated afterwards, retiring the last eleven `.php`
+files.
 
 The design is fluid with `width: 100%` and `max-width: 1920px` wrappers; inner
 widths use percentages derived from the original 1920px pixel values. Font sizes
@@ -31,19 +66,38 @@ it with `curl -k`.
 
 ## Running and verifying
 
-There is no build, lint, or test command. Serve the directory **with PHP**:
+There is no lint or test command. Build, then serve the output with anything:
 
 ```bash
 export PATH="/opt/homebrew/bin:$PATH"
-php -S localhost:8848
-# http://localhost:8848/index.php  ·  http://localhost:8848/DetailList.php
+pnpm run build                          # build:js -> build:static -> format
+cd dist/site && python3 -m http.server 8848
 ```
 
-`python3 -m http.server` will **not** work — it does not execute PHP, so the two
-`include` statements render as nothing and the header and footer silently vanish
-from both pages. That failure looks like a CSS bug, not a server bug.
-Sanity-check a served page with `curl -s … | grep -c '<?php'` — the answer must
-be 0.
+There is no live-reload dev server, and that is the trade the migration made:
+previewing a source edit means rebuilding. `pnpm run build:static` alone (~1s)
+is enough when only markup or content changed; `build:js` is only needed after
+editing `src/scripts/`.
+
+`build:static` runs `tsx src/build/render.ts`: it renders KR to
+`dist/site/*.html`, EN to `dist/site/en/`, JP to `dist/site/jp/`, copies
+`src/assets` to `dist/site/assets`, copies the compiled `dist/browser` to
+`dist/site/assets/js`, and fails loudly on a missing header/footer, a leftover
+site-relative `.php` link, or a catalog image that is missing, empty, mis-cased
+or not a real JPEG. **Keep those checks.** The case-sensitivity one has caught
+real bugs: macOS resolves a mis-cased asset happily and GitHub Pages 404s it.
+
+**Why the browser JS is copied separately.** It used to be emitted into
+`src/assets/js/` and rode along inside the wholesale `src/assets` copy. Now that
+it lands in `dist/browser/`, that free ride is gone, so `render.ts` copies it
+explicitly and throws if `dist/browser` is absent. Without that guard a build
+with no compiled JS would exit 0 and publish pages whose `./assets/js/main.js`
+404s — green build, dead site. Verified by deleting `dist/browser` and
+confirming `build:static` exits 1 naming both `dist/browser` and `build:js`.
+
+The admin UI runs on the API, not a separate server: `pnpm run admin:dev`
+compiles `src/admin/ts` and starts Express, then open `/admin` on the API's own
+port. Being same-origin is what lets the CORS allowlist stay tight.
 
 Verification means **measuring in a real browser** (Chrome DevTools MCP) — read
 computed styles and geometry via `evaluate_script` rather than judging from
@@ -57,59 +111,113 @@ screenshots. Two traps:
 
 ## Cache busting — required after every CSS/JS edit
 
-`index.php` and `DetailList.php` link assets with a `?ver=YYYYMMDD<letter>`
-query string. Browsers cache these files aggressively and **edits silently do
-not apply until the version is bumped**. Bump every reference in both pages at
-once:
+The pages link assets with a `?ver=YYYYMMDD<letter>` query string. Browsers
+cache these files aggressively and **edits silently do not apply until the
+version is bumped**. Bump every reference across all pages at once:
 
 ```bash
-perl -pi -e 's/ver=20260730d/ver=20260730e/g' index.php DetailList.php
+perl -pi -e 's/ver=20260804b/ver=20260804c/g' src/build/templates/*.ts
 ```
+
+**Known gap:** only the entry module carries `?ver=`. The modules it imports
+(`./home/sectionSnap.js` and friends) are fetched by the browser at their bare
+paths, so bumping the entry does not bust them. This bites local development
+only — a hard reload clears it — but it is a real limitation of compiling to ES
+modules without a bundler, and worth fixing with hashed filenames if module
+caching ever causes a confusing local result.
 
 ## Line endings and formatting
 
-`index.php`, `DetailList.php`, `include/header.html`, `include/footer.html`,
-`stlye/main.css`, `stlye/layout.css` and `stlye/DetailList.css` use **CRLF**;
-`stlye/reset.css` and `js/main.js` use **LF**. Prefer `Edit` over `Write` on the
-CRLF files — a full rewrite converts them to LF and inflates the diff by the
-entire file. To repair: `perl -pi -e 's/\r?\n/\r\n/' <file>`.
+**The tree is now uniformly LF.** It used to be a CRLF/LF mix — the PHP pages
+and most CSS were CRLF — and this section used to warn against rewriting those
+files wholesale. Prettier converted the last of them during the TypeScript
+migration; verified with `file` across all 134 tracked source files, zero CRLF.
+Keep it that way: no `.gitattributes` pins line endings, so a wholesale rewrite
+that reintroduces CRLF would show up as a whole-file diff.
 
 A Prettier-on-save formatter is active and will reformat files after edits
 (quote style, indentation, blank lines between CSS rules). Expected; don't fight
-it.
+it. Note that `pnpm run format` does **not** cover `.ts` — its glob is
+`{js,css,html,json,md,php,yml,yaml}`, so TypeScript is formatted by the editor
+only.
 
-`stlye/` is a misspelling of `style/`. It is pre-existing and referenced by the
-HTML links — leave it.
+The old `stlye/` misspelling is gone; stylesheets live under `src/assets/css/`.
 
 ## Architecture
 
-**Shared chrome lives in `include/`, shared CSS in `stlye/layout.css`.**
-`include/header.html` and `include/footer.html` are pulled into both pages with
-`<?php include __DIR__ . "/include/header.html"; ?>` — `__DIR__`, so the include
-resolves independently of the server's working directory. `layout.css` holds
-every header and footer rule; `main.css` is now index-only (Section01–03,
-`.ScrollBtn`, `.BgVideo`) and `DetailList.css` is DetailList-only. When those
-rules were lifted out of `main.css` their `.OverView` ancestor prefix was
-**removed on purpose**, because `DetailList.php` has no `.OverView` wrapper —
+**Shared chrome lives in `src/build/templates/{header,footer,contactPop}.ts`,
+shared CSS in `src/assets/css/layout/layout.css`.** Each page template calls
+`renderHeader(ctx, catalog)`, `renderFooter(ctx)` and `renderContactPop(ctx)`;
+`ctx` is the per-locale `RenderContext` from `i18n.ts` carrying `t()`,
+`assetUrl()`, `lang`, `htmlLang` and `aboutLabel`. `layout.css` holds every
+header and footer rule; `pages/home.css` is index-only (Section01–03,
+`.ScrollBtn`, `.BgVideo`) and `pages/detailList.css` is DetailList-only. When
+those rules were lifted out of `home.css` their `.OverView` ancestor prefix was
+**removed on purpose**, because the DetailList page has no `.OverView` wrapper —
 re-adding that prefix silently unstyles the chrome on DetailList while leaving
 index looking fine.
 
-Consequences for the two pages' `<head>`s: `DetailList.php` does not load
-`main.css`, so it also must not load the Material Symbols font (that icon font
-is referenced only by `main.css`'s `.Sec03ContactBtn`). Noto Sans KR **is**
-needed on both, because `stlye/reset.css` declares it as the base `font-family`.
+Consequences for the pages' `<head>`s: DetailList does not load `home.css`, so
+it also must not load the Material Symbols font (that icon font is referenced
+only by `home.css`'s `.Sec03ContactBtn`). Noto Sans KR **is** needed on all
+pages, because `assets/css/base/reset.css` declares it as the base
+`font-family`.
 
-`js/main.js` is one IIFE with a set of initializers wired together in `init()`.
-The only shared object is the handle returned by `initSectionSnap()`, passed
-into the button and drag initializers so all three drive the same `go(index)`.
+**Adding a page** means writing `src/build/templates/<name>.ts` exporting a
+`PageModule` (`{ name, render(ctx, data, slug?) }`) and adding one import plus
+one array entry to `src/build/pages.ts`. `name` is the output basename and its
+capitalisation is load-bearing — GitHub Pages is case-sensitive.
 
-**The same `main.js` is loaded by both pages,** so two of its initializers are
-written to no-op on DetailList rather than being split into a second file.
+**`html.ts` reproduces PHP's escaping on purpose**, because the templates were
+ported from PHP under a byte-identical-output constraint: `esc()` matches
+`htmlspecialchars(ENT_QUOTES, UTF-8)` down to the `&#039;` form of the
+apostrophe, and `phpJsonEncode()` matches `json_encode()`'s defaults, which
+escape `/` and emit `\uXXXX` rather than raw UTF-8. Use `phpJsonEncode` for
+values embedded in an inline `<script>`; plain `JSON.stringify` would change the
+bytes.
+
+Catalog paths are still stored in their historical `img/…` form in SQLite; the
+`assets/` prefix is added by `ctx.assetUrl()` at render time, which is why the
+database, the JSON seeds and admin uploads survived the asset move untouched.
+
+**Browser scripts are TypeScript ES modules under `src/scripts/`,** grouped by
+feature and compiled by `tsc` to `dist/browser/` with the folder tree preserved,
+then copied into the built site as `assets/js/`. There is no bundler, so **every
+relative import must carry an explicit `.js` specifier** even though the file on
+disk is `.ts` — an extensionless import ships a 404. `tsconfig.scripts.json`
+uses `moduleResolution: "bundler"` precisely so `.js` specifiers resolve to
+`.ts` sources.
+
+- `core/` — `motion` (easing, `windowScrollDuration`), `windowScroll` (the
+  single rAF scroll; the active animation is private to this module and
+  reachable only through `finishActiveWindowScroll()`), `overlayState`, `dom`
+  helpers.
+- `layout/` — `gnb`, `contactPop`, `footerLang`, `footerSns`, `topButton`.
+- `home/` — `sectionSnap`, `sectionButtons`, `anchorNav`, `dragScroll`, `sec02`.
+- `detail/` — `detailList`.
+
+`main.ts` wires them in a fixed order; the only shared object is the
+`SnapHandle` returned by `initSectionSnap()`, passed into the button, anchor,
+top-button and drag initializers so all of them drive the same `go(index)`.
+
+`overlayState` reads `popupIsOpen()` / `menuIsOpen()` **straight from the DOM**
+rather than from module state. That is deliberate: the snap, drag and touch
+handlers all need the answer, and routing it through shared mutable state would
+make those modules depend on each other's load order.
+
+**The same entry module is loaded by every page,** so several initializers are
+written to no-op elsewhere rather than being split into a second bundle.
 `initGnb` queries a bare `header`, not `.OverView header`, because DetailList
 has no wrapper. `initDragScroll` starts with `if (!snap) return;` — DetailList
 also has a `<main>`, and without that guard drag-scrolling would hijack the list
 page's native scrolling. `initSectionSnap` needs no guard: it finds no
 `#FullPage` sections and bails on its own.
+
+The `<script>` tag is `type="module"`, which is deferred. That is safe because
+the tag already sits at the end of `<body>`, and the two inline scripts emitted
+by `templates/overview.ts` and `templates/view.ts` do not reference anything the
+module exports — but it is a constraint to keep in mind before adding a third
+inline script that does.
 
 **Section snapping (`initSectionSnap`) is the core.** Snap targets are the three
 `#FullPage > div` sections **plus `footer#Footer`**. Sections are `100vh` but
@@ -117,8 +225,11 @@ the footer is auto-height, so `topOf()` clamps every target to
 `scrollHeight - innerHeight`; that clamp is what makes the short footer
 reachable as the final snap point. `wheel` and `touchmove` are registered
 `{passive: false}` and call `preventDefault()`, so **native scrolling is
-entirely replaced** — a fixed 900ms `locked` timer is what enforces
-one-gesture-one-section.
+entirely replaced** — a `locked` timer is what enforces one-gesture-one-section.
+It is `LOCK_MS = windowScrollDuration + 100`, i.e. 1350ms, derived in
+`home/sectionSnap.ts` from the 1250ms scroll in `core/motion.ts`. (An earlier
+version of this file said 900ms; that was stale.) The `lockVersion` counter is
+load-bearing — it stops a stale timer from releasing a newer lock.
 
 **GNB dropdown (`initGnb`).** Submenus are `<ul>`s nested inside each
 `#Gnb > li`, but they are positioned against **`#Gnb`, not the `li`**. This is
@@ -142,7 +253,7 @@ travels from a 1-depth item into its own dropdown.
 there is deliberately no scroll-based background state (it was implemented and
 then removed by request).
 
-**`stlye/reset.css`**: the
+**`src/assets/css/base/reset.css`**: the
 `header { font-size: 23px; font-weight: 700; color: #ffffff }` rule must stay
 **outside** any media query. It originally lived inside
 `@media (max-width: 1920px)`, which made header text fall back to black 16px on
@@ -151,8 +262,11 @@ windows wider than 1920px.
 ## Known open defects (deferred, not fixed)
 
 Two non-author verifiers (Codex `gpt-5.6-sol`, Cursor `cursor-grok-4.5-high`)
-reviewed `js/main.js` and both returned FAIL. The owner chose to defer the
-fixes. Full findings: `.claude/state/cursor-rescue/*.log`. Highest impact:
+reviewed the then-single `js/main.js` and both returned FAIL. The owner chose to
+defer the fixes, and the TypeScript split was a **mechanical port** — every
+defect below was carried over deliberately rather than quietly fixed, so the
+findings still stand against the modules named here. Full findings:
+`.claude/state/cursor-rescue/*.log`. Highest impact:
 
 - The `wheel` handler never normalizes `deltaMode`. The `Math.abs(e.deltaY) < 4`
   threshold discards Firefox's line-mode events (`deltaY ≈ 3`) _after_
@@ -160,8 +274,8 @@ fixes. Full findings: `.claude/state/cursor-rescue/*.log`. Highest impact:
 - `preventDefault()` is unconditional, which also disables Ctrl+wheel zoom and
   pinch zoom, and leaves no native-scroll escape for reduced-motion or
   assistive-tech users.
-- The 900ms lock is shorter than a real trackpad momentum tail, so one flick can
-  advance two sections.
+- The 1350ms lock is still shorter than a real trackpad momentum tail, so one
+  flick can advance two sections.
 - Space on a focused `.ScrollBtn` snaps the section instead of activating the
   button (the `keydown` guard only excludes `input`/`textarea`/`select`).
 - If the footer ever grows taller than the viewport it becomes unreachable,

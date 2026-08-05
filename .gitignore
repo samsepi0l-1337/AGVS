@@ -1,17 +1,21 @@
 node_modules/
-_site/
+# TS renderer output, produced alongside _site/ during the PHP->TS migration
+_site-ts/
 storage/backups/
 storage/trash/
 storage/uploads/
 data/*.sqlite-journal
 data/*.sqlite-wal
 data/*.sqlite-shm
-admin-api/dist/
+dist/
 .env
 .env.local
+
+# macOS Finder duplicate / conflict copies ("foo 2.php", empty "bar 2" dirs)
+* 2.*
+* 2
 
 # Track lockfile even if ignored by a global gitignore
 !pnpm-lock.yaml
 
 docs/superpowers/*
-admin-api/dist/*.map
