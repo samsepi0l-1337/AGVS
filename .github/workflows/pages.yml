@@ -26,7 +26,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # better-sqlite3 requires Node >= 22; its linux-x64 prebuild segfaults
+          # on 20. The build only started needing it once the renderer moved off
+          # PHP, so this pin went stale silently.
+          node-version: "24"
           cache: pnpm
 
       - name: Install dependencies
