@@ -1,4 +1,5 @@
 {
+	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
 		"rootDir": "src/admin/ts",
 		"outDir": "dist/admin",
@@ -7,13 +8,10 @@
 		"moduleResolution": "bundler",
 		"lib": ["es2022", "dom", "dom.iterable"],
 		"types": [],
-		"strict": true,
-		"forceConsistentCasingInFileNames": true,
 		"verbatimModuleSyntax": true,
-		"isolatedModules": true,
-		"noUncheckedIndexedAccess": false,
-		"sourceMap": true,
-		"declaration": false
+		"composite": true,
+		"declarationDir": "dist/.types/admin",
+		"tsBuildInfoFile": "dist/.tsbuild/tsconfig.adminui.tsbuildinfo"
 	},
 	"files": [
 		"src/admin/ts/api.ts",
