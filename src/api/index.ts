@@ -60,7 +60,7 @@ const repoRoot = findRepoRoot(import.meta.url);
 const adminRoot = path.join(repoRoot, "src", "admin");
 const adminIndexPath = path.join(adminRoot, "index.html");
 const adminAssetsPath = path.join(adminRoot, "assets");
-const adminJsPath = path.join(adminRoot, "js");
+const adminJsPath = path.join(repoRoot, "dist", "admin");
 const adminIndexHtml = readFileSync(adminIndexPath, "utf8")
 	.replace('href="assets/admin.css"', 'href="/admin/assets/admin.css"')
 	.replace('src="js/main.js"', 'src="/admin/js/main.js"');

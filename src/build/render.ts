@@ -252,10 +252,18 @@ function renderLocale(
 }
 
 function copyStaticAssets(repoRoot: string, outputRoot: string): void {
+	const sourceBrowser = path.join(repoRoot, "dist", "browser");
+	if (!fs.existsSync(sourceBrowser) || !fs.statSync(sourceBrowser).isDirectory()) {
+		throw new Error(
+			"dist/browser 빌드 결과가 없습니다. 먼저 pnpm run build:js를 실행하세요.",
+		);
+	}
+
 	const sourceAssets = path.join(repoRoot, "src", "assets");
 	if (fs.existsSync(sourceAssets) && fs.statSync(sourceAssets).isDirectory()) {
 		fs.cpSync(sourceAssets, path.join(outputRoot, "assets"), { recursive: true });
 	}
+	fs.cpSync(sourceBrowser, path.join(outputRoot, "assets", "js"), { recursive: true });
 
 	const sourceUploads = path.join(repoRoot, "storage", "uploads");
 	if (fs.existsSync(sourceUploads) && fs.statSync(sourceUploads).isDirectory()) {
@@ -340,7 +348,7 @@ function validateCatalogImages(catalog: Catalog, outputRoot: string): string[] {
 
 function main(): void {
 	const repoRoot = findRepoRoot(here);
-	const outputRoot = path.join(repoRoot, "_site");
+	const outputRoot = path.join(repoRoot, "dist", "site");
 	fs.rmSync(outputRoot, { recursive: true, force: true });
 	fs.mkdirSync(outputRoot, { recursive: true });
 	assertUniquePageNames();

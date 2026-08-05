@@ -6,12 +6,11 @@ code in this repository.
 ## What this is
 
 Static Korean corporate marketing site for "AGVS" (Automated Guided Vehicle
-System). No framework, no jQuery — plain HTML/CSS and TypeScript throughout.
-**The whole render path is TypeScript**: `src/build/` reads SQLite at build time
-and writes `_site/`, which is what GitHub Pages serves. Nothing executes PHP, in
-production or locally, so `_site/` previews correctly under any static server.
+System). No framework, no jQuery, no bundler — plain HTML/CSS and **TypeScript
+throughout; there is no PHP anywhere in this repository.** `src/build/` reads
+SQLite at build time and writes `dist/site/`, which is what GitHub Pages serves.
 
-**Everything that is source lives under `src/`:**
+**Source lives under `src/`; every build output lands under `dist/`:**
 
 ```
 src/
@@ -19,29 +18,34 @@ src/
     content.ts             SQLite readers
     i18n.ts  html.ts       t() / assetUrl(); PHP-compatible escaping
     pages.ts  render.ts    page registry; CLI entry
+    seed.ts                rebuilds data/agvs.sqlite from the JSON seeds
     templates/*.ts         header, footer, contactPop + one per page
   scripts/**/*.ts          browser sources: core, layout, home, detail, main.ts
   assets/css/{base,layout,pages}/*.css
-  assets/js/               tsc output — generated, gitignored
   assets/img/  assets/video/
-  api/                     Express admin API (TypeScript)
-  admin/                   admin UI — still PHP, pending migration
-  includes/core/*.php      lang, contentStore, db, adminCore — kept ONLY because
-                           src/admin/ and scripts/rebuild-sqlite.php require them
-  download.php             attachment download for local admin use
+  api/                     Express admin API + the download route
+  admin/                   admin UI: index.html, assets/, ts/
+
+dist/                      ALL generated output, gitignored as one directory
+  site/                    the deployable static site  <- Pages uploads this
+  browser/                 compiled src/scripts
+  admin/                   compiled src/admin/ts
+  api/                     compiled src/api
 ```
 
-`data/` (SQLite + JSON seeds), `storage/` (uploads), `scripts/` (build tooling)
-and `.github/` stay at the repo root because they are not source.
+`data/` (SQLite + JSON seeds), `storage/` (uploads) and `.github/` stay at the
+repo root because they are not source. Nothing is generated inside `src/` any
+more — if you find a `js/` directory there, it is stale, and deleting it is
+correct.
 
-**The PHP renderer is gone.** It was migrated by building the TypeScript
-renderer alongside it and diffing the two outputs page by page until all 69
-pages (23 × KR/EN/JP) rendered identically, then deleting the PHP path in commit
-`d5b8b36`'s successor. `src/includes/core/*.php` survives only for the admin UI;
-it is dead to the render path. To re-run that parity check against the old
-renderer — worth doing if a rendering regression is ever suspected — recover
-`scripts/build-static.sh`, `scripts/compare-render.sh` and the eight page `.php`
-files from `d5b8b36` and run `compare:render` there.
+**How the PHP went away**, in case a regression ever needs archaeology: the
+renderer was migrated by building the TypeScript one alongside the PHP one and
+diffing their outputs page by page until all 69 pages (23 × KR/EN/JP) rendered
+identically, and only then deleting the PHP path. To re-run that parity check,
+recover `scripts/build-static.sh`, `scripts/compare-render.sh` and the eight
+page `.php` files from `d5b8b36` and run `compare:render` there. The admin UI
+and the seed script were migrated afterwards, retiring the last eleven `.php`
+files.
 
 The design is fluid with `width: 100%` and `max-width: 1920px` wrappers; inner
 widths use percentages derived from the original 1920px pixel values. Font sizes
@@ -66,26 +70,34 @@ There is no lint or test command. Build, then serve the output with anything:
 
 ```bash
 export PATH="/opt/homebrew/bin:$PATH"
-pnpm run build                     # build:js -> build:static -> format
-cd _site && python3 -m http.server 8848
+pnpm run build                          # build:js -> build:static -> format
+cd dist/site && python3 -m http.server 8848
 ```
 
-There is no live-reload dev server any more, and that is the trade the migration
-made: previewing a source edit means rebuilding. `pnpm run build:static` alone
-(~1s) is enough when only markup or content changed; `build:js` is only needed
-after editing `src/scripts/`. `src/assets/js/` is generated and gitignored, so a
-fresh checkout renders unstyled-and-inert pages until `build:js` has run once.
+There is no live-reload dev server, and that is the trade the migration made:
+previewing a source edit means rebuilding. `pnpm run build:static` alone (~1s)
+is enough when only markup or content changed; `build:js` is only needed after
+editing `src/scripts/`.
 
-`build:static` runs `tsx src/build/render.ts`: it renders KR to `_site/*.html`,
-EN to `_site/en/`, JP to `_site/jp/`, copies `src/assets` to `_site/assets`, and
-fails loudly on a missing header/footer, a leftover site-relative `.php` link,
-or a catalog image that is missing, empty, mis-cased or not a real JPEG. **Keep
-those checks.** The case-sensitivity one in particular has caught real bugs:
-macOS resolves a mis-cased asset happily and GitHub Pages 404s it.
+`build:static` runs `tsx src/build/render.ts`: it renders KR to
+`dist/site/*.html`, EN to `dist/site/en/`, JP to `dist/site/jp/`, copies
+`src/assets` to `dist/site/assets`, copies the compiled `dist/browser` to
+`dist/site/assets/js`, and fails loudly on a missing header/footer, a leftover
+site-relative `.php` link, or a catalog image that is missing, empty, mis-cased
+or not a real JPEG. **Keep those checks.** The case-sensitivity one has caught
+real bugs: macOS resolves a mis-cased asset happily and GitHub Pages 404s it.
 
-The admin UI is the one thing that still needs PHP —
-`php -S localhost:8849 -t src` then `/admin/`, alongside `pnpm run admin:dev`
-for the API.
+**Why the browser JS is copied separately.** It used to be emitted into
+`src/assets/js/` and rode along inside the wholesale `src/assets` copy. Now that
+it lands in `dist/browser/`, that free ride is gone, so `render.ts` copies it
+explicitly and throws if `dist/browser` is absent. Without that guard a build
+with no compiled JS would exit 0 and publish pages whose `./assets/js/main.js`
+404s — green build, dead site. Verified by deleting `dist/browser` and
+confirming `build:static` exits 1 naming both `dist/browser` and `build:js`.
+
+The admin UI runs on the API, not a separate server: `pnpm run admin:dev`
+compiles `src/admin/ts` and starts Express, then open `/admin` on the API's own
+port. Being same-origin is what lets the CORS allowlist stay tight.
 
 Verification means **measuring in a real browser** (Chrome DevTools MCP) — read
 computed styles and geometry via `evaluate_script` rather than judging from
@@ -169,12 +181,12 @@ Catalog paths are still stored in their historical `img/…` form in SQLite; the
 database, the JSON seeds and admin uploads survived the asset move untouched.
 
 **Browser scripts are TypeScript ES modules under `src/scripts/`,** grouped by
-feature and compiled by `tsc` to `src/assets/js/` with the folder tree
-preserved. There is no bundler, so **every relative import must carry an
-explicit `.js` specifier** even though the file on disk is `.ts` — an
-extensionless import ships a 404. `tsconfig.scripts.json` uses
-`moduleResolution: "bundler"` precisely so `.js` specifiers resolve to `.ts`
-sources.
+feature and compiled by `tsc` to `dist/browser/` with the folder tree preserved,
+then copied into the built site as `assets/js/`. There is no bundler, so **every
+relative import must carry an explicit `.js` specifier** even though the file on
+disk is `.ts` — an extensionless import ships a 404. `tsconfig.scripts.json`
+uses `moduleResolution: "bundler"` precisely so `.js` specifiers resolve to
+`.ts` sources.
 
 - `core/` — `motion` (easing, `windowScrollDuration`), `windowScroll` (the
   single rAF scroll; the active animation is private to this module and

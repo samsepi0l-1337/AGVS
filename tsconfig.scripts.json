@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"rootDir": "src/scripts",
-		"outDir": "src/assets/js",
+		"outDir": "dist/browser",
 		"target": "es2022",
 		"module": "esnext",
 		"moduleResolution": "bundler",

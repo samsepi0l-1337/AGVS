@@ -39,7 +39,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dist/site
 
   deploy:
     needs: build

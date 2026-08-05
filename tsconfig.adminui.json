@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"rootDir": "src/admin/ts",
-		"outDir": "src/admin/js",
+		"outDir": "dist/admin",
 		"target": "es2022",
 		"module": "esnext",
 		"moduleResolution": "bundler",

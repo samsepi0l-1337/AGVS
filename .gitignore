@@ -1,5 +1,4 @@
 node_modules/
-_site/
 # TS renderer output, produced alongside _site/ during the PHP->TS migration
 _site-ts/
 storage/backups/
@@ -9,9 +8,6 @@ data/*.sqlite-journal
 data/*.sqlite-wal
 data/*.sqlite-shm
 dist/
-# Compiled browser output (built by CI)
-src/assets/js/
-src/admin/js/
 .env
 .env.local
 
