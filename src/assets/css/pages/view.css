@@ -449,51 +449,6 @@ header:has(+ .ViewMain) .ContactUsWrap {
 	margin-left: auto;
 }
 
-/* Mobile-first: hamburger only. Inline buttons appear from 768px when present. */
-.ViewArchiveDownloadsInline {
-	display: none;
-}
-
-@media (min-width: 768px) {
-	.ViewArchiveDownloadsInline {
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: flex-end;
-		align-items: center;
-		gap: 10px;
-	}
-
-	/* Desktop: 1–2 attachments stay inline; hide duplicate hamburger. */
-	.ViewArchiveDownloadsInline + .ViewDownloadMenu {
-		display: none;
-	}
-}
-
-.ArchiveDownloadBtn {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	padding: 10px 16px;
-	border: 1px solid #007dcc;
-	background-color: #ffffff;
-	color: #007dcc;
-	font-size: 13px;
-	font-weight: 700;
-	line-height: 1.2;
-	letter-spacing: 0.02em;
-	text-decoration: none;
-	transition:
-		color 0.2s ease,
-		background-color 0.2s ease,
-		border-color 0.2s ease;
-}
-
-.ArchiveDownloadBtn:hover,
-.ArchiveDownloadBtn:focus-visible {
-	background-color: #007dcc;
-	color: #ffffff;
-}
-
 .ViewDownloadMenu {
 	position: relative;
 	z-index: 2;

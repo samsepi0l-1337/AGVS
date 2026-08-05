@@ -5,7 +5,6 @@
 		"node": ">=22"
 	},
 	"devDependencies": {
-		"@prettier/plugin-php": "^0.22.4",
 		"@trivago/prettier-plugin-sort-imports": "^6.0.2",
 		"@types/bcryptjs": "^3.0.0",
 		"@types/better-sqlite3": "^9.6.0",
@@ -24,6 +23,7 @@
 		"build:js": "tsc -p tsconfig.scripts.json",
 		"build:static": "tsx src/build/render.ts",
 		"build:typecheck": "tsc -p tsconfig.build.json",
+		"typecheck": "tsc -b && pnpm run build:typecheck",
 		"rebuild:db": "tsx src/build/seed.ts",
 		"admin:ui": "tsc -p tsconfig.adminui.json",
 		"admin:dev": "pnpm run admin:ui && tsx watch src/api/index.ts",
