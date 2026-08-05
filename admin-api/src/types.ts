@@ -10,6 +10,7 @@ export interface ModelImage {
 export interface ProductModel {
 	id: string;
 	label: string;
+	subtitle: string;
 	specs: string[];
 	images: ModelImage[];
 }
@@ -90,6 +91,7 @@ export interface ModelI18nRow {
 	model_row_id: number;
 	lang: string;
 	label: string;
+	subtitle: string;
 	specs_json: string;
 }
 

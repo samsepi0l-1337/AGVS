@@ -18,15 +18,6 @@ usort(
 	$archiveItems,
 	fn($a, $b) => ($a["sortOrder"] ?? 0) <=> ($b["sortOrder"] ?? 0),
 );
-$archiveDownloadLabel = agvs_t("archive.download");
-if ($archiveDownloadLabel === "") {
-	$archiveDownloadLabelMap = [
-		"KR" => "다운로드",
-		"EN" => "Download",
-		"JP" => "ダウンロード",
-	];
-	$archiveDownloadLabel = $archiveDownloadLabelMap[$agvsLang] ?? "Download";
-}
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo htmlspecialchars(
@@ -114,17 +105,6 @@ if ($archiveDownloadLabel === "") {
                 $itemSlug = isset($archiveItem["slug"])
                 	? $archiveItem["slug"]
                 	: "";
-                $itemAttachments =
-                	isset($archiveItem["attachments"]) &&
-                	is_array($archiveItem["attachments"])
-                		? $archiveItem["attachments"]
-                		: [];
-                $itemAttachments = array_values(
-                	array_filter(
-                		$itemAttachments,
-                		fn($attachment) => !empty($attachment["path"]),
-                	),
-                );
                 ?>
                 <div class="ItemWrap">
                     <a class="ItemLink" href="view.php?archive=<?php echo rawurlencode(
@@ -154,34 +134,6 @@ if ($archiveDownloadLabel === "") {
                         	"UTF-8",
                         ); ?></p>
                     </a>
-                    <?php if (!empty($itemAttachments)): ?>
-                    <div class="ItemDownloads">
-                        <?php foreach ($itemAttachments as $attachment): ?>
-                        <?php
-                        $attPath = (string) $attachment["path"];
-                        $attName =
-                        	(string) ($attachment["originalName"] ??
-                        		basename($attPath));
-                        $attLabel =
-                        	$attName !== ""
-                        		? $archiveDownloadLabel . " · " . $attName
-                        		: $archiveDownloadLabel;
-                        ?>
-                        <a
-                        class="ArchiveDownloadBtn"
-                        href="download.php?id=<?php echo rawurlencode(
-                        	$attPath,
-                        ); ?>&amp;name=<?php echo rawurlencode($attName); ?>"
-                        >
-                            <?php echo htmlspecialchars(
-                            	$attLabel,
-                            	ENT_QUOTES,
-                            	"UTF-8",
-                            ); ?>
-                        </a>
-                        <?php endforeach; ?>
-                    </div>
-                    <?php endif; ?>
                 </div>
                 <?php endforeach; ?>
             </div>

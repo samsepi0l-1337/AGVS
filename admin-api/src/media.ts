@@ -21,3 +21,11 @@ export function assertSlug(value: string): string {
 	}
 	return slug;
 }
+
+/**
+ * Model label/subtitle display text: site-code underscores → spaces.
+ * Mirrors PHP agvs_normalize_model_text().
+ */
+export function normalizeModelText(value: string): string {
+	return value.trim().replaceAll("_", " ");
+}

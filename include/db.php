@@ -73,6 +73,7 @@ function agvs_db_schema_sql(): string
 		model_row_id INTEGER NOT NULL REFERENCES models(id) ON DELETE CASCADE,
 		lang TEXT NOT NULL CHECK (lang IN ('KR', 'EN', 'JP')),
 		label TEXT NOT NULL,
+		subtitle TEXT NOT NULL DEFAULT '',
 		specs_json TEXT NOT NULL DEFAULT '[]',
 		PRIMARY KEY (model_row_id, lang)
 	);
@@ -156,11 +157,27 @@ function agvs_db_ensure_thumbnail_columns(?PDO $pdo = null): void
 	}
 }
 
+/**
+ * Add model_i18n.subtitle on older DBs created before the field existed.
+ */
+function agvs_db_ensure_model_subtitle_column(?PDO $pdo = null): void
+{
+	$pdo = $pdo ?? agvs_db();
+	$cols = $pdo->query("PRAGMA table_info(model_i18n)")->fetchAll();
+	$names = array_column($cols, "name");
+	if (!in_array("subtitle", $names, true)) {
+		$pdo->exec(
+			"ALTER TABLE model_i18n ADD COLUMN subtitle TEXT NOT NULL DEFAULT ''",
+		);
+	}
+}
+
 function agvs_db_install_schema(?PDO $pdo = null): void
 {
 	$pdo = $pdo ?? agvs_db();
 	$pdo->exec(agvs_db_schema_sql());
 	agvs_db_ensure_thumbnail_columns($pdo);
+	agvs_db_ensure_model_subtitle_column($pdo);
 }
 
 /**
@@ -178,6 +195,15 @@ function agvs_normalize_media_path(string $path): string
 		return "";
 	}
 	return $path;
+}
+
+/**
+ * Model label/subtitle display text: site-code underscores → spaces.
+ * Keeps intentional spaces and ampersands (e.g. "GM & DI Engine DS RGV").
+ */
+function agvs_normalize_model_text(string $value): string
+{
+	return str_replace("_", " ", trim($value));
 }
 
 function agvs_json_encode(mixed $value): string

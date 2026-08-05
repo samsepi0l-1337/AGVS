@@ -20,6 +20,7 @@ const modelImageSchema = z.object({
 const productModelSchema = z.object({
 	id: slugSchema,
 	label: z.string().min(1),
+	subtitle: z.string().default(""),
 	specs: z.array(z.string()),
 	images: z.array(modelImageSchema),
 });
@@ -101,6 +102,7 @@ export const productI18nSchema = z.object({
 			z.object({
 				id: slugSchema,
 				label: z.string().min(1),
+				subtitle: z.string().default(""),
 				specs: z.array(z.string()),
 			}),
 		)

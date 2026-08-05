@@ -33,8 +33,10 @@
   language-specific fields via `admin/translate.php` or admin-api i18n PUT—not
   by hand-editing JSON seeds or running `rebuild-sqlite.php` as the translation
   workflow.
-- Detail-page hero height 250px and centered title text apply only on mobile
-  (`max-width: 767.98px`); desktop detail heroes stay 450px.
+- Catalog data: **Diesel Engine Assemble Line** is a model under
+  `heavy-transporter`, not a separate catalog item; Technology products with a
+  single model must use the product name in `ViewModelSelect` labels—never
+  placeholder `기본` / `Standard` / `標準`.
 - In PHP include templates, keep `<?php` at column 0 when re-entering from HTML
   (leading whitespace is emitted as HTML); indent keywords inside PHP blocks
   only; prefer between-tags `echo` for element text, keep attribute echoes
@@ -63,11 +65,13 @@
   last-child-only color overrides. Japanese needs `html[lang="ja"]` tweaks
   (`line-break: strict` and related) because fixed `minmax()` floors overflow
   longer JP text.
-- `Archive.php` (자료실) is a GNB top-level page with hover submenu; Sitemap
-  lists it under 고객지원 with Contact Us. Archive items live in SQLite
-  (`archive_i18n` and related tables) and open via `view.php?archive=slug`; PDF
-  and Excel attachments download via `download.php` (static build rewrites to
-  `storage/` paths).
+- `Archive.php` (자료실): GNB top-level **plain link only** (no submenu); hover
+  matches other GNB labels (`#Gnb > li:hover`). Sitemap lists under 고객지원.
+  Archive items live in SQLite (`archive_i18n` and related tables) and open via
+  `view.php?archive=slug`. PDF/Excel downloads appear on **detail only**
+  (top-right; ≥3 attachments use a compact hamburger/details menu), not on the
+  list; files served via `download.php` (static build rewrites to `storage/`
+  paths).
 - `DetailList.php` is the item list page (filters: 전체, AGV, ForkLift,
   Technology) with a horizontal `ul`/`button[data-category]` filter list (not a
   HeaderLang-style dropdown) and page styles in `stlye/DetailList.css`.
@@ -99,4 +103,8 @@
   `.php` links. CSS/JS links omit `?ver=` cache-bust query strings. Format
   scripts use `--ignore-path .prettierignore` so gitignored `_site/` still
   formats; no Tailwind Prettier plugin; `include/**/*.html` needs a Prettier
-  `parser: "php"` override.
+  `parser: "php"` override. **GitHub Pages** (`.github/workflows/pages.yml`):
+  push to `main` deploys `_site/` as static marketing only—`admin/` and
+  `admin-api` do not run on Pages (use local PHP + `pnpm run admin:dev`).
+- macOS Finder duplicate copies (`* 2.*` files and empty `* 2` dirs) are junk;
+  delete them and keep them gitignored (do not treat as source files).

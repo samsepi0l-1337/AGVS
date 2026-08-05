@@ -59,6 +59,15 @@ if ($isArchiveView) {
 		isset($archiveItem["detail"]) && is_array($archiveItem["detail"])
 			? $archiveItem["detail"]
 			: [];
+	$archiveAttachments =
+		isset($archiveItem["attachments"]) && is_array($archiveItem["attachments"])
+			? array_values(
+				array_filter(
+					$archiveItem["attachments"],
+					fn($attachment) => !empty($attachment["path"]),
+				),
+			)
+			: [];
 	$pageTitle = $archiveTitle . " | AGVS";
 } else {
 	// ── Product mode ──────────────────────────────────────────────────────────────────────
@@ -90,6 +99,65 @@ if ($isArchiveView) {
 
 	$models =
 		!empty($item["models"]) && is_array($item["models"]) ? $item["models"] : [];
+	$itemName = isset($item["name"]) ? (string) $item["name"] : "";
+	// ViewModelSwitch labels are always English (not localized). Specs/images
+	// stay on the page lang; KR/JP model_i18n rows remain for admin/elsewhere.
+	$placeholderModelLabels = ["기본", "Standard", "標準", ""];
+	$enLabelsById = [];
+	$enItemName = "";
+	$catalogEn = agvs_load_catalog("EN");
+	$itemsEn =
+		isset($catalogEn["items"]) && is_array($catalogEn["items"])
+			? $catalogEn["items"]
+			: [];
+	foreach ($itemsEn as $candidateEn) {
+		if (($candidateEn["slug"] ?? "") !== $slug) {
+			continue;
+		}
+		$enItemName = isset($candidateEn["name"])
+			? (string) $candidateEn["name"]
+			: "";
+		$modelsEn =
+			!empty($candidateEn["models"]) && is_array($candidateEn["models"])
+				? $candidateEn["models"]
+				: [];
+		foreach ($modelsEn as $modelEn) {
+			$modelId = isset($modelEn["id"]) ? (string) $modelEn["id"] : "";
+			if ($modelId === "") {
+				continue;
+			}
+			$rawEn = isset($modelEn["label"]) ? trim((string) $modelEn["label"]) : "";
+			if (
+				in_array($rawEn, $placeholderModelLabels, true) &&
+				$enItemName !== ""
+			) {
+				$enLabelsById[$modelId] = $enItemName;
+			} else {
+				$enLabelsById[$modelId] = $rawEn;
+			}
+		}
+		break;
+	}
+	foreach ($models as &$modelOption) {
+		$modelId = isset($modelOption["id"]) ? (string) $modelOption["id"] : "";
+		if ($modelId !== "" && isset($enLabelsById[$modelId])) {
+			$modelOption["label"] = $enLabelsById[$modelId];
+			continue;
+		}
+		$rawLabel = isset($modelOption["label"])
+			? trim((string) $modelOption["label"])
+			: "";
+		$fallbackName = $enItemName !== "" ? $enItemName : $itemName;
+		if (
+			in_array($rawLabel, $placeholderModelLabels, true) &&
+			$fallbackName !== ""
+		) {
+			$modelOption["label"] = $fallbackName;
+		} else {
+			$modelOption["label"] = $rawLabel;
+		}
+	}
+	unset($modelOption);
 	$activeModel = null;
 	$modelParam = isset($_GET["model"]) ? $_GET["model"] : "";
 	if ($modelParam !== "") {
@@ -112,6 +180,10 @@ if ($isArchiveView) {
 		is_array($activeModel["specs"])
 			? $activeModel["specs"]
 			: [];
+	$activeSubtitle =
+		$activeModel !== null && isset($activeModel["subtitle"])
+			? trim((string) $activeModel["subtitle"])
+			: "";
 	$activeImages =
 		$activeModel !== null &&
 		!empty($activeModel["images"]) &&
@@ -191,7 +263,7 @@ if ($isArchiveView) {
     >
     <link
     rel="stylesheet"
-    href="./stlye/view.css"
+    href="./stlye/view.css?ver=20260805d"
     >
     <link
     rel="stylesheet"
@@ -229,7 +301,85 @@ if ($isArchiveView) {
                 	ENT_QUOTES,
                 	"UTF-8",
                 ); ?></h2>
-                <?php if (!$isArchiveView && !empty($models)): ?>
+                <?php if ($isArchiveView && !empty($archiveAttachments)): ?>
+                <div class="ViewArchiveDownloads">
+                    <?php if (count($archiveAttachments) < 3): ?>
+                    <div class="ViewArchiveDownloadsInline">
+                        <?php foreach ($archiveAttachments as $attachment): ?>
+                        <?php
+                        $attPath = (string) $attachment["path"];
+                        $attName =
+                        	(string) ($attachment["originalName"] ??
+                        		basename($attPath));
+                        $attLabel =
+                        	$attName !== ""
+                        		? $archiveDownloadLabel . " · " . $attName
+                        		: $archiveDownloadLabel;
+                        ?>
+                        <a
+                        class="ArchiveDownloadBtn"
+                        href="download.php?id=<?php echo rawurlencode(
+                        	$attPath,
+                        ); ?>&amp;name=<?php echo rawurlencode($attName); ?>"
+                        >
+                            <?php echo htmlspecialchars(
+                            	$attLabel,
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?>
+                        </a>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+                    <details class="ViewDownloadMenu">
+                        <summary class="ViewDownloadMenuBtn">
+                            <span class="ViewDownloadMenuIcon" aria-hidden="true">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </span>
+                            <span class="ViewDownloadMenuLabel"><?php echo htmlspecialchars(
+                            	$archiveDownloadLabel,
+                            	ENT_QUOTES,
+                            	"UTF-8",
+                            ); ?></span>
+                        </summary>
+                        <ul class="ViewDownloadMenuList">
+                            <?php foreach (
+                            	$archiveAttachments
+                            	as $attachment
+                            ): ?>
+                            <?php
+                            $attPath = (string) $attachment["path"];
+                            $attName =
+                            	(string) ($attachment["originalName"] ??
+                            		basename($attPath));
+                            $attLabel =
+                            	$attName !== ""
+                            		? $attName
+                            		: $archiveDownloadLabel;
+                            ?>
+                            <li>
+                                <a
+                                class="ViewDownloadMenuLink"
+                                href="download.php?id=<?php echo rawurlencode(
+                                	$attPath,
+                                ); ?>&amp;name=<?php echo rawurlencode(
+	$attName,
+); ?>"
+                                >
+                                    <?php echo htmlspecialchars(
+                                    	$attLabel,
+                                    	ENT_QUOTES,
+                                    	"UTF-8",
+                                    ); ?>
+                                </a>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </details>
+                </div>
+                <?php elseif (!$isArchiveView && !empty($models)): ?>
                 <?php $activeModelLabel =
                 	$activeModel !== null && isset($activeModel["label"])
                 		? $activeModel["label"]
@@ -272,6 +422,15 @@ if ($isArchiveView) {
                 </div>
                 <?php endif; ?>
             </div>
+            <?php // Temporarily hide 부제목 (.ViewSubtitle). Field stays in model_i18n /
+            // seeds / admin for later re-enable — do not drop the schema.
+            if (false && !$isArchiveView && $activeSubtitle !== ""): ?>
+            <p class="ViewSubtitle"><?php echo htmlspecialchars(
+            	$activeSubtitle,
+            	ENT_QUOTES,
+            	"UTF-8",
+            ); ?></p>
+            <?php endif; ?>
             <?php if (!$isArchiveView && !empty($activeSpecs)): ?>
             <ul class="ViewSpecList">
                 <?php foreach ($activeSpecs as $spec): ?>
@@ -358,35 +517,6 @@ if ($isArchiveView) {
                 ); ?></li>
                 <?php endforeach; ?>
             </ul>
-            <?php endif; ?>
-            <?php if ($isArchiveView && !empty($archiveItem["attachments"])): ?>
-            <div class="ViewDownloads">
-                <?php foreach ($archiveItem["attachments"] as $attachment): ?>
-                <?php if (!empty($attachment["path"])): ?>
-                <?php
-                $attPath = (string) $attachment["path"];
-                $attName =
-                	(string) ($attachment["originalName"] ?? basename($attPath));
-                $attLabel =
-                	$attName !== ""
-                		? $archiveDownloadLabel . " · " . $attName
-                		: $archiveDownloadLabel;
-                ?>
-                <a
-                class="ArchiveDownloadBtn"
-                href="download.php?id=<?php echo rawurlencode(
-                	$attPath,
-                ); ?>&amp;name=<?php echo rawurlencode($attName); ?>"
-                >
-                    <?php echo htmlspecialchars(
-                    	$attLabel,
-                    	ENT_QUOTES,
-                    	"UTF-8",
-                    ); ?>
-                </a>
-                <?php endif; ?>
-                <?php endforeach; ?>
-            </div>
             <?php endif; ?>
             <div class="ViewNav">
                 <div class="ViewNavSide ViewNavPrev">

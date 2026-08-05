@@ -11,7 +11,7 @@ import type { ProductI18nInput, ProductUpsertInput } from "../validation.js";
 
 import { LANGUAGES, type Lang } from "../config.js";
 import { getDb, jsonDecodeArray, jsonEncode, nextSortOrder } from "../db.js";
-import { normalizeMediaPath } from "../media.js";
+import { normalizeMediaPath, normalizeModelText } from "../media.js";
 
 function isItemRow(value: unknown): value is ItemRow {
 	if (typeof value !== "object" || value === null) {
@@ -86,7 +86,7 @@ export function listProducts(lang: Lang = "KR"): ProductRecord[] {
 		 WHERE item_slug = ? ORDER BY sort_order ASC, id ASC`,
 	);
 	const modelI18nStmt = db.prepare(
-		`SELECT model_row_id, lang, label, specs_json FROM model_i18n
+		`SELECT model_row_id, lang, label, subtitle, specs_json FROM model_i18n
 		 WHERE model_row_id = ? AND lang = ?`,
 	);
 	const imageStmt = db.prepare(
@@ -122,6 +122,10 @@ export function listProducts(lang: Lang = "KR"): ProductRecord[] {
 			}
 			const i18nRaw = modelI18nStmt.get(modelRaw.id, lang);
 			const label = i18nRaw && isModelI18nRow(i18nRaw) ? i18nRaw.label : "";
+			const subtitle =
+				i18nRaw && isModelI18nRow(i18nRaw) ?
+					String(Reflect.get(i18nRaw, "subtitle") ?? "")
+				:	"";
 			const specs =
 				i18nRaw && isModelI18nRow(i18nRaw) ?
 					parseSpecs(i18nRaw.specs_json)
@@ -140,6 +144,7 @@ export function listProducts(lang: Lang = "KR"): ProductRecord[] {
 			models.push({
 				id: modelRaw.model_key,
 				label,
+				subtitle,
 				specs,
 				images,
 			});
@@ -251,10 +256,12 @@ export function upsertProduct(recordsByLang: ProductUpsertInput): void {
 			 ON CONFLICT(slug, lang) DO UPDATE SET name = excluded.name`,
 		);
 		const modelI18n = db.prepare(
-			`INSERT INTO model_i18n (model_row_id, lang, label, specs_json)
-			 VALUES (?, ?, ?, ?)
+			`INSERT INTO model_i18n (model_row_id, lang, label, subtitle, specs_json)
+			 VALUES (?, ?, ?, ?, ?)
 			 ON CONFLICT(model_row_id, lang) DO UPDATE SET
-			   label = excluded.label, specs_json = excluded.specs_json`,
+			   label = excluded.label,
+			   subtitle = excluded.subtitle,
+			   specs_json = excluded.specs_json`,
 		);
 
 		const modelRowIds: number[] = [];
@@ -279,7 +286,13 @@ export function upsertProduct(recordsByLang: ProductUpsertInput): void {
 				if (mid === undefined) {
 					return;
 				}
-				modelI18n.run(mid, lang, model.label, jsonEncode(model.specs));
+				modelI18n.run(
+					mid,
+					lang,
+					normalizeModelText(model.label),
+					normalizeModelText(model.subtitle ?? ""),
+					jsonEncode(model.specs),
+				);
 			});
 		}
 	});
@@ -333,10 +346,12 @@ export function upsertProductI18n(
 		).run(slug, lang, payload.name);
 
 		const modelI18n = db.prepare(
-			`INSERT INTO model_i18n (model_row_id, lang, label, specs_json)
-			 VALUES (?, ?, ?, ?)
+			`INSERT INTO model_i18n (model_row_id, lang, label, subtitle, specs_json)
+			 VALUES (?, ?, ?, ?, ?)
 			 ON CONFLICT(model_row_id, lang) DO UPDATE SET
-			   label = excluded.label, specs_json = excluded.specs_json`,
+			   label = excluded.label,
+			   subtitle = excluded.subtitle,
+			   specs_json = excluded.specs_json`,
 		);
 
 		for (const model of payload.models) {
@@ -346,7 +361,13 @@ export function upsertProductI18n(
 					`Unknown model id "${model.id}" for product ${slug}. Structure edits use full CRUD.`,
 				);
 			}
-			modelI18n.run(mid, lang, model.label, jsonEncode(model.specs));
+			modelI18n.run(
+				mid,
+				lang,
+				normalizeModelText(model.label),
+				normalizeModelText(model.subtitle ?? ""),
+				jsonEncode(model.specs),
+			);
 		}
 	});
 	upsert();

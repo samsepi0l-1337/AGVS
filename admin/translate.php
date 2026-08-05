@@ -60,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 				$models[] = [
 					"id" => $modelId,
 					"label" => trim((string) ($_POST["modelLabel_" . $i] ?? "")),
+					"subtitle" => trim((string) ($_POST["modelSubtitle_" . $i] ?? "")),
 					"specs" => $specs,
 				];
 			}
@@ -261,7 +262,10 @@ else:
 		<p>제품명: <?= htmlspecialchars((string) ($ref["name"] ?? "")) ?></p>
 		<?php foreach ($ref["models"] ?? [] as $refModel): ?>
 		<p>모델 <?= htmlspecialchars((string) ($refModel["id"] ?? "")) ?>:
-			<?= htmlspecialchars((string) ($refModel["label"] ?? "")) ?></p>
+			<?= htmlspecialchars((string) ($refModel["label"] ?? "")) ?>
+			<?php if (trim((string) ($refModel["subtitle"] ?? "")) !== ""): ?>
+			 / 부제목 <?= htmlspecialchars((string) $refModel["subtitle"]) ?>
+			<?php endif; ?></p>
 		<pre><?= htmlspecialchars(implode("\n", $refModel["specs"] ?? [])) ?></pre>
 		<?php endforeach; ?>
 	</fieldset>
@@ -276,6 +280,9 @@ else:
   ) ?></code></legend>
 		<label>모델명<input name="modelLabel_<?= (int) $i ?>" required value="<?= htmlspecialchars(
 	(string) ($model["label"] ?? ""),
+) ?>"></label>
+		<label>부제목<input name="modelSubtitle_<?= (int) $i ?>" value="<?= htmlspecialchars(
+	(string) ($model["subtitle"] ?? ""),
 ) ?>"></label>
 		<label>사양 (줄마다 하나)<textarea name="specs_<?= (int) $i ?>"><?= htmlspecialchars(
 	implode("\n", $model["specs"] ?? []),

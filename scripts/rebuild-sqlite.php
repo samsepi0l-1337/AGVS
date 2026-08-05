@@ -85,8 +85,8 @@ try {
 		 VALUES (:slug, :key, :sort)",
 	);
 	$modelI18n = $pdo->prepare(
-		"INSERT INTO model_i18n (model_row_id, lang, label, specs_json)
-		 VALUES (:mid, :lang, :label, :specs)",
+		"INSERT INTO model_i18n (model_row_id, lang, label, subtitle, specs_json)
+		 VALUES (:mid, :lang, :label, :subtitle, :specs)",
 	);
 	$imageInsert = $pdo->prepare(
 		"INSERT INTO model_images (model_row_id, src, alt_text, sort_order)
@@ -158,7 +158,12 @@ try {
 				$modelI18n->execute([
 					"mid" => $modelRowIds[$mSort],
 					"lang" => $lang,
-					"label" => $model["label"],
+					"label" => agvs_normalize_model_text(
+						(string) ($model["label"] ?? ""),
+					),
+					"subtitle" => agvs_normalize_model_text(
+						(string) ($model["subtitle"] ?? ""),
+					),
 					"specs" => agvs_json_encode(array_values($model["specs"] ?? [])),
 				]);
 			}

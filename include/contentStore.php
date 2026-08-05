@@ -64,7 +64,7 @@ function agvs_load_catalog(?string $lang = null): array
 		 WHERE item_slug = :slug ORDER BY sort_order ASC, id ASC",
 	);
 	$modelI18nStmt = $pdo->prepare(
-		"SELECT label, specs_json FROM model_i18n
+		"SELECT label, subtitle, specs_json FROM model_i18n
 		 WHERE model_row_id = :id AND lang = :lang",
 	);
 	$imageStmt = $pdo->prepare(
@@ -82,6 +82,7 @@ function agvs_load_catalog(?string $lang = null): array
 			]);
 			$i18n = $modelI18nStmt->fetch() ?: [
 				"label" => "",
+				"subtitle" => "",
 				"specs_json" => "[]",
 			];
 			$imageStmt->execute(["id" => $modelRow["id"]]);
@@ -95,6 +96,7 @@ function agvs_load_catalog(?string $lang = null): array
 			$models[] = [
 				"id" => $modelRow["model_key"],
 				"label" => $i18n["label"],
+				"subtitle" => (string) ($i18n["subtitle"] ?? ""),
 				"specs" => agvs_json_decode_array($i18n["specs_json"]),
 				"images" => $images,
 			];
@@ -371,10 +373,12 @@ function agvs_admin_upsert_product(array $recordsByLang): void
 			 ON CONFLICT(slug, lang) DO UPDATE SET name = excluded.name",
 		);
 		$modelI18n = $pdo->prepare(
-			"INSERT INTO model_i18n (model_row_id, lang, label, specs_json)
-			 VALUES (:mid, :lang, :label, :specs)
+			"INSERT INTO model_i18n (model_row_id, lang, label, subtitle, specs_json)
+			 VALUES (:mid, :lang, :label, :subtitle, :specs)
 			 ON CONFLICT(model_row_id, lang) DO UPDATE SET
-			   label = excluded.label, specs_json = excluded.specs_json",
+			   label = excluded.label,
+			   subtitle = excluded.subtitle,
+			   specs_json = excluded.specs_json",
 		);
 
 		$modelRowIds = [];
@@ -414,7 +418,12 @@ function agvs_admin_upsert_product(array $recordsByLang): void
 				$modelI18n->execute([
 					"mid" => $modelRowIds[$mSort],
 					"lang" => $lang,
-					"label" => $model["label"],
+					"label" => agvs_normalize_model_text(
+						(string) ($model["label"] ?? ""),
+					),
+					"subtitle" => agvs_normalize_model_text(
+						(string) ($model["subtitle"] ?? ""),
+					),
 					"specs" => agvs_json_encode(array_values($model["specs"] ?? [])),
 				]);
 			}
@@ -662,14 +671,16 @@ function agvs_admin_upsert_product_i18n(
 			->execute(["slug" => $slug, "lang" => $lang, "name" => $name]);
 
 		$modelI18n = $pdo->prepare(
-			"INSERT INTO model_i18n (model_row_id, lang, label, specs_json)
-			 VALUES (:mid, :lang, :label, :specs)
+			"INSERT INTO model_i18n (model_row_id, lang, label, subtitle, specs_json)
+			 VALUES (:mid, :lang, :label, :subtitle, :specs)
 			 ON CONFLICT(model_row_id, lang) DO UPDATE SET
-			   label = excluded.label, specs_json = excluded.specs_json",
+			   label = excluded.label,
+			   subtitle = excluded.subtitle,
+			   specs_json = excluded.specs_json",
 		);
 		foreach ($models as $model) {
 			$id = (string) ($model["id"] ?? "");
-			$label = trim((string) ($model["label"] ?? ""));
+			$label = agvs_normalize_model_text((string) ($model["label"] ?? ""));
 			if ($id === "" || $label === "") {
 				throw new RuntimeException("Model id and label are required.");
 			}
@@ -688,6 +699,9 @@ function agvs_admin_upsert_product_i18n(
 				"mid" => $byKey[$id],
 				"lang" => $lang,
 				"label" => $label,
+				"subtitle" => agvs_normalize_model_text(
+					(string) ($model["subtitle"] ?? ""),
+				),
 				"specs" => agvs_json_encode($specs),
 			]);
 		}

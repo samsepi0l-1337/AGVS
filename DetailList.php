@@ -15,6 +15,12 @@ foreach ($catalogCategories as $catalogCategory) {
 	$categoryLabels[$catalogCategory["id"]] = $catalogCategory["label"];
 }
 
+// Card subtitle = official EN product title (부제목), not category label.
+$enItemNames = [];
+foreach (agvs_load_catalog("EN")["items"] as $enItem) {
+	$enItemNames[$enItem["slug"]] = $enItem["name"];
+}
+
 $initialBannerCategory = "all";
 if (
 	isset($_GET["category"]) &&
@@ -166,7 +172,8 @@ if (
                             ); ?>
                         </h3><!--크기18px굵기700-->
                         <p class="ItemCategory"><?php echo htmlspecialchars(
-                        	$categoryLabels[$catalogItem["category"]],
+                        	$enItemNames[$catalogItem["slug"]] ??
+                        		$catalogItem["name"],
                         	ENT_QUOTES,
                         	"UTF-8",
                         ); ?></p>

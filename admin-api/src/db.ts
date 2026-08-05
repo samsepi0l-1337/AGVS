@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS model_i18n (
 	model_row_id INTEGER NOT NULL REFERENCES models(id) ON DELETE CASCADE,
 	lang TEXT NOT NULL CHECK (lang IN ('KR', 'EN', 'JP')),
 	label TEXT NOT NULL,
+	subtitle TEXT NOT NULL DEFAULT '',
 	specs_json TEXT NOT NULL DEFAULT '[]',
 	PRIMARY KEY (model_row_id, lang)
 );
@@ -144,6 +145,7 @@ export function getDb(): Database.Database {
 	db.pragma("busy_timeout = 5000");
 	db.exec(SCHEMA_SQL);
 	ensureThumbnailColumns(db);
+	ensureModelSubtitleColumn(db);
 	return db;
 }
 
@@ -158,6 +160,18 @@ function ensureThumbnailColumns(database: Database.Database): void {
 				`ALTER TABLE ${table} ADD COLUMN thumbnail TEXT NOT NULL DEFAULT ''`,
 			);
 		}
+	}
+}
+
+/** ALTER older DBs that predate model_i18n.subtitle. */
+function ensureModelSubtitleColumn(database: Database.Database): void {
+	const cols = database.pragma(`table_info(model_i18n)`) as Array<{
+		name: string;
+	}>;
+	if (!cols.some((col) => col.name === "subtitle")) {
+		database.exec(
+			`ALTER TABLE model_i18n ADD COLUMN subtitle TEXT NOT NULL DEFAULT ''`,
+		);
 	}
 }
 

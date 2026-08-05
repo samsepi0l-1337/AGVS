@@ -89,6 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			$primary = $existingModels[0] ?? [
 				"id" => "default",
 				"label" => "",
+				"subtitle" => "",
 				"specs" => [],
 				"images" => [],
 			];
@@ -124,6 +125,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 				$localModels = $localExisting["models"] ?? $existingModels;
 				$model = $primary;
 				$model["label"] = trim((string) ($_POST["modelLabel_" . $lang] ?? ""));
+				$model["subtitle"] = trim(
+					(string) ($_POST["modelSubtitle_" . $lang] ?? ""),
+				);
 				$model["specs"] = array_values(
 					array_filter(
 						array_map(
@@ -325,6 +329,12 @@ $edit["published"]
 	$edit
 		? admin_find(admin_items($type, $lang), $editSlug)["models"][0]["label"] ??
 			""
+		: "",
+) ?>"></label><label>부제목<input name="modelSubtitle_<?= $lang ?>" value="<?= htmlspecialchars(
+	$edit
+		? admin_find(admin_items($type, $lang), $editSlug)["models"][0][
+				"subtitle"
+			] ?? ""
 		: "",
 ) ?>"></label><label>사양 (줄마다 하나)<textarea name="specs_<?= $lang ?>"><?= htmlspecialchars(
 	$edit
