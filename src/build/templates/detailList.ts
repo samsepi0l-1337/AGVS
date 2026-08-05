@@ -83,7 +83,8 @@ export const detailListPage: PageModule = {
 
 		var banner = root.querySelector(".TopBg");
 		if (banner) {
-			banner.classList.forEach(function (className) {
+			// Copy the live class list before pruning it to keep shifted TopBg entries from being missed.
+			Array.prototype.slice.call(banner.classList).forEach(function (className) {
 				if (className !== "TopBg" && className.indexOf("TopBg") === 0) {
 					banner.classList.remove(className);
 				}
