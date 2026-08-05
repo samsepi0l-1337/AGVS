@@ -340,7 +340,7 @@ function validateCatalogImages(catalog: Catalog, outputRoot: string): string[] {
 
 function main(): void {
 	const repoRoot = findRepoRoot(here);
-	const outputRoot = path.join(repoRoot, "_site-ts");
+	const outputRoot = path.join(repoRoot, "_site");
 	fs.rmSync(outputRoot, { recursive: true, force: true });
 	fs.mkdirSync(outputRoot, { recursive: true });
 	assertUniquePageNames();

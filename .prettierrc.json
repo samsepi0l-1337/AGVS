@@ -16,11 +16,5 @@
 	"importOrderSeparation": true,
 	"importOrderSortSpecifiers": true,
 	"plugins": [ "@trivago/prettier-plugin-sort-imports", "@prettier/plugin-php" ],
-	"phpVersion": "8.2",
-	"overrides": [
-		{
-			"files": [ "src/includes/**/*.html" ],
-			"options": { "parser": "php" }
-		}
-	]
+	"phpVersion": "8.2"
 }

@@ -16,10 +16,12 @@
   sites) over inventing alternate structures.
 - Footer language switcher labels are KR, EN, and JP; copyright uses the form
   `Copyrights(C) YYYY AGVS. All Rights Reserved.`
-- Share header/footer via PHP includes (`src/includes/layout/header.html`,
-  `footer.html`; `Overview.php` keeps its page-local header). Put chrome CSS in
-  `src/assets/css/layout/layout.css`; keep chrome JS (GNB, footer lang, Top) in
-  `src/scripts/layout/` and FullPage/section snap in `src/scripts/home/`, all
+- Share header/footer via the TS chrome templates
+  (`src/build/templates/header.ts`, `footer.ts`; the Overview page keeps its
+  page-local header). (Superseded 2026-08-05: these were PHP includes under
+  `src/includes/layout/` until the renderer moved to TypeScript.) Put chrome CSS
+  in `src/assets/css/layout/layout.css`; keep chrome JS (GNB, footer lang, Top)
+  in `src/scripts/layout/` and FullPage/section snap in `src/scripts/home/`, all
   reached from the single `src/scripts/main.ts` entry every page loads.
   (Superseded 2026-07-30: JS-fetched `data-include` / `partials/` /
   `js/layout.js` are gone. Superseded 2026-08-05: the single `js/main.js` IIFE
@@ -53,21 +55,25 @@
   retired (2026-08-05). Wrappers keep an intentional `max-width: 1920px` even
   when inner widths are %-based; 1920px parity remains the acceptance criterion.
   GNB top-level label spelling is Technology.
-- Runtime catalog, UI chrome, videos, and archive copy live in
-  `data/agvs.sqlite`, read through `src/includes/core/contentStore.php` and
-  `agvs_t()`. `data/items{KR|EN|JP}.json`, `ui*.json`, and `videos.json` are
-  rebuild seeds only (`scripts/rebuild-sqlite.php`).
-- Pages include `index.php`, `DetailList.php`, `view.php` (model
+- Catalog, UI chrome, videos, and archive copy live in `data/agvs.sqlite`, read
+  at build time by `src/build/content.ts` and surfaced to templates as
+  `ctx.t()`. `data/items{KR|EN|JP}.json`, `ui*.json`, and `videos.json` are
+  rebuild seeds only (`scripts/rebuild-sqlite.php`). `src/includes/core/*.php`
+  still reads the same DB, but ONLY for the PHP admin UI — it is dead to the
+  render path.
+- Page templates are `src/build/templates/*.ts`, registered in
+  `src/build/pages.ts`: `index`, `detailList`, `view` (model
   `<select class="ViewModelSelect">` styled like `HeaderLangBtn` but wider;
-  drives specs/images; also `?archive=slug` for Archive detail), `Overview.php`,
-  `Video.php`, `VideoView.php`, `Archive.php`, `Sitemap.php`, plus PHP `admin/`
-  and `admin/translate.php` (i18n-only editing).
-- `Overview.php` uses its own page-local header (not
-  `src/includes/layout/header.html`); copy is keyed under `overview.*` in SQLite
-  UI payloads via `agvs_t()`. Scrolled header goes white with `#333333` text and
-  keeps blue hover; avoid last-child-only color overrides. Japanese needs
-  `html[lang="ja"]` tweaks (`line-break: strict` and related) because fixed
-  `minmax()` floors overflow longer JP text.
+  drives specs/images; also renders the Archive detail branch), `overview`,
+  `video`, `videoView`, `archive`, `sitemap`. Output basenames keep their
+  original capitalisation (`DetailList.html`) — Pages is case-sensitive. PHP
+  `admin/` and `admin/translate.php` (i18n-only editing) remain PHP.
+- The Overview page uses its own page-local header (not the shared
+  `renderHeader`); copy is keyed under `overview.*` in SQLite UI payloads via
+  `ctx.t()`. Scrolled header goes white with `#333333` text and keeps blue
+  hover; avoid last-child-only color overrides. Japanese needs `html[lang="ja"]`
+  tweaks (`line-break: strict` and related) because fixed `minmax()` floors
+  overflow longer JP text.
 - `Archive.php` (자료실): GNB top-level **plain link only** (no submenu); hover
   matches other GNB labels (`#Gnb > li:hover`). Sitemap lists under 고객지원.
   Archive items live in SQLite (`archive_i18n` and related tables) and open via
@@ -75,14 +81,14 @@
   (top-right; ≥3 attachments use a compact hamburger/details menu), not on the
   list; files served via `download.php` (static build rewrites to `storage/`
   paths).
-- `DetailList.php` is the item list page (filters: 전체, AGV, ForkLift,
+- `templates/detailList.ts` is the item list page (filters: 전체, AGV, ForkLift,
   Technology) with a horizontal `ul`/`button[data-category]` filter list (not a
   HeaderLang-style dropdown) and page styles in
   `src/assets/css/pages/detailList.css`.
 - Section 2 is three equal hover-expand panels using `img/sec02_01.png`,
   `img/sec02_02.png`, and `img/sec02_03.png`. Section 3 is ~70% left
   `img/sec03.png` and ~30% right vision copy on a soft teal panel (`#E8F6F5`),
-  with localized title/description via `agvs_t("sec03.*")` and an untranslated
+  with localized title/description via `ctx.t("sec03.*")` and an untranslated
   Contact us CTA.
 - Footer link columns are 개인정보 처리방침 (AGV, ForkLift) and 사이트맵
   (Technology); no "빠른 링크" column. Footer/contact address is KR
@@ -93,7 +99,7 @@
 - DetailList/view/Archive/Video/Sitemap heroes use desktop height 450px; at
   `max-width: 767.98px` height 250px with centered title text and
   `padding-top: 80px` so copy centers in the visible area below the fixed
-  header. Use `agvs_asset_url()` for language-stable image and media paths.
+  header. Use `ctx.assetUrl()` for language-stable image and media paths.
 - `src/api/` (was `admin-api/`) is a strict TypeScript Express JSON API (session
   auth, SQLite CRUD, i18n-only PUT routes, uploads) sharing `data/agvs.sqlite`
   with PHP; `pnpm run admin:dev` with repo-root `.env`
@@ -105,18 +111,19 @@
   (`build:js` → `build:static` → Prettier format). Browser TypeScript compiles
   via `tsconfig.scripts.json` (`src/scripts` → `src/assets/js`, generated and
   gitignored); the API via `tsconfig.api.json` (`src/api` → `dist/api`).
-  `scripts/build-static.sh` renders KR to `_site/*.html`, EN to `_site/en/`, JP
-  to `_site/jp/` and copies `src/assets` to `_site/assets`; static lang switch
-  navigates those paths, while PHP uses `?lang=` + cookie. Build reads SQLite
-  via PHP renderers; rewrites `download.php` to static file paths; FAIL check
-  allows external `https://` `.php` links. CSS/JS links **do** keep their
-  `?ver=` cache-bust query strings in the built output (an earlier note here
-  claimed otherwise — it was wrong). Format scripts use
+  `build:static` runs `tsx src/build/render.ts`, which renders KR to
+  `_site/*.html`, EN to `_site/en/`, JP to `_site/jp/` and copies `src/assets`
+  to `_site/assets`; the language switch navigates those paths. It rewrites
+  `download.php` links to static file paths and FAILs on a missing
+  header/footer, a leftover site-relative `.php` link (external `https://`
+  `.php` is allowed), or a catalog image that is missing, empty, mis-cased or
+  not a real JPEG — keep every one of those checks. CSS/JS links **do** keep
+  their `?ver=` cache-bust query strings in the built output (an earlier note
+  here claimed otherwise — it was wrong). Format scripts use
   `--ignore-path .prettierignore` so gitignored `_site/` still formats; no
-  Tailwind Prettier plugin; `src/includes/**/*.html` needs a Prettier
-  `parser: "php"` override; the format glob covers no `.ts`. **GitHub Pages**
-  (`.github/workflows/pages.yml`): push to `main` deploys `_site/` as static
-  marketing only—`src/admin/` and `src/api/` do not run on Pages (use local PHP
-  - `pnpm run admin:dev`).
+  Tailwind Prettier plugin; the format glob covers no `.ts`. **GitHub Pages**
+  (`.github/workflows/pages.yml`): push to `main` deploys `_site/`; the workflow
+  no longer installs PHP because the build no longer runs any. `src/admin/` and
+  `src/api/` do not run on Pages (use local PHP + `pnpm run admin:dev`).
 - macOS Finder duplicate copies (`* 2.*` files and empty `* 2` dirs) are junk;
   delete them and keep them gitignored (do not treat as source files).

@@ -6,30 +6,42 @@ code in this repository.
 ## What this is
 
 Static Korean corporate marketing site for "AGVS" (Automated Guided Vehicle
-System). No framework, no jQuery — plain HTML/CSS and TypeScript compiled to
-browser-native ES modules. PHP renders the pages at **build time** only: what
-GitHub Pages serves is pure HTML/CSS/JS, so a visitor never executes PHP. Local
-development still needs a PHP-capable server.
+System). No framework, no jQuery — plain HTML/CSS and TypeScript throughout.
+**The whole render path is TypeScript**: `src/build/` reads SQLite at build time
+and writes `_site/`, which is what GitHub Pages serves. Nothing executes PHP, in
+production or locally, so `_site/` previews correctly under any static server.
 
-**Everything that is source lives under `src/`**, which doubles as the `php -S`
-document root:
+**Everything that is source lives under `src/`:**
 
 ```
 src/
-  *.php                    entry pages (index, DetailList, view, Overview,
-                           Video, VideoView, Archive, Sitemap, download)
-  includes/core/*.php      lang, contentStore, db, adminCore
-  includes/layout/*.html   header, footer, contactPop
-  admin/                   admin UI (PHP)
-  api/                     Express admin API (TypeScript)
+  build/                   the static renderer (TypeScript, run by tsx)
+    content.ts             SQLite readers
+    i18n.ts  html.ts       t() / assetUrl(); PHP-compatible escaping
+    pages.ts  render.ts    page registry; CLI entry
+    templates/*.ts         header, footer, contactPop + one per page
   scripts/**/*.ts          browser sources: core, layout, home, detail, main.ts
   assets/css/{base,layout,pages}/*.css
   assets/js/               tsc output — generated, gitignored
   assets/img/  assets/video/
+  api/                     Express admin API (TypeScript)
+  admin/                   admin UI — still PHP, pending migration
+  includes/core/*.php      lang, contentStore, db, adminCore — kept ONLY because
+                           src/admin/ and scripts/rebuild-sqlite.php require them
+  download.php             attachment download for local admin use
 ```
 
 `data/` (SQLite + JSON seeds), `storage/` (uploads), `scripts/` (build tooling)
 and `.github/` stay at the repo root because they are not source.
+
+**The PHP renderer is gone.** It was migrated by building the TypeScript
+renderer alongside it and diffing the two outputs page by page until all 69
+pages (23 × KR/EN/JP) rendered identically, then deleting the PHP path in commit
+`d5b8b36`'s successor. `src/includes/core/*.php` survives only for the admin UI;
+it is dead to the render path. To re-run that parity check against the old
+renderer — worth doing if a rendering regression is ever suspected — recover
+`scripts/build-static.sh`, `scripts/compare-render.sh` and the eight page `.php`
+files from `d5b8b36` and run `compare:render` there.
 
 The design is fluid with `width: 100%` and `max-width: 1920px` wrappers; inner
 widths use percentages derived from the original 1920px pixel values. Font sizes
@@ -50,31 +62,30 @@ it with `curl -k`.
 
 ## Running and verifying
 
-There is no lint or test command. Serve **`src/` with PHP** — the document root
-is `src`, not the repo root:
+There is no lint or test command. Build, then serve the output with anything:
 
 ```bash
 export PATH="/opt/homebrew/bin:$PATH"
-pnpm run build:js          # compile src/scripts -> src/assets/js first
-php -S localhost:8848 -t src
-# http://localhost:8848/index.php  ·  http://localhost:8848/DetailList.php
+pnpm run build                     # build:js -> build:static -> format
+cd _site && python3 -m http.server 8848
 ```
 
-`build:js` is not optional: `src/assets/js/` is generated and gitignored, so on
-a fresh checkout the pages load nothing until tsc has run. Use
-`pnpm run scripts:watch` while editing TypeScript.
+There is no live-reload dev server any more, and that is the trade the migration
+made: previewing a source edit means rebuilding. `pnpm run build:static` alone
+(~1s) is enough when only markup or content changed; `build:js` is only needed
+after editing `src/scripts/`. `src/assets/js/` is generated and gitignored, so a
+fresh checkout renders unstyled-and-inert pages until `build:js` has run once.
 
-`python3 -m http.server` will **not** work — it does not execute PHP, so the
-`include` statements render as nothing and the header and footer silently vanish
-from every page. That failure looks like a CSS bug, not a server bug.
-Sanity-check a served page with `curl -s … | grep -c '<?php'` — the answer must
-be 0.
+`build:static` runs `tsx src/build/render.ts`: it renders KR to `_site/*.html`,
+EN to `_site/en/`, JP to `_site/jp/`, copies `src/assets` to `_site/assets`, and
+fails loudly on a missing header/footer, a leftover site-relative `.php` link,
+or a catalog image that is missing, empty, mis-cased or not a real JPEG. **Keep
+those checks.** The case-sensitivity one in particular has caught real bugs:
+macOS resolves a mis-cased asset happily and GitHub Pages 404s it.
 
-The full pipeline is `pnpm run build` (`build:js` → `build:static` → `format`).
-`build:static` renders KR to `_site/*.html`, EN to `_site/en/`, JP to
-`_site/jp/`, copies `src/assets` to `_site/assets`, and fails loudly on
-unexecuted PHP, a missing header/footer, a leftover site-relative `.php` link,
-or a catalog image that is missing, empty, mis-cased or not a real JPEG.
+The admin UI is the one thing that still needs PHP —
+`php -S localhost:8849 -t src` then `/admin/`, alongside `pnpm run admin:dev`
+for the API.
 
 Verification means **measuring in a real browser** (Chrome DevTools MCP) — read
 computed styles and geometry via `evaluate_script` rather than judging from
@@ -93,7 +104,7 @@ cache these files aggressively and **edits silently do not apply until the
 version is bumped**. Bump every reference across all pages at once:
 
 ```bash
-perl -pi -e 's/ver=20260804b/ver=20260804c/g' src/*.php
+perl -pi -e 's/ver=20260804b/ver=20260804c/g' src/build/templates/*.ts
 ```
 
 **Known gap:** only the entry module carries `?ver=`. The modules it imports
@@ -105,11 +116,12 @@ caching ever causes a confusing local result.
 
 ## Line endings and formatting
 
-Several PHP pages and CSS files under `src/` use **CRLF**; the TypeScript
-sources and `src/assets/css/base/reset.css` use **LF**. Check with `file` before
-a wholesale rewrite, and prefer `Edit` over `Write` on the CRLF files — a full
-rewrite converts them to LF and inflates the diff by the entire file. To repair:
-`perl -pi -e 's/\r?\n/\r\n/' <file>`.
+**The tree is now uniformly LF.** It used to be a CRLF/LF mix — the PHP pages
+and most CSS were CRLF — and this section used to warn against rewriting those
+files wholesale. Prettier converted the last of them during the TypeScript
+migration; verified with `file` across all 134 tracked source files, zero CRLF.
+Keep it that way: no `.gitattributes` pins line endings, so a wholesale rewrite
+that reintroduces CRLF would show up as a whole-file diff.
 
 A Prettier-on-save formatter is active and will reformat files after edits
 (quote style, indentation, blank lines between CSS rules). Expected; don't fight
@@ -121,23 +133,40 @@ The old `stlye/` misspelling is gone; stylesheets live under `src/assets/css/`.
 
 ## Architecture
 
-**Shared chrome lives in `src/includes/layout/`, shared CSS in
-`src/assets/css/layout/layout.css`.** `header.html` and `footer.html` are pulled
-into every page with
-`<?php include __DIR__ . "/includes/layout/header.html"; ?>` — `__DIR__`, so the
-include resolves independently of the server's working directory. `layout.css`
-holds every header and footer rule; `pages/home.css` is index-only
-(Section01–03, `.ScrollBtn`, `.BgVideo`) and `pages/detailList.css` is
-DetailList-only. When those rules were lifted out of `home.css` their
-`.OverView` ancestor prefix was **removed on purpose**, because `DetailList.php`
-has no `.OverView` wrapper — re-adding that prefix silently unstyles the chrome
-on DetailList while leaving index looking fine.
+**Shared chrome lives in `src/build/templates/{header,footer,contactPop}.ts`,
+shared CSS in `src/assets/css/layout/layout.css`.** Each page template calls
+`renderHeader(ctx, catalog)`, `renderFooter(ctx)` and `renderContactPop(ctx)`;
+`ctx` is the per-locale `RenderContext` from `i18n.ts` carrying `t()`,
+`assetUrl()`, `lang`, `htmlLang` and `aboutLabel`. `layout.css` holds every
+header and footer rule; `pages/home.css` is index-only (Section01–03,
+`.ScrollBtn`, `.BgVideo`) and `pages/detailList.css` is DetailList-only. When
+those rules were lifted out of `home.css` their `.OverView` ancestor prefix was
+**removed on purpose**, because the DetailList page has no `.OverView` wrapper —
+re-adding that prefix silently unstyles the chrome on DetailList while leaving
+index looking fine.
 
-Consequences for the pages' `<head>`s: `DetailList.php` does not load
-`home.css`, so it also must not load the Material Symbols font (that icon font
-is referenced only by `home.css`'s `.Sec03ContactBtn`). Noto Sans KR **is**
-needed on all pages, because `assets/css/base/reset.css` declares it as the base
+Consequences for the pages' `<head>`s: DetailList does not load `home.css`, so
+it also must not load the Material Symbols font (that icon font is referenced
+only by `home.css`'s `.Sec03ContactBtn`). Noto Sans KR **is** needed on all
+pages, because `assets/css/base/reset.css` declares it as the base
 `font-family`.
+
+**Adding a page** means writing `src/build/templates/<name>.ts` exporting a
+`PageModule` (`{ name, render(ctx, data, slug?) }`) and adding one import plus
+one array entry to `src/build/pages.ts`. `name` is the output basename and its
+capitalisation is load-bearing — GitHub Pages is case-sensitive.
+
+**`html.ts` reproduces PHP's escaping on purpose**, because the templates were
+ported from PHP under a byte-identical-output constraint: `esc()` matches
+`htmlspecialchars(ENT_QUOTES, UTF-8)` down to the `&#039;` form of the
+apostrophe, and `phpJsonEncode()` matches `json_encode()`'s defaults, which
+escape `/` and emit `\uXXXX` rather than raw UTF-8. Use `phpJsonEncode` for
+values embedded in an inline `<script>`; plain `JSON.stringify` would change the
+bytes.
+
+Catalog paths are still stored in their historical `img/…` form in SQLite; the
+`assets/` prefix is added by `ctx.assetUrl()` at render time, which is why the
+database, the JSON seeds and admin uploads survived the asset move untouched.
 
 **Browser scripts are TypeScript ES modules under `src/scripts/`,** grouped by
 feature and compiled by `tsc` to `src/assets/js/` with the folder tree
@@ -173,10 +202,10 @@ page's native scrolling. `initSectionSnap` needs no guard: it finds no
 `#FullPage` sections and bails on its own.
 
 The `<script>` tag is `type="module"`, which is deferred. That is safe because
-the tag already sits at the end of `<body>`, and the two inline scripts
-(`Overview.php`, `view.php`) do not reference anything the module exports — but
-it is a constraint to keep in mind before adding a third inline script that
-does.
+the tag already sits at the end of `<body>`, and the two inline scripts emitted
+by `templates/overview.ts` and `templates/view.ts` do not reference anything the
+module exports — but it is a constraint to keep in mind before adding a third
+inline script that does.
 
 **Section snapping (`initSectionSnap`) is the core.** Snap targets are the three
 `#FullPage > div` sections **plus `footer#Footer`**. Sections are `100vh` but
