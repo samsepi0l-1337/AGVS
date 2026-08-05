@@ -79,7 +79,8 @@ export function initDetailList(): void {
 		}
 
 		if (banner) {
-			banner.classList.forEach(function (className) {
+			// Snapshot the live token list so removals cannot skip adjacent stale banner classes.
+			Array.from(banner.classList).forEach(function (className) {
 				if (className !== "TopBg" && className.indexOf("TopBg") === 0) {
 					banner.classList.remove(className);
 				}
