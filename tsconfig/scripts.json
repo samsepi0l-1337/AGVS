@@ -1,0 +1,17 @@
+{
+	"extends": "./base.json",
+	"compilerOptions": {
+		"rootDir": "../src/scripts",
+		"outDir": "../dist/browser",
+		"target": "es2022",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"lib": ["es2022", "dom", "dom.iterable"],
+		"types": [],
+		"verbatimModuleSyntax": true,
+		"composite": true,
+		"declarationDir": "../dist/.types/browser",
+		"tsBuildInfoFile": "../dist/.tsbuild/tsconfig.scripts.tsbuildinfo"
+	},
+	"include": ["../src/scripts/**/*.ts"]
+}

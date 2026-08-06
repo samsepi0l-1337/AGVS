@@ -1,7 +1,7 @@
 {
-	"extends": "./tsconfig.base.json",
+	"extends": "./base.json",
 	"compilerOptions": {
-		"rootDir": "src/build",
+		"rootDir": "../src/build",
 		"target": "es2022",
 		"module": "esnext",
 		"moduleResolution": "bundler",
@@ -11,5 +11,5 @@
 		"sourceMap": false,
 		"noEmit": true
 	},
-	"include": ["src/build/**/*.ts"]
+	"include": ["../src/build/**/*.ts"]
 }

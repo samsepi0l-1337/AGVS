@@ -184,7 +184,7 @@ database, the JSON seeds and admin uploads survived the asset move untouched.
 feature and compiled by `tsc` to `dist/browser/` with the folder tree preserved,
 then copied into the built site as `assets/js/`. There is no bundler, so **every
 relative import must carry an explicit `.js` specifier** even though the file on
-disk is `.ts` — an extensionless import ships a 404. `tsconfig.scripts.json`
+disk is `.ts` — an extensionless import ships a 404. `tsconfig/scripts.json`
 uses `moduleResolution: "bundler"` precisely so `.js` specifiers resolve to
 `.ts` sources.
 
