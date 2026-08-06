@@ -304,11 +304,11 @@ function renderLocale(
 function copyStaticAssets(
 	repoRoot: string,
 	outputRoot: string,
-	sourceBrowser: string,
+	sourceScripts: string,
 ): void {
-	if (!fs.existsSync(sourceBrowser) || !fs.statSync(sourceBrowser).isDirectory()) {
+	if (!fs.existsSync(sourceScripts) || !fs.statSync(sourceScripts).isDirectory()) {
 		throw new Error(
-			"dist/browser 빌드 결과가 없습니다. 먼저 pnpm run build:js를 실행하세요.",
+			"dist/scripts 빌드 결과가 없습니다. 먼저 pnpm run build:js를 실행하세요.",
 		);
 	}
 
@@ -316,7 +316,7 @@ function copyStaticAssets(
 	if (fs.existsSync(sourceAssets) && fs.statSync(sourceAssets).isDirectory()) {
 		fs.cpSync(sourceAssets, path.join(outputRoot, "assets"), { recursive: true });
 	}
-	fs.cpSync(sourceBrowser, path.join(outputRoot, "assets", "js"), { recursive: true });
+	fs.cpSync(sourceScripts, path.join(outputRoot, "assets", "js"), { recursive: true });
 
 	const sourceUploads = path.join(repoRoot, "storage", "uploads");
 	if (fs.existsSync(sourceUploads) && fs.statSync(sourceUploads).isDirectory()) {
@@ -402,8 +402,8 @@ function validateCatalogImages(catalog: Catalog, outputRoot: string): string[] {
 function main(): void {
 	const repoRoot = findRepoRoot(here);
 	const outputRoot = path.join(repoRoot, "dist", "site");
-	const sourceBrowser = path.join(repoRoot, "dist", "browser");
-	const modulePaths = findCompiledModules(sourceBrowser);
+	const sourceScripts = path.join(repoRoot, "dist", "scripts");
+	const modulePaths = findCompiledModules(sourceScripts);
 	fs.rmSync(outputRoot, { recursive: true, force: true });
 	fs.mkdirSync(outputRoot, { recursive: true });
 	assertUniquePageNames();
@@ -425,7 +425,7 @@ function main(): void {
 		}
 	}
 
-	copyStaticAssets(repoRoot, outputRoot, sourceBrowser);
+	copyStaticAssets(repoRoot, outputRoot, sourceScripts);
 	const failures = renderedFiles.flatMap((file) => validateRenderedPage(file, outputRoot));
 	if (krCatalog) {
 		failures.push(...validateCatalogImages(krCatalog, outputRoot));

@@ -81,7 +81,7 @@ editing `src/scripts/`.
 
 `build:static` runs `tsx src/build/render.ts`: it renders KR to
 `dist/site/*.html`, EN to `dist/site/en/`, JP to `dist/site/jp/`, copies
-`src/assets` to `dist/site/assets`, copies the compiled `dist/browser` to
+`src/assets` to `dist/site/assets`, copies the compiled `dist/scripts` to
 `dist/site/assets/js`, and fails loudly on a missing header/footer, a leftover
 site-relative `.php` link, or a catalog image that is missing, empty, mis-cased
 or not a real JPEG. **Keep those checks.** The case-sensitivity one has caught
@@ -89,11 +89,11 @@ real bugs: macOS resolves a mis-cased asset happily and GitHub Pages 404s it.
 
 **Why the browser JS is copied separately.** It used to be emitted into
 `src/assets/js/` and rode along inside the wholesale `src/assets` copy. Now that
-it lands in `dist/browser/`, that free ride is gone, so `render.ts` copies it
-explicitly and throws if `dist/browser` is absent. Without that guard a build
+it lands in `dist/scripts/`, that free ride is gone, so `render.ts` copies it
+explicitly and throws if `dist/scripts` is absent. Without that guard a build
 with no compiled JS would exit 0 and publish pages whose `./assets/js/main.js`
-404s — green build, dead site. Verified by deleting `dist/browser` and
-confirming `build:static` exits 1 naming both `dist/browser` and `build:js`.
+404s — green build, dead site. Verified by deleting `dist/scripts` and
+confirming `build:static` exits 1 naming both `dist/scripts` and `build:js`.
 
 The admin UI runs on the API, not a separate server: `pnpm run admin:dev`
 compiles `src/admin/ts` and starts Express, then open `/admin` on the API's own
@@ -181,12 +181,27 @@ Catalog paths are still stored in their historical `img/…` form in SQLite; the
 database, the JSON seeds and admin uploads survived the asset move untouched.
 
 **Browser scripts are TypeScript ES modules under `src/scripts/`,** grouped by
-feature and compiled by `tsc` to `dist/browser/` with the folder tree preserved,
+feature and compiled by `tsc` to `dist/scripts/` with the folder tree preserved,
 then copied into the built site as `assets/js/`. There is no bundler, so **every
 relative import must carry an explicit `.js` specifier** even though the file on
-disk is `.ts` — an extensionless import ships a 404. `tsconfig/scripts.json`
+disk is `.ts` — an extensionless import ships a 404. The single `tsconfig.json`
 uses `moduleResolution: "bundler"` precisely so `.js` specifiers resolve to
 `.ts` sources.
+
+**There is exactly one `tsconfig.json`, compiling `src/` as a single project**
+(2026-08-06). It replaced a base config plus four per-target ones. The layout
+follows from `rootDir: "src"`, `outDir: "dist"`: `src/scripts` → `dist/scripts`,
+`src/admin/ts` → `dist/admin/ts`, `src/api` → `dist/api`, and `src/build` →
+`dist/build`, whose JS is unused because tsx runs the `.ts` sources directly.
+`composite`, `references`, `declaration` and `tsBuildInfoFile` are all gone with
+the split, which also removes the way `.d.ts` files once leaked into the
+published site.
+
+**The cost, stated so it is not rediscovered as a bug:** one project means one
+`lib` and one `types`, so browser and Node globals are visible everywhere.
+`process.env` in a browser module and `document` in a server module both
+typecheck now; separate projects used to catch them. If that starts biting,
+splitting the config back out is the fix.
 
 - `core/` — `motion` (easing, `windowScrollDuration`), `windowScroll` (the
   single rAF scroll; the active animation is private to this module and
