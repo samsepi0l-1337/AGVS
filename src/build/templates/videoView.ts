@@ -35,18 +35,6 @@ function sortOrder(record: Record<string, unknown>): number {
 	return typeof value === "number" ? value : 0;
 }
 
-function isPhpEmpty(value: unknown): boolean {
-	return (
-		value === undefined ||
-		value === null ||
-		value === false ||
-		value === 0 ||
-		value === "" ||
-		value === "0" ||
-		(Array.isArray(value) && value.length === 0)
-	);
-}
-
 function descriptionLines(
 	video: Record<string, unknown>,
 	lang: Parameters<PageModule["render"]>[0]["lang"],
@@ -106,10 +94,6 @@ export const videoViewPage: PageModule = {
 		const pageTitle = `${phpString(video.title)} | AGVS`;
 		const videoType = stringField(video, "type");
 		const videoDescriptions = descriptionLines(video, ctx.lang);
-		const referenceUrl =
-			!isPhpEmpty(video.referenceUrl) ? phpString(video.referenceUrl)
-			: !isPhpEmpty(video.source) ? phpString(video.source)
-			: "";
 
 		let player = "";
 		if (videoType === "youtube") {
@@ -141,18 +125,11 @@ export const videoViewPage: PageModule = {
 			:	`<ul class="ViewSpecList">
 	${videoDescriptions.map((line) => `<li>${esc(line)}</li>`).join("")}
 </ul>`;
-		const reference =
-			referenceUrl !== "" && /^https?:\/\//i.test(referenceUrl) ?
-				`<p class="VideoReference">
-	<a
-		href="${esc(referenceUrl)}"
-		target="_blank"
-		rel="noopener noreferrer"
-	>
-		${esc(referenceUrl)}
-	</a>
-</p>`
-			:	"";
+		// The source/referenceUrl link used to render here as a `.VideoReference`
+		// paragraph under the description. Removed by request 2026-08-06 — it
+		// published raw agvsk.com bbs URLs at the bottom of every video page.
+		// The value is still stored and still editable in the admin UI, it is
+		// simply no longer shown on the site.
 		const previousNavigation =
 			previousVideo === null ?
 				`<span class="ViewNavPlaceholder" aria-hidden="true"></span>`
@@ -229,7 +206,6 @@ export const videoViewPage: PageModule = {
 				<div class="ViewBody">
 					${player}
 					${descriptionList}
-					${reference}
 				</div>
 				<div class="ViewNav">
 					<div class="ViewNavSide ViewNavPrev">

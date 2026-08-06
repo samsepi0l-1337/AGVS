@@ -98,9 +98,43 @@ function renderArchiveDownloads(
 </div>`;
 }
 
+/**
+ * Model ids that need a page of their own.
+ *
+ * An item's FIRST model is what its own `view-<slug>.html` page shows, so only
+ * the models after it need one. Exported because `render.ts` enumerates the
+ * pages to write and must agree with `modelHref()` below on the basenames.
+ */
+export function extraModelPageSlugs(item: CatalogItem): string[] {
+	return item.models.slice(1).map((model) => model.id);
+}
+
+/**
+ * Where a model's page lives.
+ *
+ * This used to be `?model=<id>` on the item's own page, which the PHP renderer
+ * resolved server-side. The static build renders one file per item, so that
+ * query string reloaded the identical page: the URL changed and nothing else
+ * did. Each non-first model now has a pre-rendered page instead, so switching
+ * models is a plain navigation — no JS, and no flash of the wrong model.
+ *
+ * `rewritePhpLinks()` in render.ts turns both forms into the matching
+ * `view-<slug>.html`, which is why this emits the same `view.php?item=` shape
+ * every other internal link uses.
+ */
+function modelHref(
+	itemSlug: string,
+	models: CatalogModel[],
+	model: CatalogModel,
+): string {
+	const target = models[0]?.id === model.id ? itemSlug : model.id;
+	return `view.php?item=${rawUrlEncode(target)}`;
+}
+
 function renderModelSwitch(
 	models: CatalogModel[],
 	activeModel: CatalogModel,
+	itemSlug: string,
 ): string {
 	const options = models
 		.map((model) => {
@@ -110,9 +144,9 @@ function renderModelSwitch(
 			// Deliberately not esc(): the PHP echo emits a fixed active-class suffix.
 			const activeClass = isActive ? " isActive" : "";
 			return `<li role="option" aria-selected="${selectedValue}">
-	<button type="button" class="ViewModelSwitchOption${activeClass}" data-model="${esc(model.id)}">
+	<a href="${esc(modelHref(itemSlug, models, model))}" class="ViewModelSwitchOption${activeClass}">
 		${esc(model.label)}
-	</button>
+	</a>
 </li>`;
 		})
 		.join("");
@@ -270,9 +304,9 @@ function renderProduct(
 	ctx: Parameters<PageModule["render"]>[0],
 	data: Parameters<PageModule["render"]>[1],
 	item: CatalogItem,
+	activeModel: CatalogModel | null,
 ): string {
 	const models = normalizedModels(item);
-	const activeModel = models[0] ?? null;
 	const activeSpecs = activeModel?.specs ?? [];
 	const activeImages = activeModel?.images ?? [];
 	const categoryTitle =
@@ -290,7 +324,9 @@ function renderProduct(
 			siblings[siblingIndex + 1]
 		:	null;
 	const modelSwitch =
-		activeModel === null ? "" : renderModelSwitch(models, activeModel);
+		activeModel === null ? "" : (
+			renderModelSwitch(models, activeModel, item.slug)
+		);
 	const specs =
 		activeSpecs.length > 0 ?
 			`<ul class="ViewSpecList">
@@ -359,15 +395,16 @@ function renderProduct(
 		</div>
 	</div>
 </main>`;
-	// Deliberately not esc(): this mirrors PHP json_encode() in JavaScript source.
-	const encodedItemSlug = phpJsonEncode(item.slug);
+	// The options are ordinary links now, so this script only opens and closes
+	// the menu — it no longer rewrites the URL. The old version set `?model=`
+	// and reloaded, which on a static site fetched the same file back and left
+	// the page unchanged.
 	const productScript = `<script>
 	(function () {
 		var wrap = document.querySelector(".ViewModelSwitch");
 		if (!wrap) return;
 		var btn = wrap.querySelector(".ViewModelSwitchBtn");
 		var menu = wrap.querySelector(".ViewModelSwitchMenu");
-		var itemSlug = ${encodedItemSlug};
 		function setOpen(open) {
 			wrap.classList.toggle("isOpen", open);
 			btn.setAttribute("aria-expanded", open ? "true" : "false");
@@ -376,15 +413,6 @@ function renderProduct(
 		btn.addEventListener("click", function (e) {
 			e.stopPropagation();
 			setOpen(menu.hidden);
-		});
-		wrap.querySelectorAll(".ViewModelSwitchOption").forEach(function (opt) {
-			opt.addEventListener("click", function () {
-				var model = opt.getAttribute("data-model");
-				var url = new URL(window.location.href);
-				url.searchParams.set("item", itemSlug);
-				url.searchParams.set("model", model);
-				window.location.href = url.toString();
-			});
 		});
 		document.addEventListener("click", function () {
 			setOpen(false);
@@ -424,9 +452,24 @@ export const viewPage: PageModule = {
 		const item = data.catalog.items.find(
 			(candidate) => candidate.slug === slug,
 		);
-		if (!item) {
-			throw new Error(`카탈로그 항목을 찾을 수 없습니다: ${slug}`);
+		if (item) {
+			const models = normalizedModels(item);
+			return renderProduct(ctx, data, item, models[0] ?? null);
 		}
-		return renderProduct(ctx, data, item);
+
+		// Not an item slug — a non-first model addressed by its own id. Only
+		// models after the first are looked up here, because the first one is
+		// already reachable as the item's own page and would otherwise render
+		// the same content under two basenames.
+		for (const candidate of data.catalog.items) {
+			const models = normalizedModels(candidate);
+			const activeModel =
+				models.find((model, index) => index > 0 && model.id === slug) ?? null;
+			if (activeModel !== null) {
+				return renderProduct(ctx, data, candidate, activeModel);
+			}
+		}
+
+		throw new Error(`카탈로그 항목을 찾을 수 없습니다: ${slug}`);
 	},
 };
