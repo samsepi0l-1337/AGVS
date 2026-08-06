@@ -437,6 +437,35 @@ function validateCatalogImages(catalog: Catalog, outputRoot: string): string[] {
 	return failures;
 }
 
+/**
+ * Refuse to build when a template exists as both `.ts` and `.tsx`.
+ *
+ * `./overview.js` resolves to `overview.ts` when both are present, so the
+ * `.tsx` becomes dead code and the site keeps rendering from the old file —
+ * with a green build and no warning anywhere. That happened on 2026-08-07: a
+ * `git add` aborted on an unrelated bad pathspec, the deletion of the old
+ * `.ts` went unstaged, and the merged branch carried both files.
+ */
+function assertNoShadowedTemplates(repoRoot: string): void {
+	const directory = path.join(repoRoot, "src", "build", "templates");
+	const stems = new Map<string, string[]>();
+	for (const entry of fs.readdirSync(directory)) {
+		const match = /^(.*)\.(ts|tsx)$/.exec(entry);
+		if (!match) continue;
+		const [, stem] = match;
+		stems.set(stem, [...(stems.get(stem) ?? []), entry]);
+	}
+	const shadowed = [...stems.values()].filter((names) => names.length > 1);
+	if (shadowed.length > 0) {
+		throw new Error(
+			`템플릿이 .ts와 .tsx로 중복되어 있습니다: ${shadowed
+				.map((names) => names.join(" / "))
+				.join(", ")}. ` +
+				`둘 다 있으면 .ts가 우선 해석되어 .tsx가 무시됩니다. 하나를 지우세요.`,
+		);
+	}
+}
+
 function main(): void {
 	const repoRoot = findRepoRoot(here);
 	const outputRoot = path.join(repoRoot, "dist", "site");
@@ -445,6 +474,7 @@ function main(): void {
 	fs.rmSync(outputRoot, { recursive: true, force: true });
 	fs.mkdirSync(outputRoot, { recursive: true });
 	assertUniquePageNames();
+	assertNoShadowedTemplates(repoRoot);
 
 	const renderedFiles: string[] = [];
 	let krCatalog: Catalog | null = null;
