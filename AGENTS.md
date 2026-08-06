@@ -52,7 +52,7 @@
 - Static AGVS marketing site (multi-page): plain HTML/CSS/vanilla JS with
   KR/EN/JP i18n via `src/build/i18n.ts` (public site) and cookie `agvs_lang`;
   assets under `src/assets/{css,img,video}/` (compiled JS is generated into
-  `dist/browser/`, never into `src/`). The old `stlye/` misspelling is retired
+  `dist/scripts/`, never into `src/`). The old `stlye/` misspelling is retired
   (2026-08-05). Wrappers keep an intentional `max-width: 1920px` even when inner
   widths are %-based; 1920px parity remains the acceptance criterion. GNB
   top-level label spelling is Technology.
@@ -118,30 +118,30 @@
   output (`dist/api/`) needs.
 - Package manager is pnpm; local and CI entrypoint is `pnpm run build`
   (`build:js` → `build:static` → Prettier format). Browser TypeScript compiles
-  via `tsconfig/scripts.json` (`src/scripts` → `dist/browser`, generated and
-  gitignored); the admin UI via `tsconfig/adminui.json` (`src/admin/ts` →
-  `dist/admin`); the API via `tsconfig/api.json` (`src/api` → `dist/api`). **All
-  TypeScript configs live in `tsconfig/`; the repo root holds only
-  `tsconfig.json`**, the solution file whose `references` let `tsc -b` build
-  everything. `pnpm run typecheck` is that plus `tsconfig/build.json`, which
-  cannot be a reference because references require `composite` and `composite`
-  requires emit, while `src/build` is typecheck-only (tsx runs the `.ts`). Paths
-  inside those configs are relative to the config file, so each carries `../` —
-  a missed one does not error, it silently compiles the wrong tree.
-  `tsconfig/base.json` is deliberately NOT folded into the root solution:
-  `extends` inherits `files`/`include`/`exclude` too, and the solution's
-  `files: []` would then be inherited by every target. A single config is
-  impossible — the browser targets need the DOM lib with `esnext`/`bundler`
-  while the Node targets need node types and `NodeNext`. **Every build output
-  lands under `dist/` and nothing is generated inside `src/`** (2026-08-05) — a
-  `js/` directory under `src/` is stale. `build:static` runs
+  via **one root `tsconfig.json`** that compiles `src/` as a single project
+  (2026-08-06; it replaced a base config plus four per-target ones, and an
+  earlier note here claiming a single config was impossible was wrong — it is
+  possible, at a cost stated below). `rootDir: "src"` and `outDir: "dist"` fix
+  the layout: `src/scripts` → `dist/scripts`, `src/admin/ts` → `dist/admin/ts`,
+  `src/api` → `dist/api`, `src/build` → `dist/build` (unused — tsx runs those
+  `.ts` sources directly). `composite`, `references`, `declaration` and
+  `tsBuildInfoFile` went away with the split, which also removed the way `.d.ts`
+  files once leaked into the published site. **The cost:** one project means one
+  `lib` and one `types`, so browser and Node globals are visible everywhere —
+  `process.env` in a browser module and `document` in a server module both
+  typecheck now, where separate projects caught them. Splitting the config back
+  out is the fix if that starts biting. Two consumers depend on the emitted
+  locations and move with them: `render.ts` copies `dist/scripts` into the site,
+  and the API serves `dist/admin/ts` at `/admin/js`. **Every build output lands
+  under `dist/` and nothing is generated inside `src/`** (2026-08-05) — a `js/`
+  directory under `src/` is stale. `build:static` runs
   `tsx src/build/render.ts`, which renders KR to `dist/site/*.html`, EN to
   `dist/site/en/`, JP to `dist/site/jp/`, copies `src/assets` to
-  `dist/site/assets` and copies `dist/browser` to `dist/site/assets/js`; the
+  `dist/site/assets` and copies `dist/scripts` to `dist/site/assets/js`; the
   language switch navigates those paths. That second copy is load-bearing: the
   browser JS no longer lives inside `src/assets`, so without it the build would
   exit 0 and publish pages whose JS 404s — `render.ts` throws when
-  `dist/browser` is missing, and that guard has been triggered deliberately to
+  `dist/scripts` is missing, and that guard has been triggered deliberately to
   confirm it fires. The renderer also rewrites `download.php` links to static
   file paths and FAILs on a missing header/footer, a leftover site-relative
   `.php` link (external `https://` `.php` is allowed), or a catalog image that
