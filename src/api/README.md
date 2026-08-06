@@ -1,7 +1,11 @@
 # AGVS Admin API (TypeScript)
 
-Small Node/Express backend for admin auth and SQLite-backed content CRUD. Public
-marketing pages stay on PHP and continue reading `data/agvs.sqlite`.
+Small Node/Express backend for admin auth and SQLite-backed content CRUD. The
+public marketing pages are rendered at build time by `src/build/` (TypeScript,
+no PHP anywhere) and read the same `data/agvs.sqlite`.
+
+New here? Start with the repo-root [`README.md`](../../README.md) — it covers
+clone/pull setup. This file documents the API surface itself.
 
 ## Setup
 
@@ -11,26 +15,28 @@ marketing pages stay on PHP and continue reading `data/agvs.sqlite`.
 cp .env.example .env
 ```
 
-2. Set `AGVS_ADMIN_PASSWORD_HASH` to a PHP-compatible bcrypt hash (`$2y$…`):
+2. Set `AGVS_ADMIN_PASSWORD_HASH` to a bcrypt hash:
 
 ```bash
-php -r "echo password_hash('your-password', PASSWORD_BCRYPT, ['cost'=>12]), PHP_EOL;"
+node -e 'import("bcryptjs").then(m=>console.log(m.default.hashSync("your-password",12)))'
 ```
+
+That emits `$2b$…`, which is accepted directly. Legacy PHP `$2y$` hashes still
+verify — see the auth note below.
 
 3. Set `AGVS_ADMIN_SESSION_SECRET` to a long random string (≥16 chars).
 
-4. Ensure the SQLite DB exists (seeded from JSON if needed):
-
-```bash
-pnpm run rebuild:db
-```
+4. `data/agvs.sqlite` is committed, so it is already there after a clone.
+   `pnpm run rebuild:db` regenerates it wholesale from the JSON seeds and
+   **discards anything entered through the admin UI** — it is a reset, not a
+   setup step.
 
 ## Run
 
 ```bash
-pnpm run admin:dev      # tsx watch
-pnpm run admin:build   # emit admin-api/dist
-pnpm run admin:start   # node admin-api/dist/index.js
+pnpm run admin:dev     # compile the admin UI, then tsx watch src/api/index.ts
+pnpm run admin:build   # emit dist/api (and the rest of src/)
+pnpm run admin:start   # node dist/api/index.js
 pnpm run admin:typecheck
 ```
 
@@ -89,8 +95,9 @@ thumbnail, media paths, attachments, or published flags.
 | `video_i18n`                | —                                       |
 
 `lang` must be `KR` \| `EN` \| `JP`. Unknown product model `id`s are rejected
-(structure changes belong on full CRUD). Do **not** use `rebuild-sqlite.php` as
-the day-to-day translation path.
+(structure changes belong on full CRUD). Do **not** use `pnpm run rebuild:db`
+(formerly `rebuild-sqlite.php`) as the day-to-day translation path — it rebuilds
+the DB from the JSON seeds and drops everything entered here.
 
 ## Translator UI (admin)
 
