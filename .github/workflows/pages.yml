@@ -10,9 +10,15 @@ permissions:
   pages: write
   id-token: write
 
+# Allow one deployment at a time, but never cancel one that is already running.
+# GitHub's own starter workflow for Pages sets cancel-in-progress: false for
+# exactly this reason — a production deployment should be allowed to finish.
+# This repo had `true`, and on 2026-08-06 overlapping runs cancelled each
+# other's in-flight deployment repeatedly; every deployment afterwards sat in
+# `deployment_queued` until it timed out, six runs in a row.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
