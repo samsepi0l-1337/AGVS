@@ -19,7 +19,9 @@ src/
     i18n.ts  html.ts       t() / assetUrl(); PHP-compatible escaping
     pages.ts  render.ts    page registry; CLI entry
     seed.ts                rebuilds data/agvs.sqlite from the JSON seeds
-    templates/*.ts         header, footer, contactPop + one per page
+    templates/*.tsx        header, footer, contactPop, shell, langSwitch
+                           + one per page (some still .ts — see below)
+    jsx/jsx-runtime.ts     the string-emitting JSX factory (no React)
   scripts/**/*.ts          browser sources: core, layout, home, detail, main.ts
   assets/css/{base,layout,pages}/*.css
   assets/img/  assets/video/
@@ -116,7 +118,7 @@ cache these files aggressively and **edits silently do not apply until the
 version is bumped**. Bump every reference across all pages at once:
 
 ```bash
-perl -pi -e 's/ver=20260804b/ver=20260804c/g' src/build/templates/*.ts
+perl -pi -e 's/ver=20260804b/ver=20260804c/g' src/build/templates/*.ts*
 ```
 
 **Known gap:** only the entry module carries `?ver=`. The modules it imports
@@ -145,7 +147,7 @@ The old `stlye/` misspelling is gone; stylesheets live under `src/assets/css/`.
 
 ## Architecture
 
-**Shared chrome lives in `src/build/templates/{header,footer,contactPop}.ts`,
+**Shared chrome lives in `src/build/templates/{header,footer,contactPop}.tsx`,
 shared CSS in `src/assets/css/layout/layout.css`.** Each page template calls
 `renderHeader(ctx, catalog)`, `renderFooter(ctx)` and `renderContactPop(ctx)`;
 `ctx` is the per-locale `RenderContext` from `i18n.ts` carrying `t()`,
@@ -163,10 +165,45 @@ only by `home.css`'s `.Sec03ContactBtn`). Noto Sans KR **is** needed on all
 pages, because `assets/css/base/reset.css` declares it as the base
 `font-family`.
 
-**Adding a page** means writing `src/build/templates/<name>.ts` exporting a
+**Adding a page** means writing `src/build/templates/<name>.tsx` exporting a
 `PageModule` (`{ name, render(ctx, data, slug?) }`) and adding one import plus
 one array entry to `src/build/pages.ts`. `name` is the output basename and its
 capitalisation is load-bearing — GitHub Pages is case-sensitive.
+
+**Templates are TSX, rendered to strings at build time** (2026-08-06). There is
+no React and no bundler: `src/build/jsx/jsx-runtime.ts` is a ~150-line factory
+that returns HTML strings, wired up with `jsxFactory: "h"`, so each `.tsx` file
+imports `h` the same way it imports anything else. The classic factory is used
+rather than the automatic runtime because a **relative** `jsxImportSource`
+resolves against each importing file rather than against `tsconfig.json`, so it
+cannot name a path that is correct from every directory — `./src/build/jsx`
+fails from `templates/` with TS2875, and a `paths` mapping would fix compilation
+but not `tsx`'s own resolution at run time.
+
+The reason for the switch was escaping, not syntax. The string templates carried
+~200 hand-written `esc()` calls and forgetting one was undetectable. In TSX
+`{value}` is escaped always and `{raw(html)}` is the visible exception. Two
+things the runtime has to get right, both found by getting them wrong first:
+`aria-*`/`data-*` are string attributes, so `aria-selected={false}` must render
+`"false"` rather than vanish the way `hidden` does; and SVG shape primitives
+(`path`, `line`, `rect`, `stop`, …) must stay self-closed, since the paired form
+changes the built bytes on every page.
+
+Shared pieces live beside the pages: `shell.tsx` (`PageShell` — the doctype,
+head, header, footer, popup and entry script every page repeated) and
+`langSwitch.tsx` (`LangSwitch`, used by both header and footer with a `prefix`
+of `"Header"` or `"Footer"`). `PageShell` takes an explicit `stylesheets` list
+rather than deriving one from the page name, because the rules about which page
+loads which sheet are real — see the `<head>` note above.
+
+**Converting the rest**: `index`, `detailList`, `view`, `videoView` and
+`overview` are still string templates. They interoperate — a TSX component
+returns a string, so a string template can interpolate it and vice versa — so
+they can go one at a time. `scripts/compare-dom.py <before> <after>` is how each
+conversion was checked: it compares the element tree, every attribute and
+whitespace-collapsed text, because Prettier reflows short elements when the
+pre-format whitespace changes and a byte diff therefore reports formatting
+churn. Verify a conversion against a saved copy of `dist/site` from before it.
 
 **`html.ts` reproduces PHP's escaping on purpose**, because the templates were
 ported from PHP under a byte-identical-output constraint: `esc()` matches
