@@ -51,14 +51,14 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # Do not add `with: timeout:` here. 600000 ms (10 min) is the action's
+      # MAXIMUM, not just its default: a larger value is silently clamped back
+      # with "Warning: timeout value is greater than the allowed maximum".
+      # Tried on 2026-08-06 (1800000) while deploys were stalling in
+      # `deployment_queued` — it changed nothing, because the cap is hard.
+      # When a deploy fails that way the queue is the problem, not this file.
+      # Note that re-running does NOT recover it: a Pages deployment is keyed
+      # on the commit sha, so a re-run recreates the same deployment ID and it
+      # is cancelled within seconds. A new commit is the only way forward.
       - id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          # The action's default is 600000 (10 min), and on 2026-08-06 two
-          # deploys in a row sat in `deployment_queued` for exactly that long
-          # and were cancelled — a Pages queue delay, not a build problem.
-          # Worse, once a commit's deployment is cancelled, re-running the job
-          # recreates the same deployment ID and it is cancelled immediately,
-          # so the only recovery was a new commit. Waiting longer is cheap;
-          # failing a green build because the queue was slow is not.
-          timeout: 1800000
