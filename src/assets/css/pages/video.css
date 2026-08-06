@@ -399,20 +399,3 @@ header:has(+ .VideoViewMain) .ContactUsWrap {
 		font-size: 14px;
 	}
 }
-
-.VideoReference {
-	margin: -30px 0 50px;
-	font-size: 14px;
-	line-height: 1.6;
-}
-
-.VideoReference a {
-	color: #007dcc;
-	text-decoration: underline;
-	text-underline-offset: 3px;
-}
-
-.VideoReference a:hover,
-.VideoReference a:focus-visible {
-	color: #005f9c;
-}

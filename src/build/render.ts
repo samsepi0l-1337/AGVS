@@ -6,6 +6,7 @@ import { loadCatalog, loadUi, loadVideosDocument } from "./content.js";
 import { createContext } from "./i18n.js";
 import { pages } from "./pages.js";
 import type { PageData, PageModule } from "./pages.js";
+import { extraModelPageSlugs } from "./templates/view.js";
 import type { Catalog, Lang, UiDocument } from "./types.js";
 
 interface LocaleTarget {
@@ -181,6 +182,34 @@ function countDetailPages(destinationDirectory: string, prefix: string): number 
 		.filter((name) => name.startsWith(`${prefix}-`) && name.endsWith(".html")).length;
 }
 
+/**
+ * Refuse to write two product pages to the same basename.
+ *
+ * Model ids are unique only WITHIN an item, not across the catalog — three
+ * items currently share the model id `default`. Those are all first models, so
+ * none of them gets a page of its own today and nothing collides. But the
+ * moment a second model reuses an id, or a model id matches an item slug, one
+ * page would silently overwrite the other and a product would vanish from the
+ * site with a green build. Fail loudly instead, like the other render guards.
+ */
+function assertUniqueSlugs(lang: Lang, slugs: string[]): void {
+	const seen = new Set<string>();
+	const duplicates = new Set<string>();
+	for (const slug of slugs) {
+		if (seen.has(slug)) {
+			duplicates.add(slug);
+		}
+		seen.add(slug);
+	}
+	if (duplicates.size > 0) {
+		throw new Error(
+			`[${lang}] view 페이지 이름이 겹칩니다: ${[...duplicates].join(", ")}. ` +
+				`모델 id는 아이템 안에서만 고유하므로, 페이지를 갖는 모델의 id는 ` +
+				`다른 아이템 슬러그 및 모델 id와 달라야 합니다.`,
+		);
+	}
+}
+
 function assertDetailCount(
 	lang: Lang,
 	destinationDirectory: string,
@@ -232,21 +261,30 @@ function renderLocale(
 
 	const viewPage = pages.find((page) => page.name === "view");
 	if (viewPage) {
+		// One page per item, plus one per additional model. A model used to be
+		// selected with `?model=` on the item's page, which a static host cannot
+		// resolve — see extraModelPageSlugs() in templates/view.ts.
+		const viewSlugs: string[] = [];
 		for (const item of catalog.items) {
+			viewSlugs.push(item.slug, ...extraModelPageSlugs(item));
+		}
+		assertUniqueSlugs(target.lang, viewSlugs);
+
+		for (const slug of viewSlugs) {
 			files.push(
 				writeRenderedPage(
 					viewPage,
 					ctx,
 					data,
 					destinationDirectory,
-					`view-${item.slug}`,
+					`view-${slug}`,
 					nestedLocale,
 					modulePaths,
-					item.slug,
+					slug,
 				),
 			);
 		}
-		assertDetailCount(target.lang, destinationDirectory, "view", catalog.items.length, "아이템");
+		assertDetailCount(target.lang, destinationDirectory, "view", viewSlugs.length, "아이템");
 
 		for (const archive of archiveItems) {
 			const slug = slugFromRecord(archive, "자료실");
