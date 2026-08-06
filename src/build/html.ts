@@ -1,4 +1,9 @@
-function phpString(value: unknown): string {
+/**
+ * PHP's string conversion, exported because `esc()` applies it and TSX
+ * templates that render a raw `unknown` need the same coercion — `String()`
+ * differs for null, false and the numeric edge cases below.
+ */
+export function phpString(value: unknown): string {
 	if (value === null || value === false) {
 		return "";
 	}
