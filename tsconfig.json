@@ -19,5 +19,11 @@
 		"esModuleInterop": true,
 		"resolveJsonModule": true
 	},
-	"include": ["src/**/*.ts", "src/**/*.tsx"]
+	"include": ["src/**/*.ts", "src/**/*.tsx"],
+	// macOS Finder duplicates ("foo 2.ts") are junk, but they used to be
+	// harmless junk. Now that jsx-runtime.ts carries a `declare global`, a
+	// duplicate of it redeclares the JSX namespace and the build fails with
+	// TS2300 pointing at a file nobody wrote. They are gitignored; exclude
+	// them from compilation too.
+	"exclude": ["node_modules", "**/* 2.ts", "**/* 2.tsx"]
 }
