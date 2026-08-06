@@ -81,9 +81,10 @@
   submenu); hover matches other GNB labels (`#Gnb > li:hover`). Sitemap lists
   under 고객지원. Archive items live in SQLite (`archive_i18n` and related
   tables) and open via `view.php?archive=slug`. PDF/Excel downloads appear on
-  **detail only** (top-right; ≥3 attachments use a compact hamburger/details
-  menu), not on the list; files served via `download.php` (static build rewrites
-  to `storage/` paths).
+  **detail only** (top-right), never on the list, and **always** use the compact
+  `<details>` menu regardless of attachment count (2026-08-05: the former ≥3
+  threshold is gone, so a single file gets the menu too). Files are served via
+  `download.php` links, which the static build rewrites to `storage/` paths.
 - `templates/detailList.ts` is the item list page (filters: 전체, AGV, ForkLift,
   Technology) with a horizontal `ul`/`button[data-category]` filter list (not a
   HeaderLang-style dropdown) and page styles in
@@ -117,29 +118,40 @@
   output (`dist/api/`) needs.
 - Package manager is pnpm; local and CI entrypoint is `pnpm run build`
   (`build:js` → `build:static` → Prettier format). Browser TypeScript compiles
-  via `tsconfig.scripts.json` (`src/scripts` → `dist/browser`, generated and
-  gitignored); the admin UI via `tsconfig.adminui.json` (`src/admin/ts` →
-  `dist/admin`); the API via `tsconfig.api.json` (`src/api` → `dist/api`).
-  **Every build output lands under `dist/` and nothing is generated inside
-  `src/`** (2026-08-05) — a `js/` directory under `src/` is stale.
-  `build:static` runs `tsx src/build/render.ts`, which renders KR to
-  `dist/site/*.html`, EN to `dist/site/en/`, JP to `dist/site/jp/`, copies
-  `src/assets` to `dist/site/assets` and copies `dist/browser` to
-  `dist/site/assets/js`; the language switch navigates those paths. That second
-  copy is load-bearing: the browser JS no longer lives inside `src/assets`, so
-  without it the build would exit 0 and publish pages whose JS 404s —
-  `render.ts` throws when `dist/browser` is missing, and that guard has been
-  triggered deliberately to confirm it fires. The renderer also rewrites
-  `download.php` links to static file paths and FAILs on a missing
-  header/footer, a leftover site-relative `.php` link (external `https://`
-  `.php` is allowed), or a catalog image that is missing, empty, mis-cased or
-  not a real JPEG — keep every one of those checks. CSS/JS links **do** keep
-  their `?ver=` cache-bust query strings in the built output (an earlier note
-  here claimed otherwise — it was wrong). Format scripts use
-  `--ignore-path .prettierignore` so gitignored output still formats; no
-  Tailwind Prettier plugin; the format glob covers no `.ts` and no `.php` (none
-  remains). **GitHub Pages** (`.github/workflows/pages.yml`): push to `main`
-  deploys `dist/site/`; the workflow installs no PHP. `src/admin/` and
+  via `tsconfig/scripts.json` (`src/scripts` → `dist/browser`, generated and
+  gitignored); the admin UI via `tsconfig/adminui.json` (`src/admin/ts` →
+  `dist/admin`); the API via `tsconfig/api.json` (`src/api` → `dist/api`). **All
+  TypeScript configs live in `tsconfig/`; the repo root holds only
+  `tsconfig.json`**, the solution file whose `references` let `tsc -b` build
+  everything. `pnpm run typecheck` is that plus `tsconfig/build.json`, which
+  cannot be a reference because references require `composite` and `composite`
+  requires emit, while `src/build` is typecheck-only (tsx runs the `.ts`). Paths
+  inside those configs are relative to the config file, so each carries `../` —
+  a missed one does not error, it silently compiles the wrong tree.
+  `tsconfig/base.json` is deliberately NOT folded into the root solution:
+  `extends` inherits `files`/`include`/`exclude` too, and the solution's
+  `files: []` would then be inherited by every target. A single config is
+  impossible — the browser targets need the DOM lib with `esnext`/`bundler`
+  while the Node targets need node types and `NodeNext`. **Every build output
+  lands under `dist/` and nothing is generated inside `src/`** (2026-08-05) — a
+  `js/` directory under `src/` is stale. `build:static` runs
+  `tsx src/build/render.ts`, which renders KR to `dist/site/*.html`, EN to
+  `dist/site/en/`, JP to `dist/site/jp/`, copies `src/assets` to
+  `dist/site/assets` and copies `dist/browser` to `dist/site/assets/js`; the
+  language switch navigates those paths. That second copy is load-bearing: the
+  browser JS no longer lives inside `src/assets`, so without it the build would
+  exit 0 and publish pages whose JS 404s — `render.ts` throws when
+  `dist/browser` is missing, and that guard has been triggered deliberately to
+  confirm it fires. The renderer also rewrites `download.php` links to static
+  file paths and FAILs on a missing header/footer, a leftover site-relative
+  `.php` link (external `https://` `.php` is allowed), or a catalog image that
+  is missing, empty, mis-cased or not a real JPEG — keep every one of those
+  checks. CSS/JS links **do** keep their `?ver=` cache-bust query strings in the
+  built output (an earlier note here claimed otherwise — it was wrong). Format
+  scripts use `--ignore-path .prettierignore` so gitignored output still
+  formats; no Tailwind Prettier plugin; the format glob covers no `.ts` and no
+  `.php` (none remains). **GitHub Pages** (`.github/workflows/pages.yml`): push
+  to `main` deploys `dist/site/`; the workflow installs no PHP. `src/admin/` and
   `src/api/` do not run on Pages — run them locally with `pnpm run admin:dev`
   and open `/admin` on the API's own port.
 - macOS Finder duplicate copies (`* 2.*` files and empty `* 2` dirs) are junk;

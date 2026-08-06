@@ -1,0 +1,27 @@
+{
+	"extends": "./base.json",
+	"compilerOptions": {
+		"rootDir": "../src/admin/ts",
+		"outDir": "../dist/admin",
+		"target": "es2022",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"lib": ["es2022", "dom", "dom.iterable"],
+		"types": [],
+		"verbatimModuleSyntax": true,
+		"composite": true,
+		"declarationDir": "../dist/.types/admin",
+		"tsBuildInfoFile": "../dist/.tsbuild/tsconfig.adminui.tsbuildinfo"
+	},
+	"files": [
+		"../src/admin/ts/api.ts",
+		"../src/admin/ts/auth.ts",
+		"../src/admin/ts/content.ts",
+		"../src/admin/ts/dom.ts",
+		"../src/admin/ts/main.ts",
+		"../src/admin/ts/model.ts",
+		"../src/admin/ts/translate.ts",
+		"../src/admin/ts/types.ts",
+		"../src/admin/ts/ui.ts"
+	]
+}

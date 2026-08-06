@@ -1,6 +1,4 @@
 node_modules/
-# TS renderer output, produced alongside _site/ during the PHP->TS migration
-_site-ts/
 storage/backups/
 storage/trash/
 storage/uploads/
@@ -14,6 +12,11 @@ dist/
 # macOS Finder duplicate / conflict copies ("foo 2.php", empty "bar 2" dirs)
 * 2.*
 * 2
+
+# macOS Finder metadata. Untracked but not ignored until now, so a stray
+# `git add` would have committed it and the build copies src/assets wholesale —
+# which would have published .DS_Store to the live site.
+.DS_Store
 
 # Track lockfile even if ignored by a global gitignore
 !pnpm-lock.yaml

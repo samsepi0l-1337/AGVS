@@ -1,20 +1,20 @@
 {
-	"extends": "./tsconfig.base.json",
+	"extends": "./base.json",
 	"compilerOptions": {
 		"target": "esnext",
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"lib": ["esnext"],
-		"outDir": "dist/api",
-		"rootDir": "src/api",
+		"outDir": "../dist/api",
+		"rootDir": "../src/api",
 		"noUncheckedIndexedAccess": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"resolveJsonModule": true,
 		"verbatimModuleSyntax": false,
 		"composite": true,
-		"tsBuildInfoFile": "dist/api/tsconfig.api.tsbuildinfo"
+		"tsBuildInfoFile": "../dist/api/tsconfig.api.tsbuildinfo"
 	},
-	"include": ["src/api/**/*.ts"],
-	"exclude": ["dist", "node_modules"]
+	"include": ["../src/api/**/*.ts"],
+	"exclude": ["../dist", "../node_modules"]
 }
