@@ -64,14 +64,14 @@
   API (`src/api/store/*.ts`) reads and writes the same DB at runtime; the two
   readers are deliberately separate because they shape rows for different
   consumers.
-- Page templates are `src/build/templates/*.tsx` (some still `.ts`
-  mid-conversion), registered in `src/build/pages.ts`: `index`, `detailList`,
-  `view` (model `<select class="ViewModelSelect">` styled like `HeaderLangBtn`
-  but wider; drives specs/images; also renders the Archive detail branch),
-  `overview`, `video`, `videoView`, `archive`, `sitemap`. Output basenames keep
-  their original capitalisation (`DetailList.html`) — Pages is case-sensitive.
-  The admin UI is `src/admin/{index.html,assets,ts}`, served by the API at
-  `/admin`; its translate screen is i18n-only by design.
+- Page templates are `src/build/templates/*.tsx` (all TSX since 2026-08-07),
+  registered in `src/build/pages.ts`: `index`, `detailList`, `view` (model
+  `<select class="ViewModelSelect">` styled like `HeaderLangBtn` but wider;
+  drives specs/images; also renders the Archive detail branch), `overview`,
+  `video`, `videoView`, `archive`, `sitemap`. Output basenames keep their
+  original capitalisation (`DetailList.html`) — Pages is case-sensitive. The
+  admin UI is `src/admin/{index.html,assets,ts}`, served by the API at `/admin`;
+  its translate screen is i18n-only by design.
 - The Overview page uses its own page-local header (not the shared
   `renderHeader`); copy is keyed under `overview.*` in SQLite UI payloads via
   `ctx.t()`. Scrolled header goes white with `#333333` text and keeps blue

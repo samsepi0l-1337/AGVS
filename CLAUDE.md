@@ -19,8 +19,8 @@ src/
     i18n.ts  html.ts       t() / assetUrl(); PHP-compatible escaping
     pages.ts  render.ts    page registry; CLI entry
     seed.ts                rebuilds data/agvs.sqlite from the JSON seeds
-    templates/*.tsx        header, footer, contactPop, shell, langSwitch
-                           + one per page (some still .ts — see below)
+    templates/*.tsx        shell, header, footer, contactPop, langSwitch
+                           + one per page — all TSX, no .ts left
     jsx/jsx-runtime.ts     the string-emitting JSX factory (no React)
   scripts/**/*.ts          browser sources: core, layout, home, detail, main.ts
   assets/css/{base,layout,pages}/*.css
@@ -196,14 +196,19 @@ of `"Header"` or `"Footer"`). `PageShell` takes an explicit `stylesheets` list
 rather than deriving one from the page name, because the rules about which page
 loads which sheet are real — see the `<head>` note above.
 
-**Converting the rest**: `index`, `detailList`, `view`, `videoView` and
-`overview` are still string templates. They interoperate — a TSX component
-returns a string, so a string template can interpolate it and vice versa — so
-they can go one at a time. `scripts/compare-dom.py <before> <after>` is how each
-conversion was checked: it compares the element tree, every attribute and
-whitespace-collapsed text, because Prettier reflows short elements when the
-pre-format whitespace changes and a byte diff therefore reports formatting
-churn. Verify a conversion against a saved copy of `dist/site` from before it.
+**All eleven templates are TSX** (2026-08-07). Overview is the one that does NOT
+use `PageShell`: it has a page-local header instead of the shared one, and its
+second inline script runs after the entry module rather than before it, so it
+renders its own document. It still reuses `LangSwitch`.
+
+`scripts/compare-dom.py <before> <after>` is how each conversion was checked —
+it compares the element tree, every attribute and whitespace-collapsed text,
+because Prettier reflows short elements when the pre-format whitespace changes
+and a byte diff therefore reports formatting churn. Use it against a saved copy
+of `dist/site` from before any future template edit. Note what it does NOT
+catch, which a direct byte diff and the browser did: `&` in an attribute is now
+emitted as `&amp;` (correct HTML, identical resolved URL), `<path></path>` is
+now `<path />` (equivalent in SVG), and blank lines between blocks are gone.
 
 **`html.ts` reproduces PHP's escaping on purpose**, because the templates were
 ported from PHP under a byte-identical-output constraint: `esc()` matches
