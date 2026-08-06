@@ -1,22 +1,12 @@
 import type { RenderContext } from "../i18n.js";
-import { Fragment, h, renderToString } from "../jsx/jsx-runtime.js";
+import { h, renderToString } from "../jsx/jsx-runtime.js";
 import type { Catalog, CatalogCategory, CatalogItem } from "../types.js";
-
-const LANGUAGES = ["KR", "EN", "JP"] as const;
+import { LangSwitch } from "./langSwitch.js";
 
 function rawUrlEncode(value: string): string {
 	return encodeURIComponent(value).replace(
 		/[!'()*]/g,
 		(character) => `%${character.charCodeAt(0).toString(16).toUpperCase()}`,
-	);
-}
-
-/** The chevron shared by the language switcher. */
-function ChevronDown({ class: className }: { class: string }) {
-	return (
-		<svg class={className} viewBox="0 0 24 24" aria-hidden="true">
-			<path fill="currentColor" d="M7 10l5 5 5-5H7z"></path>
-		</svg>
 	);
 }
 
@@ -77,36 +67,6 @@ function CategoryMenu({
 	);
 }
 
-function LanguageSwitch({ ctx }: { ctx: RenderContext }) {
-	return (
-		<div class="HeaderLang LangSwitch">
-			<button
-				type="button"
-				class="HeaderLangBtn LangSwitchBtn"
-				aria-expanded="false"
-				aria-haspopup="listbox"
-				aria-label={ctx.t("header.langAria")}
-			>
-				<span class="HeaderLangCurrent LangSwitchCurrent">{ctx.lang}</span>
-				<ChevronDown class="HeaderLangChevron LangSwitchChevron" />
-			</button>
-			<ul class="HeaderLangMenu LangSwitchMenu" role="listbox" hidden>
-				{LANGUAGES.map((language) => (
-					<li role="option">
-						<button
-							type="button"
-							class="HeaderLangOption LangSwitchOption"
-							data-lang={language}
-						>
-							{language}
-						</button>
-					</li>
-				))}
-			</ul>
-		</div>
-	);
-}
-
 /**
  * The shared site header.
  *
@@ -149,7 +109,11 @@ export function renderHeader(ctx: RenderContext, catalog: Catalog): string {
 					</ul>
 				</div>
 				<div class="HeaderActions">
-					<LanguageSwitch ctx={ctx} />
+					<LangSwitch
+						ctx={ctx}
+						prefix="Header"
+						ariaLabel={ctx.t("header.langAria")}
+					/>
 					<div class="ContactUsWrap">
 						<div class="ContactUsBtn">
 							<a href="#">Contact Us</a>
