@@ -1,7 +1,14 @@
 node_modules/
 storage/backups/
 storage/trash/
-storage/uploads/
+
+# storage/uploads/ is TRACKED on purpose. render.ts copies it into the built
+# site, so an attachment only reaches GitHub Pages if it is committed — CI
+# checks out the repo and nothing else. While it was ignored, every archive
+# download link 404'd in production.
+#
+# The consequence, stated so it is not a surprise: an upload made through the
+# admin UI does not appear on the live site until someone commits the file.
 data/*.sqlite-journal
 data/*.sqlite-wal
 data/*.sqlite-shm
