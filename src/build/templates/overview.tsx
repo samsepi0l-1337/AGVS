@@ -131,7 +131,12 @@ function OverviewHeader({ ctx }: { ctx: RenderContext }) {
 		<header class="header" id="header">
 			<div class="HeaderInner">
 				<a class="brand" href="index.php" aria-label={ctx.t("overview.homeAria")}>
-					<img src={ctx.assetUrl("./assets/img/WordmarkWhite.png")} alt="" />
+					<img
+						src={ctx.assetUrl("./assets/img/WordmarkWhite.png")}
+						alt=""
+						width={1005}
+						height={352}
+					/>
 				</a>
 				<nav class="nav" id="main-nav" aria-label={ctx.t("overview.navAria")}>
 					{NAV_LINKS.map((link) => (
@@ -634,7 +639,7 @@ export const overviewPage: PageModule = {
 					{raw(renderContactPop(ctx))}
 					<script
 						type="module"
-						src="./assets/js/main.js?ver=20260804b"
+						src="./assets/js/main.js?ver=20260804c"
 					></script>
 					<script>{raw(OVERVIEW_SCRIPT)}</script>
 				</body>

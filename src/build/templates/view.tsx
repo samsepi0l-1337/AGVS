@@ -15,7 +15,7 @@ const VIEW_STYLESHEETS = [
 	"./assets/css/layout/pop.css",
 ] as const;
 
-const SCRIPT_SRC = "./assets/js/main.js?ver=20260804b";
+const SCRIPT_SRC = "./assets/js/main.js?ver=20260804c";
 
 /** Kept as numeric character references — see videoView.tsx. */
 const ARROW_LEFT = raw("&#8592;");
@@ -449,10 +449,22 @@ function renderProduct(
 							</div>
 						:	images.map((image, index) => (
 								<div class="ViewImageGroup">
+									{/*
+									 * The first image is the hero and stays eager: measured at
+									 * y=672.8 h=736 on view-acs, so it crosses the 1080px fold.
+									 * Every later image in the stack starts below it.
+									 *
+									 * No width/height: .ViewImage is width:100%/height:auto, so an
+									 * intrinsic pair IS the layout here, and the natural size is
+									 * per-model catalog data this template never receives. A guessed
+									 * ratio would move the page.
+									 */}
 									<img
 										class="ViewImage"
 										src={ctx.assetUrl(image.src)}
 										alt={`${item.name} 이미지 ${index + 1}`}
+										loading={index > 0 ? "lazy" : undefined}
+										decoding={index > 0 ? "async" : undefined}
 									/>
 									{image.text !== "" && (
 										<p class="ViewImageText">{image.text}</p>

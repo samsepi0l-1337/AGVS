@@ -177,7 +177,7 @@ export const videoViewPage: PageModule = {
 					"./assets/css/pages/video.css",
 					"./assets/css/layout/pop.css",
 				]}
-				scriptSrc="./assets/js/main.js?ver=20260804b"
+				scriptSrc="./assets/js/main.js?ver=20260804c"
 			>
 				<main class="VideoViewMain">
 					<div class="ViewTopBg">

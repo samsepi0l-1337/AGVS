@@ -22,18 +22,32 @@ function Comment({ text }: { text: string }) {
 	return raw(`<!--${text}-->`);
 }
 
+/**
+ * Index of the first card that sits entirely below the fold.
+ *
+ * Measured at the 1920x1080 baseline: the grid is four columns, and the thumb
+ * rects come out at y=630 (row 1, fully visible), y=983.36 (row 2, which still
+ * crosses the 1080px fold) and y=1336.72 (row 3, entirely below it). Only row 3
+ * may be deferred — lazy-loading a card that is already on screen would delay
+ * its paint rather than help it.
+ */
+const FIRST_BELOW_FOLD_CARD = 8;
+
 function ItemCard({
 	href,
 	category,
 	thumbnail,
 	name,
 	englishName,
+	belowFold,
 }: {
 	href: string;
 	category: string;
 	thumbnail: string;
 	name: string;
 	englishName: string;
+	/** Defer this thumbnail: it starts below the fold at the 1920px baseline. */
+	belowFold: boolean;
 }) {
 	return (
 		<div class="ItemWrap" data-category={category}>
@@ -41,7 +55,14 @@ function ItemCard({
 			<a href={href}>
 				<div class="ItemThumb">
 					<Comment text="320x230" />
-					{thumbnail !== "" && <img src={thumbnail} alt={name} />}
+					{thumbnail !== "" && (
+						<img
+							src={thumbnail}
+							alt={name}
+							loading={belowFold ? "lazy" : undefined}
+							decoding={belowFold ? "async" : undefined}
+						/>
+					)}
 				</div>
 				<h3>{name}</h3>
 				<Comment text="크기18px굵기700" />
@@ -183,7 +204,7 @@ export const detailListPage: PageModule = {
 					"./assets/css/pages/detailList.css",
 					"./assets/css/layout/pop.css",
 				]}
-				scriptSrc="./assets/js/main.js?ver=20260804b"
+				scriptSrc="./assets/js/main.js?ver=20260804c"
 			>
 				<main class="DetailListMain">
 					<div class={`TopBg TopBg${bannerCategory}`}>
@@ -206,13 +227,14 @@ export const detailListPage: PageModule = {
 							<SearchBar />
 						</div>
 						<div class="ListItemWrap">
-							{data.catalog.items.map((item) => (
+							{data.catalog.items.map((item, index) => (
 								<ItemCard
 									href={`view.php?item=${rawUrlEncode(item.slug)}`}
 									category={item.category}
 									thumbnail={itemThumbnail(ctx, item)}
 									name={item.name}
 									englishName={item.models[0]?.label || item.name}
+									belowFold={index >= FIRST_BELOW_FOLD_CARD}
 								/>
 							))}
 						</div>

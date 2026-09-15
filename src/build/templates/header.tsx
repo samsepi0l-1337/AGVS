@@ -27,12 +27,16 @@ function Logo({ ctx }: { ctx: RenderContext }) {
 					class="LogoImage LogoImageWhite"
 					src={ctx.assetUrl("./assets/img/WordmarkWhite.png")}
 					alt="AGVS"
+					width={1005}
+					height={352}
 				/>
 				<img
 					class="LogoImage LogoImageNavy"
 					src={ctx.assetUrl("./assets/img/Wordmark.png")}
 					alt=""
 					aria-hidden="true"
+					width={1005}
+					height={352}
 				/>
 			</a>
 		</div>

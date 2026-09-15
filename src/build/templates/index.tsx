@@ -19,8 +19,8 @@ function ScrollButton({
 			data-target={target}
 			aria-label="다음 섹션으로 이동"
 		>
-			<img src={idle} alt="" />
-			<img src={hover} alt="" />
+			<img src={idle} alt="" width={32} height={32} />
+			<img src={hover} alt="" width={32} height={32} />
 		</button>
 	);
 }
@@ -58,7 +58,7 @@ export const indexPage: PageModule = {
 					"./assets/css/pages/home.css",
 					"./assets/css/layout/pop.css",
 				]}
-				scriptSrc="./assets/js/main.js?ver=20260804b"
+				scriptSrc="./assets/js/main.js?ver=20260804c"
 			>
 				<main>
 					<div id="FullPage">
@@ -113,6 +113,10 @@ export const indexPage: PageModule = {
 									<img
 										src={ctx.assetUrl("./assets/img/sec03.png")}
 										alt={ctx.t("sec03.imgAlt")}
+										width={1672}
+										height={941}
+										loading="lazy"
+										decoding="async"
 									/>
 								</div>
 								<div class="ContactBannerContent">
