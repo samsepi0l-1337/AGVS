@@ -55,7 +55,7 @@ export const indexPage: PageModule = {
 				stylesheets={[
 					"./assets/css/base/reset.css",
 					"./assets/css/layout/layout.css?ver=20260804c",
-					"./assets/css/pages/home.css",
+					"./assets/css/pages/home.css?ver=20260915a",
 					"./assets/css/layout/pop.css",
 				]}
 				scriptSrc="./assets/js/main.js?ver=20260804c"

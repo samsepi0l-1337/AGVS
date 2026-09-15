@@ -201,7 +201,7 @@ export const detailListPage: PageModule = {
 				stylesheets={[
 					"./assets/css/base/reset.css",
 					"./assets/css/layout/layout.css?ver=20260804c",
-					"./assets/css/pages/detailList.css",
+					"./assets/css/pages/detailList.css?ver=20260915a",
 					"./assets/css/layout/pop.css",
 				]}
 				scriptSrc="./assets/js/main.js?ver=20260804c"

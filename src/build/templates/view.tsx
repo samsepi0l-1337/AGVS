@@ -11,7 +11,7 @@ type Data = Parameters<PageModule["render"]>[1];
 const VIEW_STYLESHEETS = [
 	"./assets/css/base/reset.css",
 	"./assets/css/layout/layout.css?ver=20260804c",
-	"./assets/css/pages/view.css?ver=20260805d",
+	"./assets/css/pages/view.css?ver=20260915a",
 	"./assets/css/layout/pop.css",
 ] as const;
 
