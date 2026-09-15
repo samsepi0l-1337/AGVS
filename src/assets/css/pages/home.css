@@ -59,15 +59,15 @@ main #FullPage > div {
 }
 
 .Sec02Panel01::before {
-	background-image: url("../../img/sec02_01.png");
+	background-image: url("../../img/sec02_01.jpg");
 }
 
 .Sec02Panel02::before {
-	background-image: url("../../img/sec02_02.png");
+	background-image: url("../../img/sec02_02.jpg");
 }
 
 .Sec02Panel03::before {
-	background-image: url("../../img/sec02_03.png");
+	background-image: url("../../img/sec02_03.jpg");
 }
 
 .Sec02Title {

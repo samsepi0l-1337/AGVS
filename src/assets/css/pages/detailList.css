@@ -32,19 +32,19 @@ header:has(+ .DetailListMain) .ContactUsWrap {
 .TopBgAgv {
 	background-image:
 		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-		url("../../img/sec02_01.png");
+		url("../../img/sec02_01.jpg");
 }
 
 .TopBgForklift {
 	background-image:
 		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-		url("../../img/sec02_02.png");
+		url("../../img/sec02_02.jpg");
 }
 
 .TopBgTechnology {
 	background-image:
 		linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-		url("../../img/sec02_03.png");
+		url("../../img/sec02_03.jpg");
 }
 
 .TopBg p {
